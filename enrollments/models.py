@@ -12,7 +12,6 @@ class Enrollment(models.Model):
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
-        related_name="enrollments",
         )
     teacher = models.ForeignKey(
         User,
