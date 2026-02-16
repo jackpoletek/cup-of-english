@@ -1,50 +1,29 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
     <div class="container">
-
-        <a class="navbar-brand" href="{% url 'core:index' %}">
-            Cup of English
+        <a href="{% url 'core:index' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary">Cup of English</h2>
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navMenu">
-            <ul class="navbar-nav ms-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:index' %}">Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:about' %}">About</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'courses:course_list' %}">Courses</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:contact' %}">Contact</a>
-                </li>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="{% url 'core:index' %}" class="nav-item nav-link">Home</a>
+                <a href="{% url 'core:about' %}" class="nav-item nav-link">About</a>
+                <a href="{% url 'courses:list' %}" class="nav-item nav-link">Courses</a>
+                <a href="{% url 'teachers:list' %}" class="nav-item nav-link">Teachers</a>
+                <a href="{% url 'core:contact' %}" class="nav-item nav-link">Contact</a>
 
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:dashboard' %}">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
-                </li>
+                <a href="{% url 'accounts:logout' %}" class="nav-item nav-link">Logout</a>
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
-                </li>
+                <a href="{% url 'accounts:login' %}" class="nav-item nav-link">Login</a>
+                <a href="{% url 'accounts:register' %}" class="nav-item nav-link">Register</a>
                 {% endif %}
-
-            </ul>
+            </div>
         </div>
     </div>
 </nav>
