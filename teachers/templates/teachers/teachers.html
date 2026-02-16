@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5">
+    <h2 class="text-center mb-5">Our Teachers</h2>
+
+    <div class="row g-4">
+        {% for teacher in teachers %}
+        <div class="col-md-6 col-lg-3">
+            <div class="text-center shadow rounded overflow-hidden">
+                <img class="img-fluid" src="{% static teacher.image %}" alt="{{ teacher.name }}" loading="lazy">
+                <div class="p-3">
+                    <h5>{{ teacher.name }}</h5>
+                    <small class="text-muted">{{ teacher.specialty }}</small>
+                    <p class="mt-2 small">{{ teacher.bio|truncatewords:12 }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,15 +1,33 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Segoe UI", sans-serif;
 }
 
-main {
-    min-height: 80vh;
-}
-
-.navbar-brand {
-    font-weight: bold;
+.navbar-brand h2 {
+    font-weight: 700;
 }
 
 footer {
-    margin-top: 40px;
+    font-size: 14px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.team-item img {
+    transition: transform .3s;
+}
+
+.team-item:hover img {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: #06BBCC;
+    border-color: #06BBCC;
+}
+
+.btn-primary:hover {
+    background-color: #058a96;
 }
