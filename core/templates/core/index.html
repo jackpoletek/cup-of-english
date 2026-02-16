@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<header class="container-fluid bg-primary text-white text-center py-5">
+    <h1>Learn English Faster</h1>
+    <p>Professional online courses for teens & adults</p>
+</header>
+
+<section class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4 text-center">
+            <img src="{% static 'cup_of_english/images/cat-1.jpg' %}" class="img-fluid rounded mb-3">
+            <h5>General English</h5>
+        </div>
+        <div class="col-md-4 text-center">
+            <img src="{% static 'cup_of_english/images/cat-2.jpg' %}" class="img-fluid rounded mb-3">
+            <h5>Business English</h5>
+        </div>
+        <div class="col-md-4 text-center">
+            <img src="{% static 'cup_of_english/images/cat-3.jpg' %}" class="img-fluid rounded mb-3">
+            <h5>Exam Preparation</h5>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
