@@ -25,7 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "True"
+# DEBUG = os.getenv("DEBUG") == "True"
+
+# Debugging for development
+DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1",
                  "localhost",
@@ -66,10 +69,11 @@ ROOT_URLCONF = "cup_of_english.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],  # REQUIRED
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -126,5 +130,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# AWS
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Checkout</h2>
+    <p>This is a temporary checkout page.</p>
+    <a href="{% url 'payment_success' %}" class="btn btn-primary">Simulate Payment</a>
+</div>
+
+{% endblock %}
