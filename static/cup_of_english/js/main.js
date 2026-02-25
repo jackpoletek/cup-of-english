@@ -1,26 +1,11 @@
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("Main JS loaded");
+// Navbar scroll shadow
 
-  const forms = document.querySelectorAll("form");
+window.addEventListener("scroll", function () {
+  const navbar = document.querySelector(".navbar");
 
-  forms.forEach((form) => {
-    form.addEventListener("submit", function (e) {
-      const required = form.querySelectorAll("[required]");
-      let valid = true;
-
-      required.forEach((field) => {
-        if (!field.value.trim()) {
-          valid = false;
-          field.classList.add("is-invalid");
-        } else {
-          field.classList.remove("is-invalid");
-        }
-      });
-
-      if (!valid) {
-        e.preventDefault();
-        alert("Please fill all required fields.");
-      }
-    });
-  });
+  if (window.scrollY > 50) {
+    navbar.classList.add("navbar-shadow");
+  } else {
+    navbar.classList.remove("navbar-shadow");
+  }
 });

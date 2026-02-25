@@ -1,33 +1,82 @@
+/* Global */
+
 body {
-    font-family: "Segoe UI", sans-serif;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-.navbar-brand h2 {
-    font-weight: 700;
+/* Navbar */
+
+.navbar-shadow {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
-footer {
-    font-size: 14px;
+
+/* Hero Carousel */
+
+.hero-section {
+    position: relative;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    height: 500px;
 }
 
-.team-item img {
-    transition: transform .3s;
+.carousel-slide {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
-.team-item:hover img {
-    transform: scale(1.05);
+.carousel-slide img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
 }
 
-.btn-primary {
-    background-color: #06BBCC;
-    border-color: #06BBCC;
+.carousel-slide.active {
+    display: block;
 }
 
-.btn-primary:hover {
-    background-color: #058a96;
+.carousel-caption {
+    position: absolute;
+    bottom: 30%;
+    left: 10%;
+    color: white;
+    max-width: 500px;
+}
+
+.carousel-caption h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.prev {
+    left: 20px;
+}
+
+.next {
+    right: 20px;
+}
+
+
+/* Cards */
+
+.card img {
+    height: 200px;
+    object-fit: cover;
 }
