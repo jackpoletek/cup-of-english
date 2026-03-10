@@ -8,7 +8,7 @@ urlpatterns = [
     path("", include("core.urls")),
 
     # Accounts
-    path("accounts/", include("accounts.urls")),
+    path("", include("accounts.urls")),
 
     # Courses
     path("courses/", include("courses.urls")),

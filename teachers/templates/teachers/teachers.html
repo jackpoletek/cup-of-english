@@ -1,24 +1,225 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block title %}Teachers | Cup of English{% endblock %}
+
 {% block content %}
 
-<div class="container py-5">
-    <h2 class="text-center mb-5">Our Teachers</h2>
-
-    <div class="row g-4">
-        {% for teacher in teachers %}
-        <div class="col-md-6 col-lg-3">
-            <div class="text-center shadow rounded overflow-hidden">
-                <img class="img-fluid" src="{% static teacher.image %}" alt="{{ teacher.name }}" loading="lazy">
-                <div class="p-3">
-                    <h5>{{ teacher.name }}</h5>
-                    <small class="text-muted">{{ teacher.specialty }}</small>
-                    <p class="mt-2 small">{{ teacher.bio|truncatewords:12 }}</p>
-                </div>
+<!-- Header Start -->
+<div class="container-fluid page-header mb-5">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center" style="min-height: 300px">
+            <h3 class="display-4 text-uppercase">Teachers</h3>
+            <div class="d-inline-flex">
+                <p class="m-0 text-uppercase">
+                    <a href="{% url 'core:home' %}">Home</a>
+                </p>
+                <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                <p class="m-0 text-uppercase">Teachers</p>
             </div>
         </div>
-        {% endfor %}
     </div>
 </div>
+<!-- Header End -->
+
+
+<!-- Team Start -->
+<div class="container-fluid py-5">
+    <div class="container pt-5 pb-3">
+
+        <div class="text-center mb-5">
+            <h5 class="text-primary text-uppercase mb-3" style="letter-spacing:5px;">Teachers</h5>
+            <h1>Meet Our Teachers</h1>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-1.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>Anna Smith</h5>
+                        <p class="m-0">General English Specialist</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-2.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>David Brown</h5>
+                        <p class="m-0">IELTS & Cambridge Expert</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-3.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>Maria Lopez</h5>
+                        <p class="m-0">Academic English Teacher</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-4.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>John Carter</h5>
+                        <p class="m-0">Business English Coach</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-1.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>Emma White</h5>
+                        <p class="m-0">ESP Teacher</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-2.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>Michael Green</h5>
+                        <p class="m-0">IELTS Trainer</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-3.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>Sophia Turner</h5>
+                        <p class="m-0">Academic Writing</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 text-center team mb-4">
+                <div class="team-item rounded overflow-hidden mb-2">
+
+                    <div class="team-img position-relative">
+                        <img class="img-fluid" src="{% static 'cup_of_english/images/team-4.jpg' %}" alt="">
+                        <div class="team-social">
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-square mx-1" href="#"><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="bg-secondary p-4">
+                        <h5>Daniel Lee</h5>
+                        <p class="m-0">Conversation Coach</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Team End -->
 
 {% endblock %}

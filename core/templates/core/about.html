@@ -3,38 +3,138 @@
 
 {% block content %}
 
-<section class="container mt-5">
-    <div class="text-center">
-        <h1>About Cup of English</h1>
-        <p class="lead mt-3">
-            Cup of English is an online language school helping teens and professionals
-            achieve real-world English fluency.
+<!-- Page Header -->
+<div class="container-fluid page-header text-center text-white">
+    <div class="container">
+        <h1 class="display-4">About</h1>
+        <p>
+            <a href="{% url 'core:home' %}">Home</a> /
+            About
         </p>
     </div>
+</div>
 
-    <div class="row mt-5">
 
-        <div class="col-md-6">
-            <img src="{% static 'cup_of_english/images/about.jpg' %}" class="img-fluid rounded shadow">
+<!-- About Section -->
+<div class="container py-5">
+    <div class="row align-items-center">
+
+        <div class="col-lg-5">
+            <img class="img-fluid rounded" src="{% static 'cup_of_english/images/about.jpg' %}">
         </div>
 
-        <div class="col-md-6">
-            <h3>Our Mission</h3>
+        <div class="col-lg-7">
+
+            <h5 class="text-primary text-uppercase">About Us</h5>
+
+            <h1 class="mb-4">Innovative Way To Learn English</h1>
+
             <p>
-                We provide practical, career-focused English courses taught by experienced instructors.
-                Our platform combines modern technology with effective teaching methods.
+                Cup of English is an online language school providing
+                professional English training for teenagers and adults.
+                Our courses are designed to develop real communication
+                skills and support academic and professional goals.
             </p>
 
-            <h3>Why Choose Us?</h3>
-            <ul>
-                <li>Live online lessons</li>
-                <li>Experienced teachers</li>
-                <li>Flexible schedules</li>
-                <li>Career-focused content</li>
-            </ul>
+            <p>
+                We offer programmes including General English,
+                Business English, English for Specific Purposes,
+                and exam preparation for IELTS and Cambridge exams.
+            </p>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Register Now Section -->
+<div class="container-fluid bg-registration py-5">
+
+    <div class="container py-5">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-7 text-white">
+
+                <h5 class="text-uppercase mb-3">
+                    Start Learning Today
+                </h5>
+
+                <h1 class="mb-4">
+                    Register Now
+                </h1>
+
+                <p>
+                    Join Cup of English and start improving your
+                    English with professional teachers and
+                    structured online courses.
+                </p>
+
+                <ul>
+                    <li>Professional teachers</li>
+                    <li>Flexible online lessons</li>
+                    <li>Courses from A2 to C2</li>
+                </ul>
+
+            </div>
+
+
+            <div class="col-lg-5">
+
+                <div class="card shadow">
+
+                    <div class="card-header text-center">
+                        <h3>Register Now</h3>
+                    </div>
+
+                    <div class="card-body text-center">
+
+                        <p>Create your student account to start learning.</p>
+
+                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg w-100">
+                            Go To Registration
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
-</section>
+
+</div>
+
+
+<!-- Testimonials -->
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h5 class="text-primary text-uppercase">Testimonials</h5>
+        <h1>What Our Students Say</h1>
+    </div>
+
+    <div class="row text-center">
+
+        <div class="col-md-4">
+            <p>"Excellent teachers and very practical lessons."</p>
+            <strong>Anna</strong>
+        </div>
+
+        <div class="col-md-4">
+            <p>"My English improved a lot in just a few months."</p>
+            <strong>David</strong>
+        </div>
+
+        <div class="col-md-4">
+            <p>"Great preparation for IELTS."</p>
+            <strong>Maria</strong>
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

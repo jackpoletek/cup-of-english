@@ -3,48 +3,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Cup of English</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <link href="{% static 'cup_of_english/images/favicon.ico' %}" rel="icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{% block title %}Cup of English{% endblock %}</title>
 
-    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="{% static 'cup_of_english/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'cup_of_english/css/style.css' %}">
+
 </head>
 
 <body>
 
-    {% include 'includes/navbar.html' %}
+    {% include "includes/navbar.html" %}
 
-    <!-- Django Messages -->
-    <div class="container mt-3">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
-            {{ message }}
-            <button class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-    {% block content %}{% endblock %}
+    {% include "includes/footer.html" %}
 
-    {% include 'includes/footer.html' %}
+    <button id="backToTop" class="btn btn-primary back-to-top">↑</button>
 
-    <!-- Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'cup_of_english/js/main.js' %}"></script>
-    <script src="{% static 'cup_of_english/js/carousel.js' %}"></script>
 
 </body>
 
