@@ -4,7 +4,7 @@ from enrollments.models import Enrollment
 from .models import Course
 
 
-def courses_list(request):
+def courses_view(request):
     """
     Display a list of all active courses available.
 
@@ -28,7 +28,7 @@ def courses_list(request):
     )
 
 
-def course_detail(request, course_id):
+def course_details(request, course_id):
     """
     Display detailed information about a specific course.
 
@@ -60,7 +60,7 @@ def course_detail(request, course_id):
 
     return render(
         request,
-        "courses/course_detail.html",
+        "courses/course_details.html",
         {
             "course": course,
             "user_enrolled": user_enrolled
