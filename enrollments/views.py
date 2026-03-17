@@ -1,6 +1,5 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
 from django.contrib import messages
 
 from courses.models import Course
@@ -51,8 +50,9 @@ def access_course(request, course_id):
     ).first()  # Get first matching record or none
 
     if not enrollment:
-        return HttpResponseForbidden(
-            "You do not have access to this course."
+        return render(
+            request,
+            "enrollments/access_denied.html"
         )
 
     return redirect("courses:course_details", course_id=course.id)
