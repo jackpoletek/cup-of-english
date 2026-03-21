@@ -1,0 +1,1 @@
+web: gunicorn cup_of_english.wsgi

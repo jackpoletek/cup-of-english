@@ -20,4 +20,4 @@ class AccountsConfig(AppConfig):
         signal handlers are active for the entire application lifecycle.
         """
     # Import signals module to connect signal handlers
-    import accounts.signals
+        import accounts.signals
