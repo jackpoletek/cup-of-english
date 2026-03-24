@@ -2,26 +2,21 @@ from pathlib import Path
 import os
 import dj_database_url
 import environ
+from dotenv import load_dotenv
 
-# Init env
-env = environ.Env(DEBUG=(bool, False))
-environ.Env.read_env()
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = os.environ.get("SECRET_KEY")
-DEBUG = env("DEBUG")
+DEBUG = os.environ.get("DEBUG") == "True"
 
-ALLOWED_HOSTS = env.list(
+ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
-    default=[
-        "127.0.0.1",
-        "localhost",
-        "cup-of-english.herokuapp.com",
-        ".herokuapp.com",
-        ],
-)
+    "127.0.0.1,localhost,cup-of-english.herokuapp.com,.herokuapp.com"
+).split(",")
 
 # APPS
 INSTALLED_APPS = [

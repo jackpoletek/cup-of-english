@@ -17,7 +17,7 @@ def courses_view(request):
         Rendered template with active courses
     """
 
-    courses = Course.objects.filter(active=True)
+    courses = Course.objects.filter(is_active=True)
 
     return render(
         request,
@@ -55,7 +55,7 @@ def course_details(request, course_id):
         user_enrolled = Enrollment.objects.filter(
             learner=request.user,
             course=course,
-            active=True
+            is_active=True
         ).exists()
 
     return render(
@@ -86,7 +86,7 @@ def my_courses(request):
     # Get all active enrollments for the current user
     enrollments = Enrollment.objects.filter(
         learner=request.user,
-        active=True
+        is_active=True
     )
 
     return render(

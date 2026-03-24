@@ -48,7 +48,7 @@ class Course(models.Model):
         auto_now_add=True
     )
 
-    active = models.BooleanField(
+    is_active = models.BooleanField(
         default=True
     )
 

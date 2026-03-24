@@ -10,7 +10,7 @@ def create_user_profile(sender, instance, created, **kwargs):
     Signal handler automatically creates a UserProfile when a new user is created.
     This is triggered after a user instance is saved to the database.
     It ensures every user has a profile for role management.
-    
+
     Args:
         sender: The model class (User) that sent the signal
         instance: The actual User instance being saved
@@ -24,6 +24,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.get_or_create(user=instance)
 
 
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     """
@@ -35,5 +36,7 @@ def save_user_profile(sender, instance, **kwargs):
         instance: The actual User instance being saved
         **kwargs: Additional arguments
     """
-
-    instance.userprofile.save()
+    try:
+        instance.userprofile.save()
+    except AttributeError:
+        pass

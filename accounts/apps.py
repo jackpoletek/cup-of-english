@@ -19,5 +19,5 @@ class AccountsConfig(AppConfig):
         when Django starts, preventing race conditions and ensuring
         signal handlers are active for the entire application lifecycle.
         """
-    # Import signals module to connect signal handlers
-        import accounts.signals
+        # Import signals module to connect signal handlers
+        import accounts.signals  # noqa: F401
