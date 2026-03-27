@@ -5,13 +5,23 @@
 
 <!-- Carousel Start -->
 <div class="container-fluid p-0 pb-5 mb-5">
-    <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="2"></button>
+        </div>
 
         <div class="carousel-inner">
 
             <div class="carousel-item active">
-                <img class="w-100" src="{% static 'cup_of_english/images/carousel-1.jpg' %}" alt="Slide">
-                <div class="carousel-caption">
+                <img class="w-100" src="{% static 'cup_of_english/images/carousel-1.jpg' %}"
+                    alt="Learn English online course">
+
+                <!-- esponsive Caption -->
+                <div class="carousel-caption d-none d-md-block">
                     <h5>Best Online English Courses</h5>
                     <h1>Learn English From Your Home</h1>
                     <a href="{% url 'core:courses' %}" class="btn btn-primary">Explore Courses</a>
@@ -19,8 +29,10 @@
             </div>
 
             <div class="carousel-item">
-                <img class="w-100" src="{% static 'cup_of_english/images/carousel-2.jpg' %}" alt="Slide">
-                <div class="carousel-caption">
+                <img class="w-100" src="{% static 'cup_of_english/images/carousel-2.jpg' %}"
+                    alt="Business English training">
+
+                <div class="carousel-caption d-none d-md-block">
                     <h5>Professional English Training</h5>
                     <h1>Improve Your Career Opportunities</h1>
                     <a href="{% url 'core:courses' %}" class="btn btn-primary">Browse Courses</a>
@@ -28,8 +40,10 @@
             </div>
 
             <div class="carousel-item">
-                <img class="w-100" src="{% static 'cup_of_english/images/carousel-3.jpg' %}" alt="Slide">
-                <div class="carousel-caption">
+                <img class="w-100" src="{% static 'cup_of_english/images/carousel-3.jpg' %}"
+                    alt="Interactive English lessons">
+
+                <div class="carousel-caption d-none d-md-block">
                     <h5>Study With Expert Teachers</h5>
                     <h1>Interactive Online Lessons</h1>
                     <a href="{% url 'accounts:register' %}" class="btn btn-primary">Register Now</a>
@@ -38,6 +52,7 @@
 
         </div>
 
+        <!-- Controls -->
         <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </button>
@@ -61,9 +76,7 @@
         </div>
 
         <div class="col-lg-7">
-
             <h5 class="text-primary text-uppercase mb-3">About Us</h5>
-
             <h1 class="mb-4">Innovative Way To Learn English</h1>
 
             <p>
@@ -76,7 +89,6 @@
             <a href="{% url 'core:about' %}" class="btn btn-primary">
                 Learn More
             </a>
-
         </div>
     </div>
 </div>
@@ -94,7 +106,8 @@
 
         <div class="col-lg-4 mb-4">
             <div class="card course-card">
-                <img class="card-img-top" src="{% static 'cup_of_english/images/course-1.jpg' %}">
+                <img class="card-img-top" src="{% static 'cup_of_english/images/course-1.jpg' %}"
+                    alt="General English course">
                 <div class="card-body">
                     <h5 class="card-title">General English</h5>
                     <p>Improve speaking, grammar and vocabulary.</p>
@@ -107,7 +120,8 @@
 
         <div class="col-lg-4 mb-4">
             <div class="card course-card">
-                <img class="card-img-top" src="{% static 'cup_of_english/images/course-2.jpg' %}">
+                <img class="card-img-top" src="{% static 'cup_of_english/images/course-2.jpg' %}"
+                    alt="Business English course">
                 <div class="card-body">
                     <h5 class="card-title">Business English</h5>
                     <p>English for meetings, presentations and work.</p>
@@ -120,7 +134,8 @@
 
         <div class="col-lg-4 mb-4">
             <div class="card course-card">
-                <img class="card-img-top" src="{% static 'cup_of_english/images/course-3.jpg' %}">
+                <img class="card-img-top" src="{% static 'cup_of_english/images/course-3.jpg' %}"
+                    alt="IELTS preparation course">
                 <div class="card-body">
                     <h5 class="card-title">IELTS Preparation</h5>
                     <p>Prepare effectively for international exams.</p>
