@@ -214,6 +214,23 @@ footer a:hover {
     }
 }
 
+/* Caption animation */
+.animate-caption {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsive design */
 
 /* Mobile devices < 768px */
