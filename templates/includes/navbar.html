@@ -13,25 +13,43 @@
 
             <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:home' %}">Home</a>
-                </li>
+                <ul class="navbar-nav ms-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:about' %}">About</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:home' %}">
+                            Home
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:courses' %}">Courses</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/courses/' %}active{% endif %}"
+                            href="{% url 'core:courses' %}">
+                            Courses
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:teachers' %}">Teachers</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/about/' %}active{% endif %}"
+                            href="{% url 'core:about' %}">
+                            About
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'core:contact' %}">Contact</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/teachers/' %}active{% endif %}"
+                            href="{% url 'core:teachers' %}">
+                            Teachers
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}"
+                            href="{% url 'core:contact' %}">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
 
             </ul>
 
