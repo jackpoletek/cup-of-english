@@ -5,23 +5,16 @@
 
 {% block content %}
 
-<!-- Header Start -->
-<div class="container-fluid page-header mb-5">
-    <div class="container">
-        <div class="d-flex flex-column justify-content-center" style="min-height: 300px">
-            <h3 class="display-4 text-uppercase">Teachers</h3>
-            <div class="d-inline-flex">
-                <p class="m-0 text-uppercase">
-                    <a href="{% url 'core:home' %}">Home</a>
-                </p>
-                <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                <p class="m-0 text-uppercase">Teachers</p>
-            </div>
-        </div>
+<!-- Page Header -->
+<div class="container-fluid page-header mb-5 text-left text-white page-header-bg">
+    <div class="container py-5">
+        <h1 class="display-4 text-uppercase">Teachers</h1>
+        <p class="m-0 text-uppercase">
+            <a href="{% url 'core:home' %}">Home</a> >>
+            Teachers
+        </p>
     </div>
 </div>
-<!-- Header End -->
-
 
 <!-- Team Start -->
 <div class="container-fluid py-5">

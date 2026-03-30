@@ -51,16 +51,19 @@ a:hover {
 }
 
 .page-header {
-    background: var(--dark-accent);
-    color: white;
+    width: 100%;
     padding: 80px 0;
+}
+
+.page-header-bg {
+    background: linear-gradient(rgba(45, 49, 66, 0.75), rgba(45, 49, 66, 0.75)),
+        url('/static/cup_of_english/images/course-3.jpg') center/cover no-repeat;
 }
 
 .page-header h1,
 .page-header h3 {
     color: white;
 }
-
 
 /* Navbar */
 
