@@ -1,14 +1,26 @@
-<div class="container-fluid bg-dark text-white py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
+<div class="container-fluid bg-dark text-white py-5 px-sm-3 px-lg-5 footer-main">
     <div class="row pt-5">
         <div class="col-lg-12 col-md-12">
             <div class="row">
 
                 <!-- Get In Touch -->
                 <div class="col-md-6 mb-5">
-                    <h5 class="text-primary text-uppercase mb-4" style="letter-spacing: 5px;">Get In Touch</h5>
-                    <p><i class="fa fa-map-marker-alt mr-2"></i>Cup Of English</p>
-                    <p><i class="fa fa-phone-alt mr-2"></i>+44 07932 465 868</p>
-                    <p><i class="fa fa-envelope mr-2"></i>info@cupofenglish.co.uk</p>
+                    <h5 class="text-primary text-uppercase mb-4 footer-heading">Get In Touch</h5>
+
+                    <p class="footer-item">
+                        <i class="fa fa-map-marker-alt"></i>
+                        <span>Cup Of English</span>
+                    </p>
+
+                    <p class="footer-item">
+                        <i class="fa fa-phone-alt"></i>
+                        <span>+44 07932 465 868</span>
+                    </p>
+
+                    <p class="footer-item">
+                        <i class="fa fa-envelope"></i>
+                        <span>info@cupofenglish.co.uk</span>
+                    </p>
 
                     <div class="d-flex justify-content-start mt-4">
                         <a class="btn btn-outline-light btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
@@ -20,32 +32,38 @@
 
                 <!-- Our Courses -->
                 <div class="col-md-6 mb-5">
-                    <h5 class="text-primary text-uppercase mb-4" style="letter-spacing: 5px;">Our Courses</h5>
+                    <h5 class="text-primary text-uppercase mb-4 footer-heading">Our Courses</h5>
 
                     <div class="d-flex flex-column justify-content-start">
 
-                        <a class="text-white mb-2" href="{% url 'core:courses' %}">
-                            <i class="fa fa-angle-right mr-2"></i>General English
+                        <a class="text-white mb-2 footer-link" href="{% url 'core:courses' %}">
+                            <i class="fa fa-angle-right"></i>
+                            <span>General English</span>
                         </a>
 
-                        <a class="text-white mb-2" href="{% url 'core:courses' %}">
-                            <i class="fa fa-angle-right mr-2"></i>Business English
+                        <a class="text-white mb-2 footer-link" href="{% url 'core:courses' %}">
+                            <i class="fa fa-angle-right"></i>
+                            <span>Business English</span>
                         </a>
 
-                        <a class="text-white mb-2" href="{% url 'core:courses' %}">
-                            <i class="fa fa-angle-right mr-2"></i>English for Specific Purposes
+                        <a class="text-white mb-2 footer-link" href="{% url 'core:courses' %}">
+                            <i class="fa fa-angle-right"></i>
+                            <span>English for Specific Purposes</span>
                         </a>
 
-                        <a class="text-white mb-2" href="{% url 'core:courses' %}">
-                            <i class="fa fa-angle-right mr-2"></i>Exam Preparation
+                        <a class="text-white mb-2 footer-link" href="{% url 'core:courses' %}">
+                            <i class="fa fa-angle-right"></i>
+                            <span>Exam Preparation</span>
                         </a>
 
-                        <a class="text-white mb-2" href="{% url 'core:courses' %}">
-                            <i class="fa fa-angle-right mr-2"></i>English for Academic Purposes
+                        <a class="text-white mb-2 footer-link" href="{% url 'core:courses' %}">
+                            <i class="fa fa-angle-right"></i>
+                            <span>English for Academic Purposes</span>
                         </a>
 
-                        <a class="text-white" href="{% url 'core:courses' %}">
-                            <i class="fa fa-angle-right mr-2"></i>IB / IGCSE English
+                        <a class="text-white footer-link" href="{% url 'core:courses' %}">
+                            <i class="fa fa-angle-right"></i>
+                            <span>IB / IGCSE English</span>
                         </a>
 
                     </div>
@@ -56,20 +74,13 @@
     </div>
 </div>
 
-<div class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5"
-    style="border-color: rgba(256, 256, 256, .1) !important;">
-
+<div class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5 footer-bottom">
     <div class="row">
-
         <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
-
-            <p class="m-0 text-white">&copy; <a href="#">Cup of English</a>. All Rights Reserved.</p>
-
+            <p class="m-0 text-white">
+                &copy; <a href="#">Cup of English</a>. All Rights Reserved.
+            </p>
         </div>
-
-        <div class="col-lg-6 text-center text-md-right">
-
-        </div>
-
+        <div class="col-lg-6 text-center text-md-right"></div>
     </div>
 </div>

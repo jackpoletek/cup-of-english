@@ -190,6 +190,39 @@ form textarea {
 
 /* Footer */
 
+.footer-main {
+    margin-top: 90px;
+}
+
+.footer-heading {
+    letter-spacing: 5px;
+}
+
+.footer-bottom {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.footer-item i,
+.footer-link i {
+    margin-right: 0.5rem; /* first space */
+}
+
+.footer-item span,
+.footer-link span {
+    margin-left: 0.25rem; /* second space */
+}
+
+/* better alignment */
+.footer-item,
+.footer-link {
+    display: flex;
+    align-items: center;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
 footer,
 .bg-dark {
     background: var(--dark-accent) !important;
