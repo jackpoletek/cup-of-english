@@ -28,7 +28,7 @@
                     </p>
 
                     <h4 class="mt-4">
-                        Price: ${{ course.price }}
+                        Price: £{{ course.price }}
                     </h4>
 
                     <div class="mt-4">
@@ -47,8 +47,9 @@
 
                         {% else %}
 
-                        <a href="{% url 'enrollments:enroll_course' course.id %}" class="btn btn-success">
-                            Enroll in Course
+                        <!-- Stripe Checkout Button -->
+                        <a href="{% url 'payments:checkout' course.id %}" class="btn btn-primary">
+                            Buy Course
                         </a>
 
                         {% endif %}
@@ -56,7 +57,7 @@
                         {% else %}
 
                         <a href="{% url 'accounts:login' %}" class="btn btn-primary">
-                            Login to Enroll
+                            Login to Buy
                         </a>
 
                         {% endif %}

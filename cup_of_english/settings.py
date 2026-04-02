@@ -1,9 +1,7 @@
 from pathlib import Path
 import os
 import dj_database_url
-import environ
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
@@ -26,6 +24,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
+    # Third party
+    "storages",
+    
+    # Project apps
     "accounts",
     "courses",
     "enrollments",
@@ -60,9 +63,9 @@ TEMPLATES = [
             "django.template.context_processors.request",
             "django.contrib.auth.context_processors.auth",
             "django.contrib.messages.context_processors.messages",
-            ],
-        },
+        ],
     },
+},
 ]
 
 WSGI_APPLICATION = "cup_of_english.wsgi.application"
@@ -90,30 +93,52 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# STATIC FILES
-STATIC_URL = "/static/"
+# AWS S3 CONFIG
+if "USE_AWS" in os.environ:
+    
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    
+    AWS_STORAGE_BUCKET_NAME = "cup-of-english-static-112712884750-us-west-1-an"
+    AWS_S3_REGION_NAME = "us-west-1"
+    
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = False
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",
+}
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    # STATIC
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    STATICFILES_STORAGE = "custom_storages.StaticStorage"
 
-# MEDIA FILES
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+    # MEDIA
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
+
+else:
+    # LOCAL STATIC
+    STATIC_URL = "/static/"
+    STATICFILES_DIRS = [BASE_DIR / "static"]
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+    # LOCAL MEDIA
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"
 
 # AUTH REDIRECTS
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "accounts:profile"
 LOGOUT_REDIRECT_URL = "courses:home"
 
-# DEFAULT PK
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# HEROKU SECURITY
+# SECURITY
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 if not DEBUG:
@@ -121,34 +146,15 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
 
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-else:
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-
-# LOGGING
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {"class": "logging.StreamHandler"},
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO",
-    },
-}
-
+# STRIPE
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 
+# EMAIL
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
