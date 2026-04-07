@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
     <div class="container">
 
-        <a class="navbar-brand fw-bold text-dark" href="{% url 'core:home' %}">
+        <a class="navbar-brand fw-bold text-dark" href="{% url 'core:index' %}">
             <span class="text-primary">Cup</span> of English
         </a>
 
@@ -16,7 +16,7 @@
                 <ul class="navbar-nav ms-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:home' %}">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:index' %}">
                             Home
                         </a>
                     </li>

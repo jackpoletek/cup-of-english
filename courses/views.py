@@ -55,7 +55,7 @@ def course_details(request, course_id):
         user_enrolled = Enrollment.objects.filter(
             learner=request.user,
             course=course,
-            is_active=True
+            active=True
         ).exists()
 
     return render(
