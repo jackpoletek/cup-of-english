@@ -24,7 +24,7 @@ def user_is_learner(user):
 # Login
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect("core:index")
+        return redirect("accounts:profile")
 
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
@@ -38,7 +38,7 @@ def login_view(request):
 
         if user is not None:
             auth_login(request, user)
-            return redirect("core:index")
+            return redirect("accounts:profile")
         else:
             messages.error(request, "Invalid username or password.")
 
@@ -50,7 +50,7 @@ def logout_view(request):
     if request.user.is_authenticated:
         auth_logout(request)
 
-    return redirect("core:index")
+    return redirect("accounts/logout.html")
 
 
 # Registration

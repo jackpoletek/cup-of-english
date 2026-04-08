@@ -9,6 +9,7 @@
 
     <div class="row">
 
+        <!-- Left column -->
         <div class="col-md-4">
 
             <div class="card shadow-sm">
@@ -22,6 +23,13 @@
                         {{ user.email }}
                     </p>
 
+                    <!-- Display role -->
+                    <p class="badge bg-primary">
+                        {{ user.userprofile.role|title }}
+                    </p>
+
+                    <hr>
+
                     <a href="{% url 'accounts:logout' %}" class="btn btn-danger">
                         Logout
                     </a>
@@ -31,16 +39,29 @@
 
         </div>
 
+        <!-- Right column -->
         <div class="col-md-8">
 
             <div class="card shadow-sm">
                 <div class="card-body">
 
-                    <h5 class="mb-3">My Courses</h5>
+                    <!-- Role-based content -->
 
-                    <p>
-                        You are not enrolled in any courses yet.
-                    </p>
+                    {% if user.userprofile.role == "learner" %}
+                    <h5 class="mb-3">My Courses</h5>
+                    <p>You are not enrolled in any courses yet.</p>
+
+                    {% elif user.userprofile.role == "teacher" %}
+                    <h5 class="mb-3">My Students</h5>
+                    <p>You have no assigned students yet.</p>
+
+                    {% elif user.userprofile.role == "admin" %}
+                    <h5 class="mb-3">Admin Panel</h5>
+                    <p>Manage users, courses, and platform settings.</p>
+
+                    {% else %}
+                    <p>No role assigned.</p>
+                    {% endif %}
 
                 </div>
             </div>

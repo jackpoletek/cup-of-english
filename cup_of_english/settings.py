@@ -3,7 +3,7 @@ import os
 import dj_database_url
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,10 +24,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
+
     # Third party
     "storages",
-    
+
     # Project apps
     "accounts",
     "courses",
@@ -53,19 +53,19 @@ ROOT_URLCONF = "cup_of_english.urls"
 
 # TEMPLATES
 TEMPLATES = [
-{
-    "BACKEND": "django.template.backends.django.DjangoTemplates",
-    "DIRS": [BASE_DIR / "templates"],
-    "APP_DIRS": True,
-    "OPTIONS": {
-        "context_processors": [
-            "django.template.context_processors.debug",
-            "django.template.context_processors.request",
-            "django.contrib.auth.context_processors.auth",
-            "django.contrib.messages.context_processors.messages",
-        ],
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
     },
-},
 ]
 
 WSGI_APPLICATION = "cup_of_english.wsgi.application"
@@ -95,13 +95,13 @@ USE_TZ = True
 
 # AWS S3 CONFIG
 if "USE_AWS" in os.environ:
-    
+
     AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-    
+
     AWS_STORAGE_BUCKET_NAME = "cup-of-english-static-112712884750-us-west-1-an"
     AWS_S3_REGION_NAME = "us-west-1"
-    
+
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
     AWS_DEFAULT_ACL = None
@@ -109,7 +109,7 @@ if "USE_AWS" in os.environ:
 
     AWS_S3_OBJECT_PARAMETERS = {
         "CacheControl": "max-age=86400",
-}
+        }
 
     # STATIC
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"

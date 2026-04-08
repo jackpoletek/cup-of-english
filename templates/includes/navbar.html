@@ -13,43 +13,70 @@
 
             <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:index' %}">
+                        Home
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:index' %}">
-                            Home
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/courses/' %}active{% endif %}"
+                        href="{% url 'core:courses' %}">
+                        Courses
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/courses/' %}active{% endif %}"
-                            href="{% url 'core:courses' %}">
-                            Courses
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/about/' %}active{% endif %}"
+                        href="{% url 'core:about' %}">
+                        About
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/about/' %}active{% endif %}"
-                            href="{% url 'core:about' %}">
-                            About
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/teachers/' %}active{% endif %}"
+                        href="{% url 'core:teachers' %}">
+                        Teachers
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/teachers/' %}active{% endif %}"
-                            href="{% url 'core:teachers' %}">
-                            Teachers
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}"
+                        href="{% url 'core:contact' %}">
+                        Contact
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}"
-                            href="{% url 'core:contact' %}">
-                            Contact
-                        </a>
-                    </li>
+                <!-- auth state -->
+                {% if user.is_authenticated %}
 
-                </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:profile' %}">
+                        Profile
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="{% url 'accounts:logout' %}">
+                        Logout
+                    </a>
+                </li>
+
+                {% else %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:login' %}">
+                        Login
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:register' %}">
+                        Register
+                    </a>
+                </li>
+
+                {% endif %}
 
             </ul>
 
