@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import OperationalError
+from accounts.forms import ProfileForm
 from enrollments.models import Enrollment
 
 from .models import UserProfile
@@ -113,12 +114,42 @@ def register_view(request):
 @login_required
 def profile(request):
 
-    enrollments = Enrollment.objects.filter(user=request.user)
+    # Role-based enrollments
+    if hasattr(request.user, "userprofile"):
+
+        if request.user.userprofile.role == "learner":
+            enrollments = Enrollment.objects.filter(
+                learner=request.user,
+                active=True
+            )
+
+        elif request.user.userprofile.role == "teacher":
+            enrollments = Enrollment.objects.filter(
+                teacher=request.user,
+                active=True
+            )
+
+        else:
+            enrollments = None
+    else:
+        enrollments = None
+
+    # Form logic
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect("accounts:profile")
+    else:
+        form = ProfileForm(instance=request.user)
 
     return render(
         request,
         "accounts/profile.html",
         {
-            "enrollments": enrollments
+            "enrollments": enrollments,
+            "form": form,
         },
     )

@@ -42,10 +42,31 @@
         <!-- Right column -->
         <div class="col-md-8">
 
-            <div class="card shadow-sm">
+            <!-- Profile edit form -->
+            <div class="card shadow-sm mb-4">
                 <div class="card-body">
 
-                    <!-- Role-based content -->
+                    <h5 class="mb-3">Edit Profile</h5>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label>Email</label>
+                            {{ form.email }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Save Changes
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Role-based content -->
+            <div class="card shadow-sm">
+                <div class="card-body">
 
                     {% if user.userprofile.role == "learner" %}
 
