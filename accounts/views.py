@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import OperationalError
+from enrollments.models import Enrollment
 
 from .models import UserProfile
 
@@ -111,4 +112,13 @@ def register_view(request):
 # Authenticated views
 @login_required
 def profile(request):
-    return render(request, "accounts/profile.html")
+
+    enrollments = Enrollment.objects.filter(user=request.user)
+
+    return render(
+        request,
+        "accounts/profile.html",
+        {
+            "enrollments": enrollments
+        },
+    )

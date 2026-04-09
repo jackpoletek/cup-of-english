@@ -48,14 +48,44 @@
                     <!-- Role-based content -->
 
                     {% if user.userprofile.role == "learner" %}
+
                     <h5 class="mb-3">My Courses</h5>
+
+                    {% if enrollments %}
+                    <ul class="list-group">
+                        {% for enrollment in enrollments %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ enrollment.course.title }}
+
+                            <a href="{% url 'courses:course_details' enrollment.course.id %}"
+                                class="btn btn-sm btn-outline-primary">
+                                View
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
                     <p>You are not enrolled in any courses yet.</p>
+                    {% endif %}
 
                     {% elif user.userprofile.role == "teacher" %}
+
                     <h5 class="mb-3">My Students</h5>
+
+                    {% if enrollments %}
+                    <ul class="list-group">
+                        {% for enrollment in enrollments %}
+                        <li class="list-group-item">
+                            {{ enrollment.learner.username }} - {{ enrollment.course.title }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
                     <p>You have no assigned students yet.</p>
+                    {% endif %}
 
                     {% elif user.userprofile.role == "admin" %}
+
                     <h5 class="mb-3">Admin Panel</h5>
                     <p>Manage users, courses, and platform settings.</p>
 
