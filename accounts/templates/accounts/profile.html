@@ -24,9 +24,11 @@
                     </p>
 
                     <!-- Display role -->
+                    {% if user.userprofile %}
                     <p class="badge bg-primary">
                         {{ user.userprofile.role|title }}
                     </p>
+                    {% endif %}
 
                     <hr>
 
@@ -68,7 +70,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
 
-                    {% if user.userprofile.role == "learner" %}
+                    {% if user.userprofile and user.userprofile.role == "learner" %}
 
                     <h5 class="mb-3">My Courses</h5>
 
@@ -89,7 +91,7 @@
                     <p>You are not enrolled in any courses yet.</p>
                     {% endif %}
 
-                    {% elif user.userprofile.role == "teacher" %}
+                    {% elif user.userprofile and user.userprofile.role == "teacher" %}
 
                     <h5 class="mb-3">My Students</h5>
 
@@ -105,7 +107,7 @@
                     <p>You have no assigned students yet.</p>
                     {% endif %}
 
-                    {% elif user.userprofile.role == "admin" %}
+                    {% elif user.userprofile and user.userprofile.role == "admin" %}
 
                     <h5 class="mb-3">Admin Panel</h5>
                     <p>Manage users, courses, and platform settings.</p>

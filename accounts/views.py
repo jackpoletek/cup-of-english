@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import OperationalError
-from accounts.forms import ProfileForm
+from .forms import ProfileForm
 from enrollments.models import Enrollment
 
 from .models import UserProfile
@@ -120,13 +120,13 @@ def profile(request):
         if request.user.userprofile.role == "learner":
             enrollments = Enrollment.objects.filter(
                 learner=request.user,
-                active=True
+                is_active=True
             )
 
         elif request.user.userprofile.role == "teacher":
             enrollments = Enrollment.objects.filter(
                 teacher=request.user,
-                active=True
+                is_active=True
             )
 
         else:

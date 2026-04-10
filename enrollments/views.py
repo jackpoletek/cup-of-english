@@ -10,14 +10,12 @@ from .models import Enrollment
 def enroll_course(request, course_id):
     """
     Handle course enrollment for authenticated learners.
-
     This view allows authenticated users to enroll in a course.
     It prevents duplicate enrollments and provides appropriate feedback messages.
 
     Args:
         request: HTTP request object (user is guaranteed authenticated)
         course_id: Primary key of the course to enroll in
-
     Returns:
         Redirect to course detail page with appropriate status message
     """
@@ -45,11 +43,13 @@ def access_course(request, course_id):
 
     # Check if user has an active enrollment for the course
     # Using .first() instead of .exists() as we don't need the actual object
-    enrollment = Enrollment.objects.filter(
-        learner=request.user, course=course, active=True
-    ).first()  # Get first matching record or none
+    enrollment_exists = Enrollment.objects.filter(
+        learner=request.user,
+        course=course,
+        is_active=True
+    ).exists()  # Check if any matching record exists
 
-    if not enrollment:
+    if not enrollment_exists:
         return render(
             request,
             "enrollments/access_denied.html"

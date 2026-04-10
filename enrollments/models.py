@@ -7,7 +7,6 @@ class Enrollment(models.Model):
 
     """
     Enrollment model represents a learner's registration in a course.
-
     It tracks which learners are enrolled in which courses,
     which teacher is assigned to the enrollment, and the status of the enrollment.
     It serves as a bridge between the User (learner), Course, and Teacher models.
@@ -35,9 +34,8 @@ class Enrollment(models.Model):
     )
 
     # Soft delete flag to allow deactivating enrollments without deleting them
-    active = models.BooleanField(default=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         """
@@ -48,4 +46,5 @@ class Enrollment(models.Model):
         ordering = ["-created_at"]  # Most recent enrollments first (descending order)
 
     def __str__(self):
-        return f"{self.learner.username} enrolled in {self.course.title} taught by {self.teacher.username}"
+        teacher_name = self.teacher.username if self.teacher else "No teacher assigned"
+        return f"{self.learner.username} enrolled in {self.course.title} taught by {teacher_name}"
