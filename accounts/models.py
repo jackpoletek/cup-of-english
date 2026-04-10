@@ -32,14 +32,12 @@ class UserProfile(models.Model):
     def unique_role(self, new_role):
         """
         Validates if a user can be assigned a new role.
-
         - Admin cannot change their role
         - Users without a role can take any new role
         - Users can't change their existing role
 
         Args:
             new_role (str): The role being assigned to the user
-
         Raises:
             ValidationError: role change is not allowed
         """
