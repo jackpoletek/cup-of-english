@@ -112,6 +112,10 @@
                     <h5 class="mb-3">Admin Panel</h5>
                     <p>Manage users, courses, and platform settings.</p>
 
+                    <a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-primary">
+                        Go to Admin Dashboard
+                    </a>
+
                     {% else %}
                     <p>No role assigned.</p>
                     {% endif %}

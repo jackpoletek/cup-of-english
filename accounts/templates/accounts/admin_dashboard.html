@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <p class="mb-4">
+                Manage users, courses, and enrollments using the admin tools below.
+            </p>
+
+            <div class="d-grid gap-3">
+
+                <!-- Users -->
+                <a href="/admin/auth/user/" class="btn btn-outline-primary">
+                    Manage Users
+                </a>
+
+                <!-- Courses -->
+                <a href="/admin/courses/course/" class="btn btn-outline-primary">
+                    Manage Courses
+                </a>
+
+                <!-- Enrollments -->
+                <a href="/admin/enrollments/enrollment/" class="btn btn-outline-primary">
+                    Manage Enrollments
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

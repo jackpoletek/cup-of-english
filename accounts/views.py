@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db import OperationalError, transaction
+from django.db import OperationalError, transaction, IntegrityError
 from .forms import ProfileForm
 from enrollments.models import Enrollment
 
@@ -115,7 +115,7 @@ def register_view(request):
         logger.exception("Database error during registration.")
         messages.error(request, "System is temporarily unavailable. Please try again later.")
         return render(request, "accounts/register.html", status=503)
-    
+
 
 # Authenticated views
 @login_required
@@ -160,3 +160,11 @@ def profile(request):
             "form": form,
         },
     )
+
+@login_required
+def admin_dashboard(request):
+    if not (hasattr(request.user, "userprofile") and request.user.userprofile.role != "admin"):
+        messages.error(request, "You do not have permission to access this page.")
+        return redirect("accounts:profile")
+
+    return render(request, "accounts/admin.html")
