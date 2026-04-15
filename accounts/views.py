@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db import OperationalError
+from django.db import OperationalError, transaction
 from .forms import ProfileForm
 from enrollments.models import Enrollment
 
@@ -91,24 +91,31 @@ def register_view(request):
             messages.error(request, "Email already in use.")
             return render(request, "accounts/register.html")
 
-        # Create user
-        user = User.objects.create_user(
-            username=username, email=email, password=password
-        )
+        # Use atomic transaction to ensure both User and UserProfile are created together
+        with transaction.atomic():
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+                )
 
-        # Create user profile with role
-        UserProfile.objects.create(user=user, role=role)
+            # Profile is automatically created by signals, just setting the role
+            user.userprofile.role = role
+            user.userprofile.save()
 
         messages.success(request, "Account created successfully. Please log in.")
-
         return redirect("accounts:login")
 
+    except IntegrityError:
+        logger.exception("Error during registration.")
+        messages.error(request, "Registration failed. Please try again later.")
+        return render(request, "accounts/register.html")
+
     except OperationalError:
-        logger.exception("Database error during registration")
-
-        messages.error(request, "System is temporarily unavailable.")
+        logger.exception("Database error during registration.")
+        messages.error(request, "System is temporarily unavailable. Please try again later.")
         return render(request, "accounts/register.html", status=503)
-
+    
 
 # Authenticated views
 @login_required
