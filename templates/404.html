@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container text-center py-5">
+
+    <h1 class="display-4">404</h1>
+
+    <h3 class="mb-3">Oops! Page not found</h3>
+
+    <p class="mb-4">
+        Looks like this lesson got lost. Even the best students make mistakes.
+    </p>
+
+    <a href="{% url 'core:index' %}" class="btn btn-primary">
+        Go Home
+    </a>
+
+    <a href="{% url 'core:courses' %}" class="btn btn-outline-secondary ms-2">
+        Browse Courses
+    </a>
+
+</div>
+
+{% endblock %}
