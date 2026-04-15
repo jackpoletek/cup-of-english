@@ -9,5 +9,8 @@ urlpatterns = [
     path("teachers/", views.teachers, name="teachers"),
     path("courses/", views.courses, name="courses"),
     path("contact/", views.contact, name="contact"),
-]
 
+    path("404/", views.error_404_view, name="error_404_view"),
+    path("403/", views.error_403_view, name="error_403_view"),
+    path("500/", views.error_500_view, name="error_500_view"),
+]
