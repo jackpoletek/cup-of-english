@@ -163,7 +163,7 @@ def profile(request):
 
 @login_required
 def admin_dashboard(request):
-    if not (hasattr(request.user, "userprofile") and request.user.userprofile.role != "admin"):
+    if not (hasattr(request.user, "userprofile") and request.user.userprofile.role == "admin"):
         messages.error(request, "You do not have permission to access this page.")
         return redirect("accounts:profile")
 

@@ -1,12 +1,13 @@
 import stripe
-import json
 import logging
+
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
-from accounts.models import User
+from django.contrib.auth.models import User
 from courses.models import Course
 from enrollments.models import Enrollment
 
@@ -15,6 +16,7 @@ logger = logging.getLogger(__name__)
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Checkout view
+@login_required
 def checkout(request, course_id):
     course = get_object_or_404(Course, id=course_id)
 
@@ -82,10 +84,15 @@ def stripe_webhook(request):
             course = Course.objects.get(id=course_id)
 
             # Prevent duplicate enrollments
-            if not Enrollment.objects.filter(user=user, course=course).exists():
+            if not Enrollment.objects.filter(
+                learner=user,
+                course=course,
+                is_active=True # Prevent enrolling in the same course twice
+            ).exists():
+
                 Enrollment.objects.create(
-                    user=user,
-                    course=course,
+                    learner=user,
+                    course=course
                 )
                 logger.info(f"Enrollment created for user {user} and course {course}")
 
