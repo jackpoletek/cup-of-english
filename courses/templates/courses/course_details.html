@@ -41,8 +41,8 @@
                             You are enrolled in this course.
                         </div>
 
-                        <a href="{% url 'courses:my_courses' %}" class="btn btn-primary">
-                            Go to My Courses
+                        <a href="{% url 'courses:course_content' course.id %}" class="btn btn-success">
+                            Go to Course Content
                         </a>
 
                         {% else %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from enrollments.models import Enrollment
 from .models import Course
@@ -88,5 +88,41 @@ def my_courses(request):
         "courses/my_courses.html",
         {
             "enrollments": enrollments
+        }
+    )
+
+@login_required
+def course_content(request, course_id):
+    """
+    Display the content of a specific course for enrolled users.
+    This view ensures that only users who are actively enrolled in the course
+    can access the course content.
+
+    Args:
+        request: HTTP request object (user is guaranteed to be authenticated)
+        course_id: Primary key of the course whose content is to be displayed
+    Returns:
+        Rendered template with course content if enrolled, otherwise redirects
+    """
+
+    # Get the course or return 404 if it doesn't exist
+    course = get_object_or_404(Course, id=course_id)
+
+    # Check if the user is enrolled in this course
+    is_enrolled = Enrollment.objects.filter(
+        learner=request.user,
+        course=course,
+        is_active=True
+    ).exists()
+
+    if not is_enrolled:
+        # If not enrolled, block access and redirect to course details
+        return redirect('courses:course_details', course_id=course.id)
+
+    return render(
+        request,
+        "courses/course_content.html",
+        {
+            "course": course
         }
     )
