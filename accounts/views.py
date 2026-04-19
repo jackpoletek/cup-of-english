@@ -1,4 +1,5 @@
 import logging
+import time
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -11,7 +12,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -42,7 +42,7 @@ def send_activation_email(user, request):
     email_message = EmailMultiAlternatives(
         subject="Activate your account",
         body=text_content,
-        from_email="gr8tutorjack@gmail.com",
+        from_email=settings.EMAIL_HOST_USER,
         to=[user.email],
     )
 
@@ -89,18 +89,32 @@ def login_view(request):
 
 
 # Resend activation helper
-def resend_activation_view(request):
+def resend_activation(request):
     if request.method == "POST":
         email = request.POST.get("email", "").strip()
+
+        if not email:
+            messages.error(request, "Email is required.")
+            return redirect("accounts:login")
 
         try:
             user = User.objects.get(email=email)
 
             if user.is_active:
-                messages.info(request, "Account already activated.")
+                messages.info(request, "Account already activated. You can now log in.")
+                return redirect("accounts:login")
+
+            last_sent = request.session.get("last_activation_email_sent", 0)
+            now = time.time()
+
+            if now - last_sent < 60:  # 1 minute cooldown
+                messages.error(request, "Activation email was sent. Please wait before requesting again.")
                 return redirect("accounts:login")
 
             send_activation_email(request, user)
+
+            request.session["last_activation_email"] = now
+
             messages.success(request, "Activation email resent.")
 
         except User.DoesNotExist:
@@ -170,7 +184,10 @@ def register_view(request):
         # Use helper to send email
         send_activation_email(request, user)
 
-        messages.success(request, "Account created successfully. Check your email for activation instructions.")
+        messages.success(
+            request,
+            "Account created successfully. Check your email for activation instructions."
+        )
         return redirect("accounts:login")
 
     except IntegrityError:
