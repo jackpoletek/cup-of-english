@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import OperationalError, transaction, IntegrityError
 
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
@@ -19,6 +23,31 @@ from enrollments.models import Enrollment
 from .models import UserProfile
 
 logger = logging.getLogger(__name__)
+
+
+# Activation email helper
+def send_activation_email(user, request):
+    activation_link = generate_activation_link(request, user)
+
+    html_content = render_to_string(
+        "emails/activation_email.html",
+        {
+            "user": user,
+            "activation_link": activation_link,
+        }
+    )
+
+    text_content = strip_tags(html_content)
+
+    email_message = EmailMultiAlternatives(
+        subject="Activate your account",
+        body=text_content,
+        from_email="gr8tutorjack@gmail.com",
+        to=[user.email],
+    )
+
+    email_message.attach_alternative(html_content, "text/html")
+    email_message.send(fail_silently=False)  # Log email sending issues
 
 
 # Role helpers
@@ -57,6 +86,27 @@ def login_view(request):
             messages.error(request, "Invalid username or password.")
 
     return render(request, "accounts/login.html")
+
+
+# Resend activation helper
+def resend_activation_view(request):
+    if request.method == "POST":
+        email = request.POST.get("email", "").strip()
+
+        try:
+            user = User.objects.get(email=email)
+
+            if user.is_active:
+                messages.info(request, "Account already activated.")
+                return redirect("accounts:login")
+
+            send_activation_email(request, user)
+            messages.success(request, "Activation email resent.")
+
+        except User.DoesNotExist:
+            messages.error(request, "No account found with this email.")
+
+    return redirect("accounts:login")
 
 
 # Logout
@@ -117,18 +167,10 @@ def register_view(request):
             user.userprofile.role = role
             user.userprofile.save()
 
-        # Send activation email
-        activation_link = generate_activation_link(request, user)
+        # Use helper to send email
+        send_activation_email(request, user)
 
-        send_mail(
-            subject="Activate your account",
-            message=f"Please click the link to activate your account:\n{activation_link}",
-            from_email="gr8tutorjack@gmail.com",
-            recipient_list=[email],
-            fail_silently=False,  # Log email sending issues
-        )
-
-        messages.success(request, "Account created successfully. Please log in.")
+        messages.success(request, "Account created successfully. Check your email for activation instructions.")
         return redirect("accounts:login")
 
     except IntegrityError:
@@ -142,6 +184,7 @@ def register_view(request):
         return render(request, "accounts/register.html", status=503)
 
 
+# Account Activation
 def activate_account(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -201,6 +244,7 @@ def profile(request):
             "form": form,
         },
     )
+
 
 @login_required
 def admin_dashboard(request):
