@@ -6,9 +6,16 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import OperationalError, transaction, IntegrityError
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+
+from .utils import generate_activation_link
+
 from .forms import ProfileForm
 from enrollments.models import Enrollment
-
 from .models import UserProfile
 
 logger = logging.getLogger(__name__)
@@ -38,7 +45,12 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
 
+        # Block login if email not verified
         if user is not None:
+            if not user.is_active:
+                messages.error(request, "Please verify your email address first.")
+                return render(request, "accounts/login.html")
+
             auth_login(request, user)
             return redirect("accounts:profile")
         else:
@@ -93,15 +105,28 @@ def register_view(request):
 
         # Use atomic transaction to ensure both User and UserProfile are created together
         with transaction.atomic():
+            # User created with inactive status until email verification
             user = User.objects.create_user(
                 username=username,
                 email=email,
-                password=password
-                )
+                password=password,
+                is_active=False
+            )
 
             # Profile is automatically created by signals, just setting the role
             user.userprofile.role = role
             user.userprofile.save()
+
+        # Send activation email
+        activation_link = generate_activation_link(request, user)
+
+        send_mail(
+            subject="Activate your account",
+            message=f"Please click the link to activate your account:\n{activation_link}",
+            from_email="gr8tutorjack@gmail.com",
+            recipient_list=[email],
+            fail_silently=False,  # Log email sending issues
+        )
 
         messages.success(request, "Account created successfully. Please log in.")
         return redirect("accounts:login")
@@ -115,6 +140,22 @@ def register_view(request):
         logger.exception("Database error during registration.")
         messages.error(request, "System is temporarily unavailable. Please try again later.")
         return render(request, "accounts/register.html", status=503)
+
+
+def activate_account(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return render(request, "accounts/activation_success.html")
+        else:
+            return render(request, "accounts/activation_failed.html")
+
+    except Exception:
+        return render(request, "accounts/activation_failed.html")
 
 
 # Authenticated views

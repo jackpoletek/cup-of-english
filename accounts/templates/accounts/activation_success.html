@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container py-5 text-center">
+
+    <h2>Account Activated</h2>
+    <p>You can now log in.</p>
+    <a href="{% url 'accounts:login' %}" class="btn btn-primary">Login</a>
+    
+</div>
+
+{% endblock %}
