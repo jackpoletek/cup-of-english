@@ -12,19 +12,19 @@
                 {% csrf_token %}
                 <div class="mb-3">
                     <label>Username</label>
-                    <input type="text" name="username" class="form-control" required>
+                    <input type="text" name="username" class="form-control" required autocomplete="username">
                 </div>
                 <div class="mb-3">
                     <label>Email</label>
-                    <input type="email" name="email" class="form-control" required>
+                    <input type="email" name="email" class="form-control" required autocomplete="email">
                 </div>
                 <div class="mb-3">
                     <label>Password</label>
-                    <input type="password" name="password" class="form-control" required>
+                    <input type="password" name="password" class="form-control" required autocomplete="new-password">
                 </div>
                 <div class="mb-3">
                     <label>Confirm Password</label>
-                    <input type="password" name="password_again" class="form-control" required>
+                    <input type="password" name="password_again" class="form-control" required autocomplete="new-password">
                 </div>
                 <div class="mb-3">
                     <label>Role</label>

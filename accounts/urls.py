@@ -12,7 +12,7 @@ urlpatterns = [
     path("admin/", views.admin_dashboard, name="admin_dashboard"),
 
     path(
-        "activate/<uid64>/<token>/",
+        "activate/<uidb64>/<token>/",
         views.activate_account,
         name="activate"
         ),

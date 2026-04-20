@@ -47,7 +47,13 @@ def send_activation_email(user, request):
     )
 
     email_message.attach_alternative(html_content, "text/html")
-    email_message.send(fail_silently=False)  # Log email sending issues
+
+    # Prevent crash leaking to user if email fails to send, but log the issue for debugging
+    try:
+        email_message.send(fail_silently=False)  # Log email sending issues
+    except Exception:
+        logger.exception("Error sending activation email.")
+        raise
 
 
 # Role helpers
@@ -111,14 +117,19 @@ def resend_activation(request):
                 messages.error(request, "Activation email was sent. Please wait before requesting again.")
                 return redirect("accounts:login")
 
-            send_activation_email(request, user)
+            send_activation_email(user, request)
 
-            request.session["last_activation_email"] = now
+            request.session["last_activation_email_sent"] = now
 
             messages.success(request, "Activation email resent.")
 
         except User.DoesNotExist:
             messages.error(request, "No account found with this email.")
+
+        except Exception:
+            # Log the error but avoid leaking information to the user
+            messages.error(request, "Resending activation email failed. Please try again later.")
+            logger.exception("Error resending activation email.")
 
     return redirect("accounts:login")
 
@@ -181,14 +192,20 @@ def register_view(request):
             user.userprofile.role = role
             user.userprofile.save()
 
-        # Use helper to send email
-        send_activation_email(request, user)
+        # User rollback will occur if email sending fails
+        send_activation_email(user, request)
 
         messages.success(
             request,
             "Account created successfully. Check your email for activation instructions."
         )
         return redirect("accounts:login")
+
+    except Exception:
+        # Handle unexpected errors gracefully without exposing details to the user, but log them for debugging
+        logger.exception("Registration failed.")
+        messages.error(request, "Registration failed. Please try again later.")
+        return render(request, "accounts/register.html")
 
     except IntegrityError:
         logger.exception("Error during registration.")
