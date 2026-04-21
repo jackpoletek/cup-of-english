@@ -26,10 +26,16 @@
                     Contact For Any Query
                 </h5>
 
-                {% if success %}
+                {% if messages %}
+
+                {% for message in messages %}
+
                 <div class="alert alert-success">
-                    Your message has been sent successfully.
+                    {{ message }}
                 </div>
+
+                {% endfor %}
+
                 {% endif %}
 
                 <form method="POST" class="flex-grow-1 d-flex flex-column">

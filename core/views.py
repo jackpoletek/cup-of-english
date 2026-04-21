@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .forms import ContactForm
 
 from django.core.mail import send_mail
 from django.conf import settings
+
+from django.contrib import messages
 
 
 def index(request):
@@ -26,6 +28,7 @@ def contact(request):
 
     if request.method == "POST":
         form = ContactForm(request.POST)
+
         if form.is_valid():
             form.save()
 
@@ -40,13 +43,14 @@ def contact(request):
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[settings.EMAIL_HOST_USER],
                 fail_silently=False,
-                headers={"Reply-To": email},
             )
 
-            return render(request, "core/contact.html", {
-                "form": ContactForm(),
-                "success": True
-                })
+            messages.success(request, "Your message has been sent successfully!")
+
+            return redirect("core:contact")
+
+        else:
+            form = ContactForm()
 
     return render(request, "core/contact.html", {"form": form})
 
