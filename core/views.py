@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .forms import ContactForm
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 def index(request):
     return render(request, "core/index.html")
@@ -25,6 +28,21 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
+
+            name = form.cleaned_data["name"]
+            email = form.cleaned_data["email"]
+            message = form.cleaned_data["message"]
+
+            # Send confirmation email
+            send_mail(
+                subject=f"New Contact Message from {name}",
+                message=f"Message from {name}. ({email}):\n\n{message}",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.EMAIL_HOST_USER],
+                fail_silently=False,
+                headers={"Reply-To": email},
+            )
+
             return render(request, "core/contact.html", {
                 "form": ContactForm(),
                 "success": True
