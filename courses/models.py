@@ -21,8 +21,10 @@ class Course(models.Model):
     COURSE_TYPE = (
         ("general", "General English"),
         ("business", "Business English"),
-        ("exam", "Exam Preparation"),
         ("esp", "English for Specific Purposes"),
+        ("eap", "English for Academic Purposes"),
+        ("ib", "IB English"),
+        ("igcse", "IGCSE English"),
     )
 
     title = models.CharField(max_length=255)
