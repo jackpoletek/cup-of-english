@@ -131,52 +131,66 @@
 
                     <div class="bg-secondary p-4">
                         <div class="d-flex justify-content-between mb-3">
-                            <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>25 Students</small>
-                            <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>01h 30m</small>
+                            <small class="m-0">
+                                <i class="fa fa-users text-primary mr-2"></i>All Levels
+                            </small>
+
+                            <small class="m-0">
+                                <i class="far fa-clock text-primary mr-2"></i>Flexible Access
+                            </small>
                         </div>
 
                         {% if forloop.counter == 1 %}
-                        <a class="h5" href="#">General English</a>
+                        <a class="h5" href="{% url 'courses:course_list_by_type' 'general' %}">
+                            General English
+                        </a>
+                        <p>Improve speaking, grammar, vocabulary and confidence.</p>
+                        <h5 class="m-0">From £199.00</h5>
+
                         {% elif forloop.counter == 2 %}
-                        <a class="h5" href="#">Business English</a>
+                        <a class="h5" href="{% url 'courses:course_list_by_type' 'business' %}">
+                            Business English
+                        </a>
+                        <p>Professional English for career growth and communication.</p>
+                        <h5 class="m-0">From £299.00</h5>
+
                         {% elif forloop.counter == 3 %}
-                        <a class="h5" href="#">English for Specific Purposes</a>
+                        <a class="h5" href="{% url 'courses:course_list_by_type' 'esp' %}">
+                            English for Specific Purposes
+                        </a>
+                        <p>Specialised English for IT, Medical and industry needs.</p>
+                        <h5 class="m-0">From £399.00</h5>
+
                         {% elif forloop.counter == 4 %}
-                        <a class="h5" href="#">English for Academic Purposes</a>
+                        <a class="h5" href="{% url 'courses:course_list_by_type' 'eap' %}">
+                            English for Academic Purposes
+                        </a>
+                        <p>Academic writing, presentations and university readiness.</p>
+                        <h5 class="m-0">From £399.00</h5>
+
                         {% elif forloop.counter == 5 %}
-                        <a class="h5" href="#">IB English</a>
+                        <a class="h5" href="{% url 'courses:course_list_by_type' 'ib' %}">
+                            IB English
+                        </a>
+                        <p>Advanced IB Language & Literature success strategies.</p>
+                        <h5 class="m-0">From £499.00</h5>
+
                         {% elif forloop.counter == 6 %}
-                        <a class="h5" href="#">IGCSE English</a>
+                        <a class="h5" href="{% url 'courses:course_list_by_type' 'igcse' %}">
+                            IGCSE English
+                        </a>
+                        <p>Exam-focused preparation for IGCSE success.</p>
+                        <h5 class="m-0">From £499.00</h5>
                         {% endif %}
 
-                        <div class="border-top mt-4 pt-4">
-                            <div class="d-flex justify-content-between">
-                                <h6 class="m-0">
-                                    <i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small>
-                                </h6>
-
-                                {% if forloop.counter == 1 %}
-                                <h5 class="m-0">£199.00</h5>
-                                {% elif forloop.counter == 2 %}
-                                <h5 class="m-0">£299.00</h5>
-                                {% elif forloop.counter == 3 %}
-                                <h5 class="m-0">£399.00</h5>
-                                {% elif forloop.counter == 4 %}
-                                <h5 class="m-0">£399.00</h5>
-                                {% elif forloop.counter == 5 %}
-                                <h5 class="m-0">£499.00</h5>
-                                {% elif forloop.counter == 6 %}
-                                <h5 class="m-0">£499.00</h5>
-                                {% endif %}
-                            </div>
-                        </div>
-
                     </div>
+
                 </div>
             </div>
             {% endfor %}
 
         </div>
+
     </div>
 </div>
 <!-- Courses End -->

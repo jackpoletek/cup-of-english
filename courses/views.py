@@ -6,22 +6,37 @@ from .models import Course
 
 def courses_view(request):
     """
-    Display a list of all active courses available.
-    This view filters courses to show only those marked as active.
+    Display the main courses page.
 
-    Args:
-        request: HTTP request object
-    Returns:
-        Rendered template with active courses
+    For simplicity, this page is intentionally static
+    and showcases the 6 core course categories without database dependency.
+
+    Actual purchasable courses are displayed only after selecting
+    a category via course_list_by_type.
     """
-
-    courses = Course.objects.filter(is_active=True)
 
     return render(
         request,
-        "courses/courses.html",
+        "courses/courses.html"
+    )
+
+
+def course_list_by_type(request, course_type):
+    """
+    Show all levels for one selected course type.
+    E.G: General English courses of all levels (A2, B1, B2, C1, C2).
+    """
+    courses = Course.objects.filter(
+        is_active=True,
+        course_type=course_type
+    ).order_by("level")
+
+    return render(
+        request,
+        "courses/course_list.html",
         {
-            "courses": courses
+            "courses": courses,
+            "selected_type": courses.first().get_course_type_display() if courses else ""
         }
     )
 
@@ -30,24 +45,18 @@ def course_details(request, course_id):
     """
     Display detailed information about a specific course.
     Also checks if the currently logged-in user is enrolled in this course
-    to show relevant enrollment status/actions in the template.
-
-    Args:
-        request: HTTP request object
-        course_id: Primary key of the course to display
-    Returns:
-        Rendered template with course details and enrollment status
+    to show relevant enrollment status in the template.
     """
 
-    # This handles both non-existent and inactive courses
-    course = get_object_or_404(Course, id=course_id)
+    course = get_object_or_404(
+        Course,
+        id=course_id,
+        is_active=True
+    )
 
     user_enrolled = False
 
     if request.user.is_authenticated:
-        # Check for active enrollment for this user and course
-        # exists() returns True if at least one matching record is found
-
         user_enrolled = Enrollment.objects.filter(
             learner=request.user,
             course=course,
@@ -68,16 +77,8 @@ def course_details(request, course_id):
 def my_courses(request):
     """
     Display all courses the current user is enrolled in.
-    This is a personalised view showing the user's learning dashboard.
-    Requires authentication (@login_required decorator).
-
-    Args:
-        request: HTTP request object (user is guaranteed to be authenticated)
-    Returns:
-        Rendered template with user's active enrollments
     """
 
-    # Get all active enrollments for the current user
     enrollments = Enrollment.objects.filter(
         learner=request.user,
         is_active=True
@@ -91,24 +92,15 @@ def my_courses(request):
         }
     )
 
+
 @login_required
 def course_content(request, course_id):
     """
     Display the content of a specific course for enrolled users.
-    This view ensures that only users who are actively enrolled in the course
-    can access the course content.
-
-    Args:
-        request: HTTP request object (user is guaranteed to be authenticated)
-        course_id: Primary key of the course whose content is to be displayed
-    Returns:
-        Rendered template with course content if enrolled, otherwise redirects
     """
 
-    # Get the course or return 404 if it doesn't exist
     course = get_object_or_404(Course, id=course_id)
 
-    # Check if the user is enrolled in this course
     is_enrolled = Enrollment.objects.filter(
         learner=request.user,
         course=course,
@@ -116,7 +108,6 @@ def course_content(request, course_id):
     ).exists()
 
     if not is_enrolled:
-        # If not enrolled, block access and redirect to course details
         return redirect('courses:course_details', course_id=course.id)
 
     return render(

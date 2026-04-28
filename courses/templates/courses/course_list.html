@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ selected_type }} | Cup of English{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid page-header mb-5 text-left text-white page-header-bg">
+    <div class="container py-5">
+        <h1 class="display-4 text-uppercase">{{ selected_type }}</h1>
+        <p class="m-0 text-uppercase">
+            <a href="{% url 'core:index' %}">Home</a> >>
+            <a href="{% url 'courses:courses' %}">Courses</a> >>
+            {{ selected_type }}
+        </p>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h5 class="text-primary text-uppercase mb-3" style="letter-spacing:5px;">
+            Available Levels
+        </h5>
+        <h1>{{ selected_type }}</h1>
+    </div>
+
+    <div class="row">
+
+        {% for course in courses %}
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+                        {{ course.title }}
+                    </h4>
+
+                    <p class="text-muted">
+                        Level: <strong>{{ course.level }}</strong>
+                    </p>
+
+                    <p>
+                        {{ course.description|truncatewords:25 }}
+                    </p>
+
+                    <h5 class="text-primary">
+                        £{{ course.price }}
+                    </h5>
+
+                    <a href="{% url 'courses:course_details' course.id %}" class="btn btn-primary mt-3">
+                        Buy Now
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No courses available for this category yet.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

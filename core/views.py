@@ -5,10 +5,23 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 from django.contrib import messages
+from courses.models import Course
+from enrollments.models import Enrollment
 
 
 def index(request):
-    return render(request, "core/index.html")
+    featured_courses = (
+        Course.objects.filter(is_active=True)
+        .order_by("course_type", "level")
+    )
+
+    return render(
+        request,
+        "core/index.html",
+        {
+            "featured_courses": featured_courses,
+        }
+    )
 
 
 def about(request):

@@ -24,7 +24,7 @@
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Best Online English Courses</h5>
                     <h1>Learn English From Your Home</h1>
-                    <a href="{% url 'core:courses' %}" class="btn btn-primary">Explore Courses</a>
+                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">Explore Courses</a>
                 </div>
             </div>
 
@@ -35,7 +35,7 @@
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Professional English Training</h5>
                     <h1>Improve Your Career Opportunities</h1>
-                    <a href="{% url 'core:courses' %}" class="btn btn-primary">Browse Courses</a>
+                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">Browse Courses</a>
                 </div>
             </div>
 
@@ -104,6 +104,40 @@
 
     <div class="row">
 
+        {% for course in featured_courses %}
+        <div class="col-lg-4 mb-4">
+            <div class="card course-card h-100">
+
+                {% with forloop.counter|stringformat:"s" as image_num %}
+                <img class="card-img-top" src="{% static 'cup_of_english/images/course-'|add:image_num|add:'.jpg' %}"
+                    alt="{{ course.title }}">
+                {% endwith %}
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">
+                        {{ course.get_course_type_display }}
+                    </h5>
+
+                    <p class="card-text">
+                        {{ course.description|truncatewords:18 }}
+                    </p>
+
+                    <div class="mt-auto">
+                        <p class="fw-bold">
+                            From £{{ course.price }}
+                        </p>
+
+                        <a href="{% url 'courses:course_list_by_type' course.course_type %}" class="btn btn-primary">
+                            View Courses
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {% empty %}
+        <!-- FALLBACK STATIC CARDS ONLY IF DB DATA FAILS -->
         <div class="col-lg-4 mb-4">
             <div class="card course-card">
                 <img class="card-img-top" src="{% static 'cup_of_english/images/course-1.jpg' %}"
@@ -111,7 +145,7 @@
                 <div class="card-body">
                     <h5 class="card-title">General English</h5>
                     <p>Improve speaking, grammar and vocabulary.</p>
-                    <a href="{% url 'core:courses' %}" class="btn btn-primary">
+                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
                         View Courses
                     </a>
                 </div>
@@ -125,7 +159,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Business English</h5>
                     <p>English for meetings, presentations and work.</p>
-                    <a href="{% url 'core:courses' %}" class="btn btn-primary">
+                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
                         View Courses
                     </a>
                 </div>
@@ -139,12 +173,13 @@
                 <div class="card-body">
                     <h5 class="card-title">IELTS Preparation</h5>
                     <p>Prepare effectively for international exams.</p>
-                    <a href="{% url 'core:courses' %}" class="btn btn-primary">
+                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
                         View Courses
                     </a>
                 </div>
             </div>
         </div>
+        {% endfor %}
 
     </div>
 </div>

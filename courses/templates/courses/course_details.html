@@ -56,11 +56,19 @@
 
                         {% else %}
 
-                        <a href="{% url 'accounts:login' %}" class="btn btn-primary">
+                        <!-- Redirect to checkout after login -->
+                        <a href="{% url 'accounts:login' %}?next={% url 'payments:checkout' course.id %}"
+                            class="btn btn-primary">
                             Log In to Buy
                         </a>
 
                         {% endif %}
+
+                        <!-- Back to selected course category -->
+                        <a href="{% url 'courses:course_list_by_type' course.course_type %}"
+                            class="btn btn-outline-secondary ms-2">
+                            Back to Courses
+                        </a>
 
                     </div>
 

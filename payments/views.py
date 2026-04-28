@@ -87,7 +87,7 @@ def stripe_webhook(request):
             if not Enrollment.objects.filter(
                 learner=user,
                 course=course,
-                is_active=True # Prevent enrolling in the same course twice
+                is_active=True  # Prevent enrolling in the same course twice
             ).exists():
 
                 Enrollment.objects.create(

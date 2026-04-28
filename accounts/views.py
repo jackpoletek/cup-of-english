@@ -70,13 +70,25 @@ def login_view(request):
     if request.user.is_authenticated:
         return redirect("accounts:profile")
 
+    # Support next parameter for redirecting after login
+    next_url = request.GET.get("next") or request.POST.get("next")  # Support GET and POST for next parameter
+
+    if next_url in ["", None, None]:
+        next_url = None  # Prevent empty string from being treated as a valid URL
+
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
         password = request.POST.get("password", "").strip()
 
         if not username or not password:
             messages.error(request, "Both fields are required.")
-            return render(request, "accounts/login.html")
+            return render(
+                request,
+                "accounts/login.html",
+                {
+                    "next": next_url,  # Preserve next parameter in case of error
+                }
+            )
 
         user = authenticate(request, username=username, password=password)
 
@@ -84,14 +96,31 @@ def login_view(request):
         if user is not None:
             if not user.is_active:
                 messages.error(request, "Please verify your email address first.")
-                return render(request, "accounts/login.html")
+                return render(
+                    request,
+                    "accounts/login.html",
+                    {
+                        "next": next_url,
+                    }
+                )
 
             auth_login(request, user)
+
+            # Redirect to next URL if provided, otherwise go to profile
+            if next_url:
+                return redirect(next_url)
+
             return redirect("accounts:profile")
         else:
             messages.error(request, "Invalid username or password.")
 
-    return render(request, "accounts/login.html")
+    return render(
+        request,
+        "accounts/login.html",
+        {
+            "next": next_url,
+        }
+    )
 
 
 # Resend activation helper
