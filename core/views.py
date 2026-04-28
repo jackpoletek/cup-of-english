@@ -6,13 +6,12 @@ from django.conf import settings
 
 from django.contrib import messages
 from courses.models import Course
-from enrollments.models import Enrollment
 
 
 def index(request):
     featured_courses = (
         Course.objects.filter(is_active=True)
-        .order_by("course_type", "level")
+        .order_by("course_type", "level")[:6]
     )
 
     return render(

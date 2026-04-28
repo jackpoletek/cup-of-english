@@ -41,92 +41,91 @@
                 English for Academic Purposes, IB English and IGCSE English.
             </p>
 
-        </div>
-    </div>
-</div>
-
-<!-- Register Now Section -->
-<div class="container-fluid bg-registration py-5">
-
-    <div class="container py-5">
-
-        <div class="row align-items-center">
-
-            <div class="col-lg-7 text-white">
-
-                <h5 class="text-uppercase mb-3">
-                    Start Learning Today
-                </h5>
-
-                <h1 class="mb-4">
-                    Register Now
-                </h1>
-
-                <p>
-                    Join Cup of English and start improving your
-                    English with professional teachers and
-                    structured online courses.
+            <!-- CTA -->
+            <div class="registration-cta-box text-center">
+                <hr><br>
+                <p class="mb-3">
+                    Create your student account to start learning.
                 </p>
 
-                <ul>
-                    <li>Professional teachers</li>
-                    <li>Flexible online lessons</li>
-                    <li>Courses from A2 to C2</li>
-                </ul>
-
-            </div>
-
-            <div class="col-lg-5">
-
-                <div class="card shadow">
-
-                    <div class="card-header text-center">
-                        <h3>Register Now</h3>
-                    </div>
-
-                    <div class="card-body text-center">
-
-                        <p>Create your student account to start learning.</p>
-
-                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg w-100">
-                            Go To Registration
-                        </a>
-
-                    </div>
-
-                </div>
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm px-4">
+                    Go To Registration
+                </a>
 
             </div>
 
         </div>
-
     </div>
-
 </div>
 
 <!-- Testimonials -->
-<div class="container py-5">
+<div class="container-fluid py-5">
 
-    <div class="text-center mb-5">
-        <h5 class="text-primary text-uppercase">Testimonials</h5>
-        <h1>What Our Students Say</h1>
-    </div>
+    <div class="container py-5">
 
-    <div class="row text-center">
-
-        <div class="col-md-4">
-            <p>"Excellent teachers and very practical lessons."</p>
-            <strong>Anna</strong>
+        <div class="text-center mb-5">
+            <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">
+                Testimonial
+            </h5>
+            <h1>What Our Students Say</h1>
         </div>
 
-        <div class="col-md-4">
-            <p>"My English improved a lot in just a few months."</p>
-            <strong>David</strong>
-        </div>
+        <div class="row justify-content-center">
 
-        <div class="col-md-4">
-            <p>"Great preparation for IELTS."</p>
-            <strong>Maria</strong>
+            <!-- Testimonial 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-showcase text-center h-100">
+                    <i class="fa fa-2x fa-quote-left text-primary mb-3"></i>
+
+                    <h5 class="font-weight-normal mb-3">
+                        Excellent teachers and very practical lessons.
+                    </h5>
+
+                    <img class="img-fluid rounded-circle mx-auto mb-2 testimonial-avatar-small"
+                        src="{% static 'cup_of_english/images/team-1.jpg' %}" alt="Anna"
+                        style="width: 40%; height: auto;">
+
+                    <h6 class="m-0">Anna</h6>
+                    <span>General English Student</span>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-showcase text-center h-100">
+                    <i class="fa fa-2x fa-quote-left text-primary mb-3"></i>
+
+                    <h5 class="font-weight-normal mb-3">
+                        My English improved a lot in just a few months.
+                    </h5>
+
+                    <img class="img-fluid rounded-circle mx-auto mb-2 testimonial-avatar-small"
+                        src="{% static 'cup_of_english/images/team-2.jpg' %}" alt="David"
+                        style="width: 40%; height: auto;">
+
+                    <h6 class="m-0">David</h6>
+                    <span>Business English Student</span>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-showcase text-center h-100">
+                    <i class="fa fa-2x fa-quote-left text-primary mb-3"></i>
+
+                    <h5 class="font-weight-normal mb-3">
+                        Great preparation for higher education in English.
+                    </h5>
+
+                    <img class="img-fluid rounded-circle mx-auto mb-2 testimonial-avatar-small"
+                        src="{% static 'cup_of_english/images/team-3.jpg' %}" alt="Maria"
+                        style="width: 40%; height: auto;">
+
+                    <h6 class="m-0">Maria</h6>
+                    <span>Academic English Student</span>
+                </div>
+            </div>
+
         </div>
 
     </div>

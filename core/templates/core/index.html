@@ -7,7 +7,6 @@
 <div class="container-fluid p-0 pb-5 mb-5">
     <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
 
-        <!-- Indicators -->
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="0" class="active"></button>
             <button type="button" data-bs-target="#header-carousel" data-bs-slide-to="1"></button>
@@ -20,7 +19,6 @@
                 <img class="w-100" src="{% static 'cup_of_english/images/carousel-1.jpg' %}"
                     alt="Learn English online course">
 
-                <!-- Responsive Caption -->
                 <div class="carousel-caption d-none d-md-block">
                     <h5>Best Online English Courses</h5>
                     <h1>Learn English From Your Home</h1>
@@ -52,7 +50,6 @@
 
         </div>
 
-        <!-- Controls -->
         <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </button>
@@ -94,7 +91,7 @@
 </div>
 
 
-<!-- Courses Preview -->
+<!-- Popular Courses -->
 <div class="container py-5">
 
     <div class="text-center mb-5">
@@ -135,57 +132,13 @@
 
             </div>
         </div>
-
-        {% empty %}
-        <!-- FALLBACK STATIC CARDS ONLY IF DB DATA FAILS -->
-        <div class="col-lg-4 mb-4">
-            <div class="card course-card">
-                <img class="card-img-top" src="{% static 'cup_of_english/images/course-1.jpg' %}"
-                    alt="General English course">
-                <div class="card-body">
-                    <h5 class="card-title">General English</h5>
-                    <p>Improve speaking, grammar and vocabulary.</p>
-                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
-                        View Courses
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 mb-4">
-            <div class="card course-card">
-                <img class="card-img-top" src="{% static 'cup_of_english/images/course-2.jpg' %}"
-                    alt="Business English course">
-                <div class="card-body">
-                    <h5 class="card-title">Business English</h5>
-                    <p>English for meetings, presentations and work.</p>
-                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
-                        View Courses
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 mb-4">
-            <div class="card course-card">
-                <img class="card-img-top" src="{% static 'cup_of_english/images/course-3.jpg' %}"
-                    alt="IELTS preparation course">
-                <div class="card-body">
-                    <h5 class="card-title">IELTS Preparation</h5>
-                    <p>Prepare effectively for international exams.</p>
-                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
-                        View Courses
-                    </a>
-                </div>
-            </div>
-        </div>
         {% endfor %}
 
     </div>
 </div>
 
 
-<!-- Teachers Preview -->
+<!-- Meet Our Teachers -->
 <div class="container py-5">
 
     <div class="text-center mb-5">
@@ -193,10 +146,46 @@
         <h1>Meet Our Teachers</h1>
     </div>
 
-    <div class="text-center">
-        <a href="{% url 'core:teachers' %}" class="btn btn-primary">
-            View Teachers
-        </a>
+    <div class="row">
+
+        {% for i in "1234" %}
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card course-card h-100">
+
+                <img class="card-img-top" src="{% static 'cup_of_english/images/team-'|add:i|add:'.jpg' %}"
+                    alt="Teacher {{ i }}">
+
+                <div class="card-body text-center d-flex flex-column">
+
+                    {% if forloop.counter == 1 %}
+                    <h5 class="card-title">Anna Smith</h5>
+                    <p class="card-text">General English Specialist</p>
+
+                    {% elif forloop.counter == 2 %}
+                    <h5 class="card-title">David Brown</h5>
+                    <p class="card-text">IELTS & Cambridge Expert</p>
+
+                    {% elif forloop.counter == 3 %}
+                    <h5 class="card-title">Maria Lopez</h5>
+                    <p class="card-text">Academic English Teacher</p>
+
+                    {% elif forloop.counter == 4 %}
+                    <h5 class="card-title">John Carter</h5>
+                    <p class="card-text">Business English Coach</p>
+                    {% endif %}
+
+                    <div class="mt-auto">
+                        <a href="{% url 'core:teachers' %}" class="btn btn-primary">
+                            View Teachers
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
     </div>
 
 </div>
