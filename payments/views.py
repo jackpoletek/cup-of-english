@@ -1,6 +1,9 @@
 import stripe
 import logging
 
+from enrollments.utils import is_enrolled
+from django.db import transaction, IntegrityError
+
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
@@ -84,17 +87,17 @@ def stripe_webhook(request):
             course = Course.objects.get(id=course_id)
 
             # Prevent duplicate enrollments
-            if not Enrollment.objects.filter(
-                learner=user,
-                course=course,
-                is_active=True  # Prevent enrolling in the same course twice
-            ).exists():
-
-                Enrollment.objects.create(
-                    learner=user,
-                    course=course
-                )
-                logger.info(f"Enrollment created for user {user} and course {course}")
+            if not is_enrolled(user, course):
+                try:
+                    with transaction.atomic():
+                        Enrollment.objects.get_or_create(
+                            learner=user,
+                            course=course
+                        )
+                    logger.info(f"Enrollment created for user {user} and course {course}")
+                except IntegrityError:
+                    # Duplicate enrollment detected, log and ignore
+                    pass
 
         except Exception as e:
             logger.exception("Webhook error: %s", e)

@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from courses.models import Course
 from .models import Enrollment
+from enrollments.utils import is_enrolled
 
 
 @login_required
@@ -41,18 +42,11 @@ def access_course(request, course_id):
 
     course = get_object_or_404(Course, id=course_id)
 
-    # Check if user has an active enrollment for the course
-    # Using .first() instead of .exists() as we don't need the actual object
-    enrollment_exists = Enrollment.objects.filter(
-        learner=request.user,
-        course=course,
-        is_active=True
-    ).exists()  # Check if any matching record exists
-
-    if not enrollment_exists:
+    # Check enrollment status and show access denied page if not enrolled, otherwise redirect to course details
+    if not is_enrolled(request.user, course):
         return render(
             request,
-            "enrollments/access_denied.html"
+            "enrollments/access_denied.html",
         )
 
     return redirect("courses:course_details", course_id=course.id)

@@ -230,21 +230,21 @@ def register_view(request):
         )
         return redirect("accounts:login")
 
+    except IntegrityError:
+        logger.exception("Error during registration.")
+        messages.error(request, "Registration failed. Please try again later.")
+        return render(request, "accounts/register.html")
+    
+    except OperationalError:
+        logger.exception("Database error during registration.")
+        messages.error(request, "System is temporarily unavailable. Please try again later.")
+        return render(request, "accounts/register.html", status=503)
+    
     except Exception:
         # Handle unexpected errors gracefully without exposing details to the user, but log them for debugging
         logger.exception("Registration failed.")
         messages.error(request, "Registration failed. Please try again later.")
         return render(request, "accounts/register.html")
-
-    except IntegrityError:
-        logger.exception("Error during registration.")
-        messages.error(request, "Registration failed. Please try again later.")
-        return render(request, "accounts/register.html")
-
-    except OperationalError:
-        logger.exception("Database error during registration.")
-        messages.error(request, "System is temporarily unavailable. Please try again later.")
-        return render(request, "accounts/register.html", status=503)
 
 
 # Account Activation

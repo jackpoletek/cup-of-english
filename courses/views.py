@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from enrollments.models import Enrollment
 from .models import Course
+from enrollments.utils import is_enrolled
 
 
 def courses_view(request):
@@ -57,11 +58,7 @@ def course_details(request, course_id):
     user_enrolled = False
 
     if request.user.is_authenticated:
-        user_enrolled = Enrollment.objects.filter(
-            learner=request.user,
-            course=course,
-            is_active=True
-        ).exists()
+        user_enrolled = is_enrolled(request.user, course)
 
     return render(
         request,
@@ -101,13 +98,10 @@ def course_content(request, course_id):
 
     course = get_object_or_404(Course, id=course_id)
 
-    is_enrolled = Enrollment.objects.filter(
-        learner=request.user,
-        course=course,
-        is_active=True
-    ).exists()
+    # Check if the user is enrolled in the course
+    enrolled = is_enrolled(request.user, course)
 
-    if not is_enrolled:
+    if not enrolled:
         return redirect('courses:course_details', course_id=course.id)
 
     return render(
