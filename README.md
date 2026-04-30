@@ -324,7 +324,7 @@ Improves readability for long-form educational content.
 
 ---
 
-## Color Scheme
+## Colour Scheme
 
 Defined using CSS variables:
 
@@ -479,6 +479,7 @@ redirect("core:index")
 - **Bug:** Contact form resubmitted on page refresh due to direct render response:
 ```python
 return render(request, "core/contact.html", {...})
+```
 - **Error:** Duplicate emails sent when user refreshed the page.
 - **Fix:**
 - Implemented Post/Redirect/Get (PRG) pattern:
