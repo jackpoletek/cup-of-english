@@ -441,6 +441,8 @@ All tests passing.
 - Final implementation:
 ```python
 redirect("core:index")
+```
+---
 
 - **Bug:** User was created even when registration process failed, causing inconsistent database state.
 - **Error:** `IntegrityError`: duplicate key value violates unique constraint, accounts_userprofile_user_id_key
@@ -482,6 +484,7 @@ return render(request, "core/contact.html", {...})
 - Implemented Post/Redirect/Get (PRG) pattern:
 ```python
 return redirect("core:contact")
+```
 
 ### Known Issues
 
@@ -498,6 +501,7 @@ return redirect("core:contact")
 git clone https://github.com/your-username/cup-of-english.git
 cd cup-of-english
 pip install -r requirements.txt
+```
 
 Create .env:
 
@@ -508,14 +512,14 @@ DATABASE_URL=your_database_url
 STRIPE_PUBLIC_KEY=your_key
 STRIPE_SECRET_KEY=your_key
 STRIPE_WEBHOOK_SECRET=your_secret
-
+```
 
 Run:
 
 ```bash
 python manage.py migrate
 python manage.py runserver
-
+```
 
 ## Gmail SMTP Setup
 - Enable 2FA
