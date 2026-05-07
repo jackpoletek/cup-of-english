@@ -38,6 +38,11 @@
                         {{ course.title }}
                     </h4>
 
+                    <p class="text-muted mb-1">
+                        Teacher:
+                        {{ course.teacher.username|default:"Not assigned" }}
+                    </p>
+
                     <p class="text-muted">
                         Level: <strong>{{ course.level }}</strong>
                     </p>

@@ -268,44 +268,42 @@ def activate_account(request, uidb64, token):
 @login_required
 def profile(request):
 
-    # Role-based enrollments
-    if hasattr(request.user, "userprofile"):
+    user = request.user
 
-        if request.user.userprofile.role == "learner":
+    enrollments = []
+
+    # Only show enrollments if user has a profile with a valid role
+    if hasattr(user, "userprofile"):
+        if user.userprofile.role == "learner":
             enrollments = Enrollment.objects.filter(
-                learner=request.user,
-                is_active=True
+                learner=user,
+                is_active=True # Only show active enrollments
             )
 
-        elif request.user.userprofile.role == "teacher":
+        elif user.userprofile.role == "teacher":
             enrollments = Enrollment.objects.filter(
-                teacher=request.user,
-                is_active=True
-            )
+                course__teacher=user,
+                is_active=True # Only show active enrollments
+            ).select_related("learner", "course")
 
-        else:
-            enrollments = None
-    else:
-        enrollments = None
-
-    # Form logic
     if request.method == "POST":
-        form = ProfileForm(request.POST, instance=request.user)
+        form = ProfileForm(request.POST, instance=user)
 
+        # Only allow saving if form is valid to prevent partial updates
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully.")
             return redirect("accounts:profile")
     else:
-        form = ProfileForm(instance=request.user)
+        form = ProfileForm(instance=user)
 
     return render(
         request,
         "accounts/profile.html",
         {
-            "enrollments": enrollments,
             "form": form,
-        },
+            "enrollments": enrollments
+        }
     )
 
 

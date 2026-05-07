@@ -21,11 +21,34 @@
                         Level: <strong>{{ course.level }}</strong>
                         |
                         Type: <strong>{{ course.get_course_type_display }}</strong>
+
+                        Teacher:
+                        <strong>{{ course.teacher.username|default:"Not assigned" }}</strong>
                     </p>
 
                     <p class="mt-3">
                         {{ course.description }}
                     </p>
+
+                    <!-- Reviews Section-->
+                    <hr>
+                    <h4>Reviews</h4>
+
+                    {% for review in course.reviews.all %}
+                    <div class="mb-2">
+                        <strong>{{ review.learner.username }}</strong>
+                        ({{ review.rating }}/5)
+                        <p>{{ review.comment }}</p>
+                    </div>
+                    {% empty %}
+                    <p>No reviews yet.</p>
+                    {% endfor %}
+
+                    {% if user.is_authenticated and user_enrolled %}
+                    <a href="{% url 'courses:add_review' course.id %}" class="btn btn-outline-primary">
+                        Add Review
+                    </a>
+                    {% endif %}
 
                     <h4 class="mt-4">
                         Price: £{{ course.price }}

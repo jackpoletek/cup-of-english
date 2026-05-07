@@ -77,13 +77,25 @@
                     {% if enrollments %}
                     <ul class="list-group">
                         {% for enrollment in enrollments %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ enrollment.course.title }}
+                        <li class="list-group-item>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ enrollment.course.title }}</strong>
+
+                                    # Show info about teacher if available
+                                    <br>
+                                    <small class="text-muted">
+                                        Teacher: {{ enrollment.course.teacher.username|default:"Not assigned" }}
+                                    </small>
+                                </div>
 
                             <a href="{% url 'courses:course_details' enrollment.course.id %}"
                                 class="btn btn-sm btn-outline-primary">
                                 View
                             </a>
+                        </div>
+
                         </li>
                         {% endfor %}
                     </ul>

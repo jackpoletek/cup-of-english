@@ -25,6 +25,11 @@
                         {{ enrollment.course.title }}
                     </h5>
 
+                    <p class="text-muted mb-1">
+                        Teacher:
+                        {{ enrollment.course.teacher.username|default:"Not assigned" }}
+                    </p>
+
                     <p class="text-muted">
                         Level: {{ enrollment.course.level }}
                     </p>

@@ -6,6 +6,15 @@
 
     <h2>{{ course.title }} - Course Content</h2>
 
+    <p class="text-muted">
+        Level: <strong>{{ course.level }}</strong>
+        |
+        Type: <strong>{{ course.get_course_type_display }}</strong>
+
+        Teacher:
+        <strong>{{ course.teacher.username|default:"Not assigned" }}</strong>
+    </p>
+
     <div class="alert alert-success">
         You have full access to this course.
     </div>

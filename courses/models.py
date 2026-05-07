@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Course(models.Model):
@@ -54,5 +55,41 @@ class Course(models.Model):
         default=True
     )
 
+    teacher = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="teaching_courses",
+    )
+
     def __str__(self):
         return self.title
+
+
+class Review(models.Model):
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+
+    learner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    # Ratings from 1 to 5
+    rating = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    comment = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Ensure a learner can only review a course once
+    class Meta:
+        unique_together = ("course", "learner")
+
+    def __str__(self):
+        return f"{self.learner} - {self.course} ({self.rating})"

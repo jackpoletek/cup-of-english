@@ -24,4 +24,10 @@ urlpatterns = [
         views.course_content,
         name="course_content"
         ),
+
+        path(
+            "course/<int:course_id>/review/",
+            views.add_review,
+            name="add_review"
+            ),
 ]

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container py-5">
+    <h3>Add Review - {{ course.title }}</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label>Rating (1-5)</label>
+            {{ form.rating }}
+        </div>
+
+        <div class="mb-3">
+            <label>Comment</label>
+            {{ form.comment }}
+        </div>
+
+        <button class="btn btn-success">Submit</button>
+    </form>
+</div>
+
+{% endblock %}
