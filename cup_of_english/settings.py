@@ -79,6 +79,9 @@ DATABASES = {
     )
 }
 
+# Close broken DB connections safely
+DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
+
 # PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
