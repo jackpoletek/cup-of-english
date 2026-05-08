@@ -134,7 +134,7 @@ else:
 # AUTH REDIRECTS
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "accounts:profile"
-LOGOUT_REDIRECT_URL = "courses:home"
+LOGOUT_REDIRECT_URL = "core:index"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

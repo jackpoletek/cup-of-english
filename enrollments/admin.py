@@ -9,6 +9,6 @@ class EnrollmentAdmin(admin.ModelAdmin):
 
     def get_teacher(self, obj):
         # Safely return the teacher's username
-        return obj.teacher if obj.teacher else "No teacher assigned"
-    
+        return obj.course.teacher if obj.course.teacher else "No teacher assigned"
+
     get_teacher.short_description = "Teacher"
