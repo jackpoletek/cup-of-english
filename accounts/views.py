@@ -1,6 +1,8 @@
 import logging
 import time
 
+from collections import defaultdict
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -272,6 +274,9 @@ def profile(request):
 
     enrollments = []
 
+    # Build mapping of teachers to their courses
+    teachers_courses = {}
+
     # Only show enrollments if user has a profile with a valid role
     if hasattr(user, "userprofile"):
         if user.userprofile.role == "learner":
@@ -281,10 +286,16 @@ def profile(request):
             )
 
         elif user.userprofile.role == "teacher":
-            enrollments = Enrollment.objects.filter(
+            teacher_enrollments = Enrollment.objects.filter(
                 course__teacher=user,
                 is_active=True # Only show active enrollments
             ).select_related("learner", "course")
+
+            teachers_courses = defaultdict(list)
+
+            # Display enrollments grouped by course for teachers
+            for enrollment in teacher_enrollments:
+                teachers_courses[enrollment.course].append(enrollment)
 
     if request.method == "POST":
         form = ProfileForm(request.POST, instance=user)
@@ -302,7 +313,8 @@ def profile(request):
         "accounts/profile.html",
         {
             "form": form,
-            "enrollments": enrollments
+            "enrollments": enrollments,
+            "teachers_courses": teachers_courses
         }
     )
 

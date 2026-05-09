@@ -78,7 +78,7 @@
                     <ul class="list-group">
                         {% for enrollment in enrollments %}
                         <li class="list-group-item">
-                            
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <strong>{{ enrollment.course.title }}</strong>
@@ -90,11 +90,11 @@
                                     </small>
                                 </div>
 
-                            <a href="{% url 'courses:course_details' enrollment.course.id %}"
-                                class="btn btn-sm btn-outline-primary">
-                                View
-                            </a>
-                        </div>
+                                <a href="{% url 'courses:course_details' enrollment.course.id %}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    View
+                                </a>
+                            </div>
 
                         </li>
                         {% endfor %}
@@ -107,14 +107,32 @@
 
                     <h5 class="mb-3">My Students</h5>
 
-                    {% if enrollments %}
-                    <ul class="list-group">
-                        {% for enrollment in enrollments %}
-                        <li class="list-group-item">
-                            {{ enrollment.learner.username }} - {{ enrollment.course.title }}
-                        </li>
-                        {% endfor %}
-                    </ul>
+                    {% if teacher_courses %}
+
+                    {% for course, course_enrollments in teacher_courses.items %}
+
+                    <div class="mb-4">
+
+                        <h6 class="fw-bold">
+                            {{ course.title }}
+                        </h6>
+
+                        <ul class="list-group">
+
+                            {% for enrollment in course_enrollments %}
+                            <li class="list-group-item">
+
+                                {{ enrollment.learner.username }}
+
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                    {% endfor %}
+
                     {% else %}
                     <p>You have no assigned students yet.</p>
                     {% endif %}
