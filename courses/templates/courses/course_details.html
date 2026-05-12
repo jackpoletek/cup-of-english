@@ -32,16 +32,51 @@
 
                     <!-- Reviews Section-->
                     <hr>
+
                     <h4>Reviews</h4>
 
+                    <!-- Average rating -->
+                    {% if average_rating %}
+                    <p class="text-muted">
+                        Average Rating:
+                        <strong>{{ average_rating|floatformat:1 }}/5</strong>
+                    </p>
+                    {% endif %}
+
                     {% for review in course.reviews.all %}
-                    <div class="mb-2">
+
+                    <!-- Review card layout -->
+                    <div class="mb-3 p-3 border rounded">
+
                         <strong>{{ review.learner.username }}</strong>
+
                         ({{ review.rating }}/5)
-                        <p>{{ review.comment }}</p>
+
+                        <p class="mb-2">
+                            {{ review.comment }}
+                        </p>
+
+                        <!-- Review owner controls -->
+                        {% if user == review.learner %}
+
+                        <a href="{% url 'courses:edit_review' review.id %}" class="btn btn-sm btn-outline-primary">
+
+                            Edit
+                        </a>
+
+                        <a href="{% url 'courses:delete_review' review.id %}" class="btn btn-sm btn-outline-danger">
+
+                            Delete
+                        </a>
+
+                        {% endif %}
+
                     </div>
+
                     {% empty %}
+
                     <p>No reviews yet.</p>
+
                     {% endfor %}
 
                     {% if user.is_authenticated and user_enrolled %}

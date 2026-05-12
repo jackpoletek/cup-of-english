@@ -1,3 +1,7 @@
+from django.db.models import Avg
+from urllib3 import request
+from urllib3 import request
+
 from enrollments.models import Enrollment
 from .models import Course, Review
 from .forms import ReviewForm
@@ -62,12 +66,17 @@ def course_details(request, course_id):
     if request.user.is_authenticated:
         user_enrolled = is_enrolled(request.user, course)
 
+    average_rating = course.reviews.aggregate(
+        Avg("rating")
+        )["rating__avg"]
+
     return render(
         request,
         "courses/course_details.html",
         {
             "course": course,
-            "user_enrolled": user_enrolled
+            "user_enrolled": user_enrolled,
+            "average_rating": average_rating
         }
     )
 
@@ -135,8 +144,80 @@ def add_review(request, course_id):
             review.course = course
             review.learner = request.user
             review.save()
+
             return redirect("courses:course_details", course_id)
+        
     else:
         form = ReviewForm()
 
-    return render(request, "courses/add_review.html", {"form": form, "course": course})
+    return render(
+        request,
+        "courses/add_review.html",
+        {
+            "form": form,
+            "course": course
+        }
+    )
+
+
+@login_required
+def edit_review(request, review_id):
+
+    review = get_object_or_404(
+        Review,
+        id=review_id
+    )
+
+    # Prevent editing other users reviews
+    if review.learner != request.user:
+        return redirect("courses:course_details", review.course.id)
+
+    if request.method == "POST":
+
+        form = ReviewForm(
+        request.POST,
+        instance=review
+    )
+
+    if form.is_valid():
+        form.save()
+
+        return redirect(
+            "courses:course_details",
+            review.course.id
+        )
+
+    else:
+        form = ReviewForm(instance=review)
+
+    return render(
+        request,
+        "courses/add_review.html",
+        {
+            "form": form,
+            "course": review.course,
+            "edit_mode": True,
+        }
+    )
+
+
+@login_required
+def delete_review(request, review_id):
+
+    review = get_object_or_404(
+        Review,
+        id=review_id
+    )
+
+# Prevent deleting other users reviews
+    if review.learner != request.user:
+        return redirect("courses:course_details", review.course.id)
+
+    course_id = review.course.id
+
+    review.delete()
+
+    return redirect(
+        "courses:course_details",
+        course_id
+    )
