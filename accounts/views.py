@@ -282,20 +282,27 @@ def profile(request):
         if user.userprofile.role == "learner":
             enrollments = Enrollment.objects.filter(
                 learner=user,
-                is_active=True # Only show active enrollments
+                is_active=True  # Only show active enrollments
             )
 
         elif user.userprofile.role == "teacher":
+
             teacher_enrollments = Enrollment.objects.filter(
                 course__teacher=user,
-                is_active=True # Only show active enrollments
-            ).select_related("learner", "course")
+                is_active=True
+            ).select_related(
+                "learner",
+                "course",
+                "course__teacher"
+            )
 
             teachers_courses = defaultdict(list)
 
             # Display enrollments grouped by course for teachers
             for enrollment in teacher_enrollments:
                 teachers_courses[enrollment.course].append(enrollment)
+
+            teachers_courses = dict(teachers_courses)  # Convert back to regular dict for template
 
     if request.method == "POST":
         form = ProfileForm(request.POST, instance=user)
