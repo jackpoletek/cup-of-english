@@ -1,24 +1,91 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
 
 <div class="container py-5">
-    <h3>Add Review - {{ course.title }}</h3>
 
-    <form method="POST">
-        {% csrf_token %}
+    <div class="row justify-content-center">
 
-        <div class="mb-3">
-            <label>Rating (1-5)</label>
-            {{ form.rating }}
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h2 class="mb-4 text-center">
+
+                        {% if edit_mode %}
+                        Edit Review
+                        {% else %}
+                        Add Review
+                        {% endif %}
+
+                    </h2>
+
+                    <p class="text-muted text-center">
+                        {{ course.title }}
+                    </p>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <!-- Rating -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Rating
+                            </label>
+
+                            {{ form.rating }}
+
+                            {% if form.rating.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.rating.errors }}
+                            </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- Comment -->
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Comment
+                            </label>
+
+                            {{ form.comment }}
+
+                            {% if form.comment.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.comment.errors }}
+                            </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="btn btn-primary w-100">
+
+                            {% if edit_mode %}
+                            Save Changes
+                            {% else %}
+                            Submit Review
+                            {% endif %}
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="mb-3">
-            <label>Comment</label>
-            {{ form.comment }}
-        </div>
+    </div>
 
-        <button class="btn btn-success">Submit</button>
-    </form>
 </div>
 
 {% endblock %}

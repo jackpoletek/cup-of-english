@@ -175,17 +175,17 @@ def edit_review(request, review_id):
     if request.method == "POST":
 
         form = ReviewForm(
-        request.POST,
-        instance=review
-    )
-
-    if form.is_valid():
-        form.save()
-
-        return redirect(
-            "courses:course_details",
-            review.course.id
+            request.POST,
+            instance=review
         )
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(
+                "courses:course_details",
+                review.course.id
+            )
 
     else:
         form = ReviewForm(instance=review)
