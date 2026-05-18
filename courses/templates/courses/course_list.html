@@ -25,6 +25,64 @@
         <h1>{{ selected_type }}</h1>
     </div>
 
+    <!-- Search & Level Filter -->
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-lg-8">
+
+                        <label class="form-label fw-bold">
+                            Search Courses
+                        </label>
+
+                        <input type="text" name="q" class="form-control" placeholder="Search all courses..."
+                            value="{{ search_query }}">
+
+                    </div>
+
+                    <div class="col-lg-2">
+
+                        <label class="form-label fw-bold">
+                            Level
+                        </label>
+
+                        <select name="level" class="form-select">
+
+                            <option value="">
+                                All Levels
+                            </option>
+
+                            {% for level in levels %}
+                            <option value="{{ level }}" {% if selected_level == level %}selected{% endif %}>
+                                {{ level }}
+                            </option>
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-lg-2">
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Search
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
     <div class="row">
 
         {% for course in courses %}
@@ -38,9 +96,10 @@
                         {{ course.title }}
                     </h4>
 
+                    <!-- Course Type -->
                     <p class="text-muted mb-1">
-                        Teacher:
-                        {{ course.teacher.username|default:"Not assigned" }}
+                        Type:
+                        <strong>{{ course.get_course_type_display }}</strong>
                     </p>
 
                     <p class="text-muted">
@@ -66,7 +125,7 @@
         </div>
         {% empty %}
         <div class="col-12 text-center">
-            <p>No courses available for this category yet.</p>
+            <p>No courses match your search.</p>
         </div>
         {% endfor %}
 

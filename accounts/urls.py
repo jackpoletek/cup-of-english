@@ -17,5 +17,7 @@ urlpatterns = [
         name="activate"
         ),
 
-    path("resend-activation/", views.resend_activation, name="resend_activation"),
+    path("resend-activation/",
+         views.resend_activation,
+         name="resend_activation"),
 ]

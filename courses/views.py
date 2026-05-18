@@ -1,6 +1,4 @@
 from django.db.models import Avg
-from urllib3 import request
-from urllib3 import request
 
 from enrollments.models import Enrollment
 from .models import Course, Review
@@ -15,16 +13,44 @@ def courses_view(request):
     """
     Display the main courses page.
 
-    For simplicity, this page is intentionally static
-    and showcases the 6 core course categories without database dependency.
-
-    Actual purchasable courses are displayed only after selecting
-    a category via course_list_by_type.
+    Users can search anf filter available courses by title and level.
     """
+
+    courses = Course.objects.filter(
+        is_active=True
+    )
+
+    # Search by title
+    search_query = request.GET.get("q", "")
+
+    if search_query:
+        courses = courses.filter(
+            title__contains=search_query
+        )
+
+    # Filter by level
+    selected_level = request.GET.get("level", "")
+
+    if selected_level:
+        courses = courses.filter(
+            level=selected_level
+        )
+
+    courses = courses.order_by(
+        "course_type",
+        "level"
+    )
 
     return render(
         request,
-        "courses/courses.html"
+        "courses/courses.html",
+        {
+            "courses": courses,
+            "search_query": search_query,
+            "selected_level": selected_level,
+            "course_type": Course.COURSE_TYPE,
+            "levels": [level[0] for level in Course.LEVEL_CHOICES],
+        }
     )
 
 
@@ -33,17 +59,50 @@ def course_list_by_type(request, course_type):
     Show all levels for one selected course type.
     E.G: General English courses of all levels (A2, B1, B2, C1, C2).
     """
+
     courses = Course.objects.filter(
         is_active=True,
-        course_type=course_type
-    ).order_by("level")
+    )
+
+    # Search all courses of the selected type
+    search_query = request.GET.get("q", "")
+
+    if search_query:
+        courses = courses.filter(
+            title__contains=search_query
+        )
+
+    # Filter by level
+    selected_level = request.GET.get("level", "")
+
+    if selected_level:
+        courses = courses.filter(
+            level=selected_level
+        )
+
+    # If no search is used, show all courses by type
+    if not search_query:
+        courses = courses.filter(
+            course_type=course_type
+        )
+
+    courses = courses.order_by("course_type", "level")
+
+    selected_type = dict(
+        Course.COURSE_TYPE
+        ).get(course_type, "")
 
     return render(
         request,
         "courses/course_list.html",
         {
             "courses": courses,
-            "selected_type": courses.first().get_course_type_display() if courses else ""
+            "selected_type": selected_type,
+            "search_query": search_query,
+            "selected_level": selected_level,
+            "levels": [
+                level[0]
+                for level in Course.LEVEL_CHOICES],
         }
     )
 
