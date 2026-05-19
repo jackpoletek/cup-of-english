@@ -1,3 +1,6 @@
+from teachers.models import TeacherProfile
+from teachers.forms import TeacherProfileForm
+
 import logging
 import time
 
@@ -277,9 +280,14 @@ def profile(request):
     # Build mapping of teachers to their courses
     teachers_courses = {}
 
+    teacher_profile = None
+    teacher_form = None
+
     # Only show enrollments if user has a profile with a valid role
     if hasattr(user, "userprofile"):
+
         if user.userprofile.role == "learner":
+
             enrollments = Enrollment.objects.filter(
                 learner=user,
                 is_active=True  # Only show active enrollments
@@ -304,16 +312,76 @@ def profile(request):
 
             teachers_courses = dict(teachers_courses)  # Convert back to regular dict for template
 
-    if request.method == "POST":
-        form = ProfileForm(request.POST, instance=user)
+            # Get or create teacher profile for the form
+            teacher_profile, created = TeacherProfile.objects.get_or_create(
+                user=user
+            )
 
-        # Only allow saving if form is valid to prevent partial updates
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Profile updated successfully.")
-            return redirect("accounts:profile")
+    if request.method == "POST":
+
+        # Teacher profile form handling
+        if (
+            hasattr(user, "userprofile")
+            and user.userprofile.role == "teacher"
+            and "teacher_profile_submit" in request.POST
+        ):
+
+            teacher_profile, created = TeacherProfile.objects.get_or_create(
+                user=user
+            )
+
+            teacher_form = TeacherProfileForm(
+                request.POST,
+                request.FILES,
+                instance=teacher_profile
+            )
+
+            if teacher_form.is_valid():
+
+                if "delete_image" in request.POST:
+
+                    if teacher_profile.image:
+                        teacher_profile.image.delete(save=False)  # Delete the file but keep the model instance
+
+                    teacher_profile.image = None  # Clear the image field
+
+                teacher_form.save()
+
+                messages.success(
+                    request,
+                    "Teacher profile updated successfully."
+                )
+
+                return redirect("accounts:profile")
+
+        else:
+
+            form = ProfileForm(
+                request.POST,
+                instance=user
+            )
+
+            # Only allow saving if form is valid
+            if form.is_valid():
+                form.save()
+
+                messages.success(
+                    request,
+                    "Profile updated successfully."
+                )
+
+                return redirect("accounts:profile")
+
     else:
         form = ProfileForm(instance=user)
+
+        if (
+            hasattr(user, "userprofile")
+            and user.userprofile.role == "teacher"
+        ):
+            teacher_form = TeacherProfileForm(
+                instance=teacher_profile
+            )
 
     return render(
         request,
@@ -321,7 +389,9 @@ def profile(request):
         {
             "form": form,
             "enrollments": enrollments,
-            "teachers_courses": teachers_courses
+            "teachers_courses": teachers_courses,
+            "teacher_form": teacher_form,
+            "teacher_profile": teacher_profile,
         }
     )
 

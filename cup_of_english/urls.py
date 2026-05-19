@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from courses import views
 
 urlpatterns = [
@@ -24,6 +27,12 @@ urlpatterns = [
     # Payments
     path("payments/", include("payments.urls")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
 
 handler404 = "core.views.error_404_view"
 handler403 = "core.views.error_403_view"
