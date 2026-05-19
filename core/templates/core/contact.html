@@ -30,9 +30,14 @@
 
                 {% for message in messages %}
 
+                <!-- Show contact page success messages -->
+                {% if "message has been sent successfully" in message|stringformat:"s"|lower %}
+
                 <div class="alert alert-success">
                     {{ message }}
                 </div>
+
+                {% endif %}
 
                 {% endfor %}
 
