@@ -1,6 +1,9 @@
+from pyexpat.errors import messages
+
 import stripe
 import logging
 
+from accounts.views import user_is_learner
 from enrollments.utils import is_enrolled
 from django.db import transaction, IntegrityError
 
@@ -18,10 +21,35 @@ logger = logging.getLogger(__name__)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+
 # Checkout view
 @login_required
 def checkout(request, course_id):
     course = get_object_or_404(Course, id=course_id)
+
+    # Restrict checkout to learners only
+    if not user_is_learner(request.user):
+        messages.error(
+            request,
+            "Only learners can purchase courses."
+        )
+
+        return redirect(
+            "courses:course_details",
+            course_id=course.id
+        )
+
+    # Prevent learners from purchasing the same course multiple times
+    if is_enrolled(request.user, course):
+        messages.info(
+            request,
+            "You are already enrolled in this course."
+        )
+
+        return redirect(
+            "courses:course_details",
+            course_id=course.id
+        )
 
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
@@ -42,8 +70,13 @@ def checkout(request, course_id):
             "course_id": course.id,
         },
 
-        success_url=request.build_absolute_uri("/payments/success/"),
-        cancel_url=request.build_absolute_uri("/payments/cancel/"),
+        success_url=request.build_absolute_uri(
+            "/payments/success/"
+        ),
+
+        cancel_url=request.build_absolute_uri(
+            "/payments/cancel/"
+        ),
     )
 
     return redirect(session.url)
@@ -51,18 +84,26 @@ def checkout(request, course_id):
 
 # Success and cancel views
 def payment_success(request):
-    return render(request, "payments/payment_success.html")
+    return render(
+        request,
+        "payments/payment_success.html"
+    )
 
 
 def payment_cancel(request):
-    return render(request, "payments/payment_cancel.html")
+    return render(
+        request,
+        "payments/payment_cancel.html"
+    )
 
 
 # Stripe webhook to handle events (e.g. payment success)
 @csrf_exempt
 def stripe_webhook(request):
     payload = request.body
-    sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
+    sig_header = request.META.get(
+        "HTTP_STRIPE_SIGNATURE"
+    )
 
     try:
         event = stripe.Webhook.construct_event(
@@ -79,8 +120,15 @@ def stripe_webhook(request):
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
 
-        user_id = session.get("metadata", {}).get("user_id")
-        course_id = session.get("metadata", {}).get("course_id")
+        user_id = session.get(
+            "metadata",
+            {}
+        ).get("user_id")
+
+        course_id = session.get(
+            "metadata",
+            {}
+        ).get("course_id")
 
         try:
             user = User.objects.get(id=user_id)
@@ -94,13 +142,19 @@ def stripe_webhook(request):
                             learner=user,
                             course=course
                         )
-                    logger.info(f"Enrollment created for user {user} and course {course}")
+                    logger.info(
+                        f"Enrollment created for user {user} and course {course}"
+                    )
                 except IntegrityError:
                     # Duplicate enrollment detected, log and ignore
                     pass
 
         except Exception as e:
-            logger.exception("Webhook error: %s", e)
+            logger.exception(
+                "Webhook error: %s",
+                e
+            )
+
             return HttpResponse(status=500)
 
     return HttpResponse(status=200)
