@@ -141,29 +141,49 @@ def resend_activation(request):
             user = User.objects.get(email=email)
 
             if user.is_active:
-                messages.info(request, "Account already activated. You can now log in.")
+                messages.info(
+                    request,
+                    "Account already activated. You can now log in."
+                )
                 return redirect("accounts:login")
 
-            last_sent = request.session.get("last_activation_email_sent", 0)
+            last_sent = request.session.get(
+                "last_activation_email_sent",
+                0
+            )
             now = time.time()
 
             if now - last_sent < 60:  # 1 minute cooldown
-                messages.error(request, "Activation email was sent. Please wait before requesting again.")
+                messages.error(
+                    request,
+                    "Activation email was sent. Please wait before requesting again."
+                )
                 return redirect("accounts:login")
 
             send_activation_email(user, request)
 
             request.session["last_activation_email_sent"] = now
 
-            messages.success(request, "Activation email resent.")
+            messages.success(
+                request,
+                "Activation email resent successfully."
+            )
 
         except User.DoesNotExist:
-            messages.error(request, "No account found with this email.")
+            messages.error(
+                request,
+                "No account found with this email."
+            )
 
         except Exception:
             # Log the error but avoid leaking information to the user
-            messages.error(request, "Resending activation email failed. Please try again later.")
+
             logger.exception("Error resending activation email.")
+
+            messages.error(
+                request,
+                "Resending activation email failed. Please try again later."
+            )
 
     return redirect("accounts:login")
 
@@ -214,6 +234,7 @@ def register_view(request):
 
         # Use atomic transaction to ensure both User and UserProfile are created together
         with transaction.atomic():
+
             # User created with inactive status until email verification
             user = User.objects.create_user(
                 username=username,
@@ -226,25 +247,35 @@ def register_view(request):
             user.userprofile.role = role
             user.userprofile.save()
 
-        # User rollback will occur if email sending fails
-        send_activation_email(user, request)
+        # Send activation email
+        try:
+            send_activation_email(user, request)
+
+        except Exception:
+            messages.warning(
+                request,
+                "Account created but failed to send activation email."
+            )
+
+            return redirect("accounts:login")
 
         messages.success(
             request,
-            "Account created successfully. Check your email for activation instructions."
+            "Account created. Check your email to activate your account."
         )
+
         return redirect("accounts:login")
 
     except IntegrityError:
         logger.exception("Error during registration.")
         messages.error(request, "Registration failed. Please try again later.")
         return render(request, "accounts/register.html")
-    
+
     except OperationalError:
         logger.exception("Database error during registration.")
         messages.error(request, "System is temporarily unavailable. Please try again later.")
         return render(request, "accounts/register.html", status=503)
-    
+
     except Exception:
         # Handle unexpected errors gracefully without exposing details to the user, but log them for debugging
         logger.exception("Registration failed.")
@@ -259,11 +290,21 @@ def activate_account(request, uidb64, token):
         user = User.objects.get(pk=uid)
 
         if default_token_generator.check_token(user, token):
-            user.is_active = True
-            user.save()
-            return render(request, "accounts/activation_success.html")
-        else:
-            return render(request, "accounts/activation_failed.html")
+
+            # Activate the user if not already active
+            if not user.is_active:
+                user.is_active = True
+                user.save()
+
+            return render(
+                request,
+                "accounts/activation_success.html"
+            )
+
+        return render(
+            request,
+            "accounts/activation_failed.html"
+        )
 
     except Exception:
         return render(request, "accounts/activation_failed.html")
@@ -398,8 +439,15 @@ def profile(request):
 
 @login_required
 def admin_dashboard(request):
-    if not (hasattr(request.user, "userprofile") and request.user.userprofile.role == "admin"):
-        messages.error(request, "You do not have permission to access this page.")
+    if not (
+        hasattr(request.user, "userprofile")
+            and request.user.userprofile.role == "admin"
+    ):
+        messages.error(
+            request,
+            "You do not have permission to access this page."
+        )
+
         return redirect("accounts:profile")
 
     return render(request, "accounts/admin.html")

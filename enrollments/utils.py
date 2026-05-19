@@ -1,5 +1,6 @@
 from .models import Enrollment
 
+
 def is_enrolled(user, course):
     # Safe check for user authentication
     if not user or not user.is_authenticated:
