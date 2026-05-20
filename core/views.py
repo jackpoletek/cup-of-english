@@ -9,10 +9,22 @@ from courses.models import Course
 
 
 def index(request):
-    featured_courses = (
-        Course.objects.filter(is_active=True)
-        .order_by("course_type", "level")[:6]
-    )
+
+    featured_courses = []
+
+    for course_type, course_name in Course.COURSE_TYPE:
+
+        course = (
+            Course.objects.filter(
+                is_active=True,
+                course_type=course_type
+            )
+            .order_by("course_type")
+            .first()
+        )
+
+        if course:
+            featured_courses.append(course)
 
     return render(
         request,
