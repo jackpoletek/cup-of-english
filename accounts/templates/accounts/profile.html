@@ -160,7 +160,12 @@
                                     <!-- Show info about teacher if available -->
                                     <br>
                                     <small class="text-muted">
-                                        Teacher: {{ enrollment.course.teacher.username|default:"Not assigned" }}
+                                        Teacher:
+                                        {% if enrollment.course.teacher %}
+                                        {{ enrollment.course.teacher.username }}
+                                        {% else %}
+                                        {{ enrollment.teacher.username|default:"Not assigned" }}
+                                        {% endif %}
                                     </small>
                                 </div>
 

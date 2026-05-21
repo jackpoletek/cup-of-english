@@ -23,7 +23,15 @@
                         Type: <strong>{{ course.get_course_type_display }}</strong>
 
                         Teacher:
-                        <strong>{{ course.teacher.username|default:"Not assigned" }}</strong>
+                        <strong>
+                            {% if course.teacher %}
+                            {{ course.teacher.username }}
+                            {% else %}
+                            {% with first_enrollment=course.enrollment_set.first %}
+                            {{ first_enrollment.teacher.username|default:"Not assigned" }}
+                            {% endwith %}
+                            {% endif %}
+                        </strong>
                     </p>
 
                     <p class="mt-3">

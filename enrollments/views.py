@@ -26,7 +26,6 @@ def enroll_course(request, course_id):
     enrollment, created = Enrollment.objects.get_or_create(
         learner=request.user,
         course=course,
-        defaults={"teacher": course.teacher}
     )
 
     # If enrollment already exists but teacher is not set
