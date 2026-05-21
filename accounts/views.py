@@ -336,13 +336,14 @@ def profile(request):
 
         elif user.userprofile.role == "teacher":
 
+            teacher_courses = user.teaching_courses.all()  # Get all courses taught by this teacher
+
             teacher_enrollments = Enrollment.objects.filter(
-                course__teacher=user,
-                is_active=True
+                teacher=user,
+                is_active=True  # Only show active enrollments
             ).select_related(
                 "learner",
-                "course",
-                "course__teacher"
+                "course"
             )
 
             teachers_courses = defaultdict(list)

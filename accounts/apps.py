@@ -12,12 +12,5 @@ class AccountsConfig(AppConfig):
     name = 'accounts'
 
     def ready(self):
-        """
-        Method called when the application is fully loaded.
-
-        Importing signals here ensures they are registered and connected
-        when Django starts, preventing race conditions and ensuring
-        signal handlers are active for the entire application lifecycle.
-        """
-        # Import signals module to connect signal handlers
+        # Import signals to ensure they are registered when the app is ready
         import accounts.signals  # noqa: F401
