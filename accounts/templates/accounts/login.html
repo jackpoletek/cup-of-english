@@ -11,12 +11,6 @@
 
             <h2 class="mb-4 text-center">Login</h2>
 
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-danger">{{ message }}</div>
-            {% endfor %}
-            {% endif %}
-
             <form method="post">
                 {% csrf_token %}
 
