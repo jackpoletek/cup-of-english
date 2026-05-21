@@ -107,7 +107,7 @@
 
                 {% with forloop.counter|stringformat:"s" as image_num %}
                 <img class="card-img-top" src="{% static 'cup_of_english/images/course-'|add:image_num|add:'.jpg' %}"
-                    alt="{{ course.get_course_type_display }}">
+                    alt="{{ course.get_course_type_display|title }}">
                 {% endwith %}
 
                 <div class="card-body d-flex flex-column">
