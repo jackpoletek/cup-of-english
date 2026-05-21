@@ -324,6 +324,8 @@ def profile(request):
     teacher_profile = None
     teacher_form = None
 
+    form = ProfileForm(instance=user)
+
     # Only show enrollments if user has a profile with a valid role
     if hasattr(user, "userprofile"):
 
@@ -336,14 +338,17 @@ def profile(request):
 
         elif user.userprofile.role == "teacher":
 
-            teacher_courses = user.teaching_courses.all()  # Get all courses taught by this teacher
+            teacher_courses = user.teaching_courses.filter(
+                is_active=True
+            )
 
-            teacher_enrollments = Enrollment.objects.filter(
-                teacher=user,
-                is_active=True  # Only show active enrollments
-            ).select_related(
+            teacher_enrollments = Enrollment.objects.select_related(
                 "learner",
-                "course"
+                "course",
+                "course__teacher"
+            ).filter(
+                course__in=teacher_courses,
+                is_active=True
             )
 
             teachers_courses = defaultdict(list)
@@ -415,7 +420,6 @@ def profile(request):
                 return redirect("accounts:profile")
 
     else:
-        form = ProfileForm(instance=user)
 
         if (
             hasattr(user, "userprofile")
