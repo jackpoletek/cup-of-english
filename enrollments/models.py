@@ -24,6 +24,14 @@ class Enrollment(models.Model):
         on_delete=models.CASCADE,
         )
 
+    teacher = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="teaching_enrollments",
+    )
+
     # Soft delete flag to allow deactivating enrollments without deleting them
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -44,4 +52,7 @@ class Enrollment(models.Model):
             else "No teacher assigned"
         )
 
-        return f"{self.learner.username} enrolled in {self.course.title} taught by {teacher_name}"
+        return (
+            f"{self.learner.username} enrolled in "
+            f"{self.course.title} taught by {teacher_name}"
+        )
