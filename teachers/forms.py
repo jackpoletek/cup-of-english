@@ -8,6 +8,14 @@ class TeacherProfileForm(forms.ModelForm):
         model = TeacherProfile
         fields = ["bio", "image"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        widget = self.fields["image"].widget
+
+        self.fields["image"].widget.clear_checkbox_label = ""
+        widget.template_name = "django/forms/widgets/file.html"
+
     def clean_image(self):
 
         image = self.cleaned_data.get("image")
