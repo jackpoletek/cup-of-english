@@ -212,10 +212,10 @@ As a learner, I want to browse courses by category and level so that I can quick
 - Category-based navigation structure
 
 **Browse Courses By Category** </br>
-![Browse Courses By Category](docs/readme-images/auth-placeholder.png) </br>
+![Browse Courses By Category](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/courses/browse_course_by_category.png) </br>
 
 **Browse Courses By Level** </br>
-![Browse Courses By Level](docs/readme-images/auth-placeholder.png) </br>
+![Browse Courses By Level](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/courses/browse_course_by_level.png) </br>
 
 ## Secure Enrollment
 
@@ -230,6 +230,9 @@ As a learner, I want to securely purchase a course and immediately gain access a
 - Access validation using shared enrollment helper
 - Protected course content routes
 
+**Learner Profile** </br>
+![Learner Profile](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/user%20profiles/learner_profile.png) </br>
+
 ## Teacher Visibility
 
 ### User Story
@@ -241,8 +244,8 @@ As a teacher, I want to manage my profile and view enrolled learners so that I c
 - Grouped enrollment dashboard
 - Teacher-course relationship architecture
 
-**Upload Picture & Bio** </br>
-![Upload Picture & Bio](docs/readme-images/auth-placeholder.png)
+**Teacher Profile** </br>
+![Teacher Profile](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/user%20profiles/teacher_profile.png)
 
 ---
 
@@ -257,9 +260,6 @@ As a teacher, I want to manage my profile and view enrolled learners so that I c
 - Protected login flow
 - Resend activation system
 - Session-safe authentication handling
-
-**Email Account Activation** </br>
-![Email Account Activation](docs/readme-images/auth-placeholder.png)
 
 ## Course Discovery
 
@@ -294,7 +294,7 @@ As a teacher, I want to manage my profile and view enrolled learners so that I c
 ---
 
 **Stripe Successful Payment** </br>
-![Stripe Successful Payment](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_successful_message.jpg)
+![Stripe Successful Payment](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_successful_message.jpg) </br>
 
 ## Review System
 
@@ -498,17 +498,14 @@ Initial wireframes were created to plan:
 
 The wireframes prioritised low cognitive load and simple user journeys following KISS design principles.
 
-| ![[https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png]] | ![[https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png]] | ![[https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png]] |
-|--------|-----|-------|
-| Desktop | Tablet | Mobile |
-
----
-
 ### Homepage Desktop Wireframe
-![Homepage Desktop Wireframe|left](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png)
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png" alt="Homepage Desktop Wireframe" width=20% height=20%/>&nbsp;
 
 ### Homepage Tablet Wireframe
-![Homepage Tablet Wireframe|right](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png)
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png" alt="Homepage Tablet Wireframe" width=20% height=20%/>&nbsp;
+
+### Homepage Mobile Wireframe
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png" alt="Homepage Mobile Wireframe" width=20% height=20%/>&nbsp;
 
 ## Colour Scheme
 
@@ -646,7 +643,6 @@ PostgreSQL was chosen because it provides:
 - scalable cloud deployment compatibility
 
 Neon was used as the managed PostgreSQL provider.
-
 
 ## Third-Party Services
 
