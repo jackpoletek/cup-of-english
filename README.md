@@ -429,8 +429,8 @@ User <br>
 
 User <br>
 └── TeacherProfile </br>
-&nbsp;&nbsp;├── bio <br>
-&nbsp;&nbsp;└── image
+&nbsp;&nbsp;&nbsp;&nbsp;├── bio <br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── image
 
 Course <br>
 ├── teacher -> User <br>
@@ -605,6 +605,38 @@ Automated testing helps ensure:
 
 #### Running Tests
 `python manage.py test`
+
+---
+
+# AWS S3 Media Storage
+
+The platform uses AWS S3 for production-ready media and static asset storage.
+
+## AWS S3 Responsibilities
+- teacher profile image storage
+- static file hosting
+- scalable media delivery
+- production asset management
+
+## Why AWS S3 Was Used
+
+AWS S3 improves:
+- scalability
+- deployment reliability
+- media persistence
+- production performance
+
+The implementation includes:
+- bucket configuration
+- IAM access management
+- media upload integration
+- Django storage configuration
+
+---
+
+# Future Improvements
+
+---Future roadmap section to be expanded and prioritised further.
 
 ---
 
