@@ -496,8 +496,14 @@ Initial wireframes were created to plan:
 
 The wireframes prioritised low cognitive load and simple user journeys following KISS design principles.
 
-### Homepage Wirefram
+### Homepage Desktop Wireframe
 <img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png" alt="Homepage Desktop Wireframe" width=35% height=35%/>&nbsp;&nbsp;
+
+### Homepage Tablet Wireframe
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png" alt="Homepage Tablet Wireframe" width=35% height=35%/>&nbsp;&nbsp;
+
+### Homepage Mobile Wireframe
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png" alt="Homepage Mobile Wireframe" width=35% height=35%/>&nbsp;&nbsp;
 
 ## Colour Scheme
 
