@@ -486,6 +486,19 @@ This architecture was intentionally separated instead of using a direct ManyToMa
 
 # Design
 
+## Wireframes
+Initial wireframes were created to plan:
+- responsive layout structure
+- conversion-focused navigation
+- checkout flow clarity
+- dashboard usability
+- mobile responsiveness
+
+The wireframes prioritised low cognitive load and simple user journeys following KISS design principles.
+
+### Homepage Wirefram
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png" alt="Homepage Desktop Wireframe" width=35% height=35%/>&nbsp;&nbsp;
+
 ## Colour Scheme
 
 | Colour | Hex | Usage |
