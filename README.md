@@ -522,6 +522,50 @@ The typography system prioritises:
 
 ---
 
+### JavaScript Enhancements & Graceful Degradation
+
+- Carousel with autoplay, hover pause, and caption animation
+- Back-to-top button for UX improvement
+
+Graceful degradation applied:
+
+- If JavaScript fails, core navigation and content remain fully accessible
+- Carousel falls back to static content
+
+---
+
+# Technologies Used
+
+## Languages
+
+- Python
+- JavaScript
+- HTML5
+- CSS3
+
+## Frameworks & Libraries
+
+- Django
+- Bootstrap 5
+
+## Database
+
+- PostgreSQL (Neon)
+
+## Third-Party Services
+
+- Stripe
+- AWS S3
+- Gmail SMTP
+
+## Tools
+
+- Git
+- GitHub
+- Heroku
+
+---
+
 # Testing
 
 ## Manual Testing
@@ -636,144 +680,80 @@ The implementation includes:
 
 # Future Improvements
 
----Future roadmap section to be expanded and prioritised further.
+--- Future roadmap section to be expanded and prioritised further.
 
----
+## Planned Improvements
 
-### JavaScript Enhancements & Graceful Degradation
+### High Priority
+- Course lesson/module architecture
+- Video-based learning system
+- Teacher-managed course content
+- Advanced admin dashboard
 
-- Carousel with autoplay, hover pause, and caption animation
-- Back-to-top button for UX improvement
-
-Graceful degradation applied:
-
-- If JavaScript fails, core navigation and content remain fully accessible
-- Carousel falls back to static content
-
----
-
-## Future Features
-
-- Course modules and lessons
-- Video-based content
+### Medium Priority
 - Progress tracking
-- Quizzes and assessments
-- Teacher dashboards
-- Reviews and ratings
+- Learning analytics
 - Certificates
+- Student learning history
+
+### Long-Term Scaling
+- Live lessons
+- Subscription model
+- Multi-language support
+- AI-assisted learning recommendations
 
 ---
 
-# Design
+# Deployment
 
-## Layout
+## Local Setup
 
-- Clean, minimal layout using Bootstrap
-- Mobile-first responsive design
-- Clear content hierarchy
+```bash
+git clone https://github.com/your-username/cup-of-english.git
+cd cup-of-english
+pip install -r requirements.txt
+```
 
-**Rationale:**
-Educational platforms require clarity and low cognitive load to support learning focus.
+Create .env:
 
----
+```bash
+SECRET_KEY=your_secret_key
+DEBUG=True
+DATABASE_URL=your_database_url
+STRIPE_PUBLIC_KEY=your_key
+STRIPE_SECRET_KEY=your_key
+STRIPE_WEBHOOK_SECRET=your_secret
+```
 
-## Typography
+Run:
 
-- Inter font
-- High readability
-- Modern SaaS-like appearance
+```bash
+python manage.py migrate
+python manage.py runserver
+```
 
-**Rationale:**
-Improves readability for long-form educational content.
+## Gmail SMTP Setup
+- Enable 2FA
+- Generate App Password
+- Use in Django email settings
 
----
+## AWS S3 Setup
+- Create bucket
+- Enable static hosting
+- Configure CORS
+- Add bucket policy
+- Create IAM user and access keys
 
-## Colour Scheme
+## Stripe Webhooks
+- Create endpoint /checkout/wh/
+- Add signing secret to environment variables
+- Test using Stripe test cards
 
-Defined using CSS variables:
-
-- Primary: `#FF6B35` (call-to-action, engagement)
-- Dark accent: `#2D3142` (structure, readability)
-- Secondary/light: `#F5F5F5` (clean background)
-- Success: `#06D6A0` (positive feedback)
-
-**Rationale:**
-
-- Orange encourages action (buy, register)
-- Dark tones provide contrast and professionalism
-- Light background reduces visual fatigue
-
----
-
-# Database Structure
-
-### Core Models
-
-- User
-- UserProfile (roles)
-- Course
-- Enrollment
-
-### Relationships
-
-- One user → one profile
-- One course → many enrollments
-- One user → many enrollments
-
-![ERD](docs/readme-images/erd-placeholder.png)
-
----
-
-# Technologies Used
-
-## Languages
-
-- Python
-- JavaScript
-- HTML5
-- CSS3
-
-## Frameworks & Libraries
-
-- Django
-- Bootstrap 5
-
-## Database
-
+## Production
+- Hosted on Heroku
 - PostgreSQL (Neon)
-
-## Third-Party Services
-
-- Stripe
-- AWS S3
-- Gmail SMTP
-
-## Tools
-
-- Git
-- GitHub
-- Heroku
-
----
-
-# Testing
-
-## Manual Testing
-
-- Authentication flow verified
-- Email activation working
-- Stripe checkout tested
-- Webhook enrollment confirmed
-- Access control enforced
-
-## Automated Testing
-
-- Model tests
-- View tests
-- Access control tests
-- Payment webhook tests
-
-All tests passing.
+- AWS S3 for static/media
+- Stripe live payments enabled
 
 ---
 
@@ -858,61 +838,12 @@ return redirect("core:contact")
 
 ---
 
-# Deployment
-
-## Local Setup
-
-```bash
-git clone https://github.com/your-username/cup-of-english.git
-cd cup-of-english
-pip install -r requirements.txt
-```
-
-Create .env:
-
-```bash
-SECRET_KEY=your_secret_key
-DEBUG=True
-DATABASE_URL=your_database_url
-STRIPE_PUBLIC_KEY=your_key
-STRIPE_SECRET_KEY=your_key
-STRIPE_WEBHOOK_SECRET=your_secret
-```
-
-Run:
-
-```bash
-python manage.py migrate
-python manage.py runserver
-```
-
-## Gmail SMTP Setup
-- Enable 2FA
-- Generate App Password
-- Use in Django email settings
-
-## AWS S3 Setup
-- Create bucket
-- Enable static hosting
-- Configure CORS
-- Add bucket policy
-- Create IAM user and access keys
-
-## Stripe Webhooks
-- Create endpoint /checkout/wh/
-- Add signing secret to environment variables
-- Test using Stripe test cards
-
-## Production
-- Hosted on Heroku
-- PostgreSQL (Neon)
-- AWS S3 for static/media
-- Stripe live payments enabled
-
 # Credits
 - Django: https://docs.djangoproject.com/
 - Stripe: https://stripe.com/docs
 - Bootstrap: https://getbootstrap.com/
+
+---
 
 # Acknowledgements
 
