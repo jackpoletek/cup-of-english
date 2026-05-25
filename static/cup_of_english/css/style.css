@@ -373,6 +373,19 @@ footer-socials a:last-child {
         margin-top: 10px;
     }
 
+    .carousel-caption {
+        bottom: 1.5rem;
+        padding: 0.75rem;
+    }
+
+    .carousel-caption h1 {
+        font-size: 1.4rem;
+    }
+
+    .carousel-caption h5 {
+        font-size: 0.85rem;
+    }
+
     /* Auth & checkout forms */
     .card form {
         font-size: 0.95rem;
