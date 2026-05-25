@@ -1250,14 +1250,18 @@ Technical Documentation:
 
 # Acknowledgements
 
-This project was developed as a portfolio-grade full-stack application demonstrating:
+Cup of English was developed as a portfolio-grade full-stack application focused on combining practical backend engineering with user-friendly educational experience design.
 
-- Backend architecture
-- Secure payment systems
-- Real-world deployment
-- Access control and business logic
+The project explores the balance between functionality and simplicity - a continuous process of negotiating form and content while avoiding unnecessary complexity. Throughout development, the focus remained on building a platform that feels intuitive for users while still implementing production-oriented architecture, secure payment handling, scalable database relationships, and maintainable backend logic.
 
-Big thank you to my mentor Brian Macharia and my lecturer Manuel Perez.
-Urszula, I owe it to you as well.
+The application was also an opportunity to apply KISS (Keep It Simple, Stupid) principles in a real-world context, where technical decisions were guided not only by implementation difficulty, but also by usability, clarity, maintainability, and long-term scalability.
 
-Adopted and developed further by Jack Poletek.
+Special thanks to:
+- Brian Macharia for mentorship and guidance
+- Manuel Perez for teaching and academic support
+- Urszula for encouragement, support, and patience throughout the development process
+
+Original design template courtesy of Html Codex:
+https://htmlcodex.com/online-courses-html-template/
+
+Adapted, expanded, and developed further by Jack Poletek.
