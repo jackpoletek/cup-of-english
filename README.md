@@ -1,6 +1,6 @@
 # Cup of English
 
-![Cup of English]([screenshots/home/Cup of English - home.png](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/home/Cup%20of%20English%20-%20home.png))
+![Cup of English](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/home/Cup%20of%20English%20-%20home.png)
 
 Cup of English is a full-stack Django e-commerce educational platform designed as a professional MVP online English school for teenagers and adults.
 
@@ -21,8 +21,8 @@ The project combines:
 
 The application follows **KISS (Keep It Simple, Stupid)** principles while demonstrating real-world full-stack development practices.
 
-![Live Project](https://cup-of-english.herokuapp.com/)
-![Repository](https://github.com/jackpoletek/cup-of-english)
+[Live Project](https://cup-of-english-ddc7ce9e283b.herokuapp.com/) </br>
+[Repository](https://github.com/jackpoletek/cup-of-english)
 
 ---
 
