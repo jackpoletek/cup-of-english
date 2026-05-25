@@ -291,6 +291,8 @@ As a teacher, I want to manage my profile and view enrolled learners so that I c
 **Stripe Payment Completed** </br>
 ![Stripe Payment Completed](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_completed.jpg) </br>
 
+---
+
 **Stripe Successful Payment** </br>
 ![Stripe Successful Payment](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_successful_message.jpg)
 
@@ -497,7 +499,9 @@ Initial wireframes were created to plan:
 The wireframes prioritised low cognitive load and simple user journeys following KISS design principles.
 
 ### Homepage Desktop Wireframe
-<img style="float: left;" src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png" alt="Homepage Desktop Wireframe" width=30% height=30%/>&nbsp;
+![Homepage Desktop Wireframe](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png)
+
+---
 
 ### Homepage Tablet Wireframe
 <img style="center: left;" src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png" alt="Homepage Tablet Wireframe" width=25% height=25%/>&nbsp;
