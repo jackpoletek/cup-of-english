@@ -166,130 +166,68 @@ Key admin capabilities:
 ## Learner Journey
 
 graph TD
-A[Visitor Browses Courses] --> B[Registers Account]
-B --> C[Receives Activation Email]
-C --> D[Activates Account]
-D --> E[Logs In]
-E --> F[Selects Course]
-F --> G[Stripe Checkout]
-G --> H[Stripe Webhook]
-H --> I[Enrollment Created]
+A[Visitor Browses Courses] --> B[Registers Account] </br>
+B --> C[Receives Activation Email] </br>
+C --> D[Activates Account] </br>
+D --> E[Logs In] </br>
+E --> F[Selects Course] </br>
+F --> G[Stripe Checkout] </br>
+G --> H[Stripe Webhook] </br>
+H --> I[Enrollment Created] </br>
 I --> J[Premium Content Unlocked]
 
 ## Teacher Journey
 
+graph TD
+A[Teacher Registers] --> B[Activates Account] </br>
+B --> C[Logs In] </br>
+C --> D[Creates Teacher Profile] </br>
+D --> E[Uploads Bio & Image] </br>
+E --> F[Views Assigned Courses] </br>
+F --> G[Views Enrolled Learners] </br>
+
+## Admin Journey
+
+graph TD
+A[Admin Accesses Dashboard] --> B[Manages Users] </br>
+B --> C[Manages Courses] </br>
+C --> D[Manages Enrollments] </br>
+D --> E[Oversees Platform Operations]
 
 ---
 
 # User Stories
 
-## Project Planning - User Stories
+## Course Discovery
 
----
+### User Story
 
-### User Story 1: Responsive and intuitive navigation (must-have)
+As a learner, I want to browse courses by category and level so that I can quickly find a course suitable for my learning goals.
 
-**User Story:**
-As a First-Time Visitor, I want a responsive and intuitive interface so that I can easily explore the platform on any device.
+### How This Is Achieved
+- Courses grouped by educational purpose
+- Level filtering (A2-C2)
+- Responsive course catalogue layout
+- Search functionality by course title
+- Category-based navigation structure
 
-**Acceptance Criteria**
+## Secure Enrollment
 
-- Fully responsive design across devices
-- Clear navigation menu
-- Accessible key pages
+### User Story
 
-**Tasks**
+As a learner, I want to securely purchase a course and immediately gain access after payment.
 
-- Implement Bootstrap responsive grid
-- Design clear navigation structure
+### How This Is Achieved
+- Stripe Checkout integration
+- Secure payment verification
+- Webhook-driven enrollment automation
+- Access validation using shared enrollment helper
+- Protected course content routes
 
----
+## Teacher Visibility
 
-### User Story 2: Course discovery (must-have)
+### User Story
 
-**User Story:**
-As a Visitor, I want to browse courses by category so that I can find relevant learning content.
-
-**Acceptance Criteria**
-
-- Courses grouped by type
-- Courses displayed clearly
-- Easy navigation between categories
-
-**Tasks**
-
-- Create course category pages
-- Display courses dynamically
-
----
-
-### User Story 3: Secure registration and login (must-have)
-
-**User Story:**
-As a User, I want to register and activate my account so that I can securely access the platform.
-
-**Acceptance Criteria**
-
-- Email activation required
-- Inactive users cannot log in
-- Secure authentication flow
-
-**Tasks**
-
-- Implement activation tokens
-- Configure email system
-
----
-
-### User Story 4: Course purchase (must-have)
-
-**User Story:**
-As a Learner, I want to purchase a course easily so that I can access its content.
-
-**Acceptance Criteria**
-
-- Stripe checkout works
-- Payment success triggers enrollment
-- Cancel flow handled correctly
-
-**Tasks**
-
-- Integrate Stripe checkout
-- Store metadata for user/course
-
----
-
-### User Story 5: Protected content access (must-have)
-
-**User Story:**
-As a Learner, I want access only to purchased content so that the platform maintains content security.
-
-**Acceptance Criteria**
-
-- Non-enrolled users blocked
-- Enrolled users granted access
-
-**Tasks**
-
-- Implement access checks
-- Use shared enrollment helper
-
----
-
-### User Story 6: Contact communication (should-have)
-
-**User Story:**
-As a Visitor, I want to contact the platform so that I can ask questions.
-
-**Acceptance Criteria**
-
-- Contact form available
-- Email sent successfully
-
-**Tasks**
-
-- Implement form
-- Configure SMTP
 
 ---
 
