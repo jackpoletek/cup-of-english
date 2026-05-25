@@ -498,16 +498,17 @@ Initial wireframes were created to plan:
 
 The wireframes prioritised low cognitive load and simple user journeys following KISS design principles.
 
-### Homepage Desktop Wireframe
-![Homepage Desktop Wireframe](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png)
+| ![[https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png]] | ![[https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png]] | ![[https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png]] |
+|--------|-----|-------|
+| Desktop | Tablet | Mobile |
 
 ---
 
-### Homepage Tablet Wireframe
-<img style="center: left;" src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png" alt="Homepage Tablet Wireframe" width=25% height=25%/>&nbsp;
+### Homepage Desktop Wireframe
+![Homepage Desktop Wireframe|left](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png)
 
-### Homepage Mobile Wireframe
-<img style="float: right;" src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png" alt="Homepage Mobile Wireframe" width=20% height=20%/>&nbsp;
+### Homepage Tablet Wireframe
+![Homepage Tablet Wireframe|right](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png)
 
 ## Colour Scheme
 
