@@ -50,7 +50,7 @@ The project was intentionally designed using KISS (Keep It Simple, Stupid) princ
 - [Future Improvements](#future-improvements)
 - [Bugs and Fixes](#bugs-and-fixes)
 - [Credits](#credits)
-
+- [Acknowledgements](#acknowledgements)
 ---
 
 # Business Problem
@@ -520,17 +520,21 @@ The typography system prioritises:
 - visual clarity
 - mobile accessibility
 
----
+## Backend Design
 
-### JavaScript Enhancements & Graceful Degradation
+### E-Commerce Design Decision (No Basket)
 
-- Carousel with autoplay, hover pause, and caption animation
-- Back-to-top button for UX improvement
+The platform intentionally does not include a shopping basket.
 
-Graceful degradation applied:
+#### Why This Decision Was Made
+- learners typically purchase one course at a time
+- checkout friction is reduced
+- backend architecture remains simpler
+- conversion-focused UX is prioritised
 
-- If JavaScript fails, core navigation and content remain fully accessible
-- Carousel falls back to static content
+This decision follows both:
+- MVP product strategy
+- KISS development principles
 
 ---
 
@@ -538,31 +542,152 @@ Graceful degradation applied:
 
 ## Languages
 
-- Python
-- JavaScript
-- HTML5
-- CSS3
+### Python
+Primary backend language used to build:
+- business logic
+- authentication system
+- payment processing
+- enrollment architecture
+- role-based access control
+- webhook automation
+
+### JavaScript
+Used for frontend interactivity and progressive enhancement:
+- Bootstrap carousel controls
+- autoplay and hover pause functionality
+- animated UI behaviour
+- back-to-top button
+- responsive interaction improvements
+
+Graceful degradation principles were applied so the platform remains fully usable even if JavaScript becomes unavailable.
+
+### HTML 5
+Used to structure:
+- responsive page layouts
+- semantic educational content
+- forms
+- navigation systems
+- accessibility-focused components
+
+### CSS3
+Used for:
+- responsive styling
+- layout customisation
+- visual hierarchy
+- UX consistency
+- mobile-first design improvements
+
+Custom CSS variables were implemented for reusable platform-wide design consistency.
 
 ## Frameworks & Libraries
 
-- Django
-- Bootstrap 5
+### Django
+Primary backend framework responsible for:
+- MVC architecture
+- routing
+- ORM/database management
+- authentication
+- template rendering
+- form handling
+- admin dashboard
+- security protections
+- session management
+
+Django was selected because it provides rapid development speed while maintaining production-grade security and scalability.
+
+### Bootstrap 5
+Frontend framework used for:
+- responsive grid system
+- mobile-first layouts
+- reusable UI components
+- navigation structure
+- form styling
+- rapid MVP development
+
+Bootstrap aligned with the project's KISS architecture approach by reducing unnecessary frontend complexity.
 
 ## Database
 
-- PostgreSQL (Neon)
+### PostgreSQL (Neon)
+Production cloud database used for:
+- relational data integrity
+- enrollment relationships
+- transactional consistency
+- scalable production deployment
+
+PostgreSQL was chosen because it provides:
+- strong relational modeling
+- production reliability
+- ACID compliance
+- scalable cloud deployment compatibility
+
+Neon was used as the managed PostgreSQL provider.
+
 
 ## Third-Party Services
 
-- Stripe
+### Stripe
+Used for:
+- secure payment processing
+- hosted checkout pages
+- payment verification
+- webhook event handling
+- enrollment automation
+
+Stripe webhooks act as the source of truth for successful purchases.
+
+### AWS S3
+Used for:
+- teacher profile image uploads
+- media storage
+- static asset hosting
+- scalable production file delivery
+
+The project integrates:
+- S3 bucket configuration
+- IAM access policies
+- Django storage backends
+- cloud-based media persistence
+
+### Gmail SMTP
+Used for:
+- account activation emails
+- communication workflows
+- production email delivery
+
+Integrated with:
+- Django email backend
+- HTML email templates
+- token-based account activation system
+
+## Development & Deployment Tools
+
+### Git
+Version control system used for:
+- feature branching
+- commit history
+- development workflow management
+
+### GitHub
+Used for:
+- repository hosting
+- portfolio presentation
+- documentation management
+- version control collaboration
+
+### Heroku
+Cloud deployment platform used for:
+- production hosting
+- environment variable management
+- deployment pipeline
+- application scaling
+
+The deployed production stack combines:
+- Django
+- PostgreSQL
 - AWS S3
-- Gmail SMTP
-
-## Tools
-
-- Git
-- GitHub
-- Heroku
+- Stripe
+- Heroku infrastructure
 
 ---
 
@@ -680,7 +805,7 @@ The implementation includes:
 
 # Future Improvements
 
---- Future roadmap section to be expanded and prioritised further.
+Future roadmap section to be expanded and prioritised further.
 
 ## Planned Improvements
 
@@ -702,6 +827,226 @@ The implementation includes:
 - Multi-language support
 - AI-assisted learning recommendations
 
+### Backend Architecture Refactor
+
+The current architecture contains two teacher relationship sources:
+
+- `Enrollment.teacher`
+- `Course.teacher`
+
+This introduces unnecessary data duplication and increases the risk of inconsistent application state.
+
+Example of the issue:
+
+```python
+Enrollment.teacher = Teacher_Ula
+Course.teacher = None
+```
+
+In this situation:
+- frontend components may read one source
+- admin tools may read another source
+- enrollment and course ownership can become inconsistent
+
+#### Recommended Future Structure
+
+The long-term architecture plan is to simplify the `Enrollment` model and use `Course.teacher` as the single source of truth.
+
+### Current Enrollment Model
+
+```python
+Enrollment
+├── learner
+├── course
+├── teacher
+├── is_active
+└── created_at
+```
+
+### Planned Enrollment Model
+
+```python
+Enrollment
+├── learner
+├── course
+├── is_active
+└── created_at
+```
+
+### Planned Refactor
+
+Remove:
+- `Enrollment.teacher`
+
+Keep:
+- `learner`
+- `course`
+- `is_active`
+- `created_at`
+
+Teacher relationships would always be accessed through:
+
+```python
+enrollment.course.teacher
+```
+
+### Benefits of This Refactor
+
+- simpler database architecture
+- single source of truth
+- cleaner admin logic
+- easier maintenance
+- fewer synchronization bugs
+- safer long-term scalability
+- simpler ORM queries
+
+Example simplified query:
+
+```python
+Enrollment.objects.filter(course__teacher=user)
+```
+
+instead of:
+
+```python
+Enrollment.objects.filter(teacher=user)
+```
+
+### Minimal / Safe Migration Strategy
+
+The preferred implementation approach is:
+
+- remove only `Enrollment.teacher` usage
+- keep all existing platform functionality intact
+- migrate all teacher lookups to `course.teacher`
+- avoid unrelated changes to profile or image systems
+
+This approach follows the project's KISS architecture principles while improving long-term maintainability.
+
+---
+
+### React + Django REST Framework Migration
+
+A planned long-term improvement is gradual migration toward a hybrid Django + React architecture.
+
+The goal is to improve:
+- frontend scalability
+- user interactivity
+- dashboard responsiveness
+- reusable component architecture
+- API-driven development experience
+
+The recommended approach is **incremental migration**, not a full frontend rewrite.
+
+## Recommended Stack
+
+### Frontend
+- React
+- React Router
+- Bootstrap
+
+### Backend
+- Django
+- Django REST Framework (DRF)
+
+### Optional Additions
+- Axios
+
+The project intentionally avoids introducing excessive frontend complexity too early.
+
+Technologies intentionally postponed:
+- Redux
+- TypeScript
+- Next.js
+- Tailwind
+
+This keeps the learning and development process aligned with KISS principles.
+
+---
+
+## Recommended Migration Strategy
+
+### Phase 1 - React Fundamentals + DRF
+Learn:
+- JSX
+- components
+- props
+- hooks
+- forms
+- API fetching
+
+Introduce Django REST Framework APIs for:
+- courses
+- reviews
+- enrollments
+
+Templates remain unchanged initially.
+
+---
+
+### Phase 2 - React Reviews System
+
+First React integration target:
+- course reviews system
+
+Reason:
+- isolated feature
+- already fully functional
+- strong portfolio value
+- ideal for API integration practice
+
+Planned React functionality:
+- fetch reviews
+- add review
+- edit/delete review
+- live average rating updates
+
+---
+
+### Phase 3 - React Dashboards
+
+Convert:
+- learner dashboard
+- teacher dashboard
+
+This introduces:
+- reusable UI components
+- async API handling
+- dynamic rendering
+- loading states
+
+---
+
+### Phase 4 - Optional Full Frontend Migration
+
+Potential future migration:
+- course pages
+- profile pages
+- authentication pages
+- payment flows
+
+At this stage:
+- Django becomes API backend
+- React becomes frontend application
+
+---
+
+## Why This Architecture Matters
+
+This roadmap would transform the project into a modern hybrid full-stack architecture demonstrating:
+
+- Django backend development
+- REST API architecture
+- React frontend integration
+- scalable SaaS structure
+- production-ready frontend/backend separation
+
+The migration strategy prioritises:
+- low-risk refactoring
+- stable backend preservation
+- gradual frontend modernisation
+- portfolio-focused scalability
+
 ---
 
 # Deployment
@@ -709,7 +1054,7 @@ The implementation includes:
 ## Local Setup
 
 ```bash
-git clone https://github.com/your-username/cup-of-english.git
+git clone https://github.com/jackpoletek/cup-of-english.git
 cd cup-of-english
 pip install -r requirements.txt
 ```
@@ -831,14 +1176,72 @@ return render(request, "core/contact.html", {...})
 return redirect("core:contact")
 ```
 
-### Known Issues
+---
 
-- Webhook delay may cause slight delay in enrollment visibility
-- No progress tracking yet
+- **Bug:** Django success messages persisted in session storage after logout and appeared repeatedly on the login page:
+- **Error:** Messages such as _Teacher profile updated successfully_ continued appearing after logout.
+- **Fix:**
+- Messages were cleared before logout using Django message storage iteration.
+The login template message block was removed.
+Removed Code
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+Message rendering was centralised inside `base.html`.
+
+---
+
+- **Bug:** Homepage "Popular Courses" displayed duplicated course categories because the queryset selected the first six database rows instead of one course per category.
+Example incorrect output:
+- Business English A2
+- Business English B1
+- Business English B2
+
+instead of:
+- General English
+- Business English
+- English for Specific Purposes
+
+- **Error:** No Django or Python error occurred.
+The issue caused:
+- duplicated course categories
+- repeated Business English cards
+- incorrect homepage categorisation
+- inconsistent UX between homepage and courses page
+- **Fix:**
+- Implemented one-course-per-category logic.
+
+---
+
+### Known Issues
+- Stripe webhook processing may occasionally introduce slight enrollment delay
+- Full course lesson architecture is not yet implemented
+- Progress tracking system not yet available
+- Teacher/course architecture still contains duplicated teacher references (`Enrollment.teacher` and `Course.teacher`)
 
 ---
 
 # Credits
+
+## Template & Design Adaptation
+
+The frontend design was adapted and customised from the following educational template:
+[Ecourses Template by Html Codex](https://htmlcodex.com/online-courses-html-template/) </br>
+
+The original template structure was heavily modified and extended to support:
+- Django template rendering
+- Stripe payment integration
+- responsive educational marketplace architecture
+- authentication workflows
+- dynamic course management
+- role-based user functionality
+
+The project followed KISS principles by reusing and adapting a clean educational UI foundation instead of overengineering the frontend architecture.
+
+Technical Documentation:
 - Django: https://docs.djangoproject.com/
 - Stripe: https://stripe.com/docs
 - Bootstrap: https://getbootstrap.com/
@@ -854,4 +1257,7 @@ This project was developed as a portfolio-grade full-stack application demonstra
 - Real-world deployment
 - Access control and business logic
 
-Designed and developed by Jack Poletek.
+Big thank you to my mentor Brian Macharia and my lecturer Manuel Perez.
+Urszula, I owe it to you as well.
+
+Adopted and developed further by Jack Poletek.
