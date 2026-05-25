@@ -50,7 +50,7 @@ The project was intentionally designed using KISS (Keep It Simple, Stupid) princ
 - [Future Improvements](#future-improvements)
 - [Bugs and Fixes](#bugs-and-fixes)
 - [Credits](#credits)
-
+- [Acknowledgements](#acknowledgements)
 ---
 
 # Business Problem
@@ -165,7 +165,7 @@ Key admin capabilities:
 
 ## Learner Journey
 
-graph TD
+graph TD </br>
 A[Visitor Browses Courses] --> B[Registers Account] </br>
 B --> C[Receives Activation Email] </br>
 C --> D[Activates Account] </br>
@@ -178,7 +178,7 @@ I --> J[Premium Content Unlocked]
 
 ## Teacher Journey
 
-graph TD
+graph TD </br>
 A[Teacher Registers] --> B[Activates Account] </br>
 B --> C[Logs In] </br>
 C --> D[Creates Teacher Profile] </br>
@@ -188,7 +188,7 @@ F --> G[Views Enrolled Learners] </br>
 
 ## Admin Journey
 
-graph TD
+graph TD </br>
 A[Admin Accesses Dashboard] --> B[Manages Users] </br>
 B --> C[Manages Courses] </br>
 C --> D[Manages Enrollments] </br>
@@ -211,6 +211,12 @@ As a learner, I want to browse courses by category and level so that I can quick
 - Search functionality by course title
 - Category-based navigation structure
 
+**Browse Courses By Category** </br>
+![Browse Courses By Category](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/courses/browse_course_by_category.png) </br>
+
+**Browse Courses By Level** </br>
+![Browse Courses By Level](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/courses/browse_course_by_level.png) </br>
+
 ## Secure Enrollment
 
 ### User Story
@@ -224,184 +230,332 @@ As a learner, I want to securely purchase a course and immediately gain access a
 - Access validation using shared enrollment helper
 - Protected course content routes
 
+**Learner Profile** </br>
+![Learner Profile](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/user%20profiles/learner_profile.png) </br>
+
 ## Teacher Visibility
 
 ### User Story
+As a teacher, I want to manage my profile and view enrolled learners so that I can monitor my assigned courses.
 
+### How This Is Achieved
+- Dedicated TeacherProfile model
+- Image upload validation
+- Grouped enrollment dashboard
+- Teacher-course relationship architecture
+
+**Teacher Profile** </br>
+![Teacher Profile](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/user%20profiles/teacher_profile.png)
 
 ---
 
 # Features
 
-## Existing Features
+## Authentication
 
-### Authentication System
+### Feature Highlights
+- Secure registration system
+- Email account activation
+- Role-based authentication
+- Protected login flow
+- Resend activation system
+- Session-safe authentication handling
 
-- User registration with email activation
-- Secure login/logout
-- Role-based architecture
+## Course Discovery
 
-![Auth Screenshot](docs/readme-images/auth-placeholder.png)
+### Feature Highlights
+- Course segmentation by learning purpose
+- English level filtering
+- Search functionality
+- Dynamic course pages
+- Structured catalogue navigation
 
----
-
-### Course Browsing
-
-- Course categories:
+### Course Categories
 - General English
 - Business English
-- EAP / ESP
-- Exam preparation
+- English for Academic Purposes (EAP)
+- English for Specific Purposes (ESP)
+- IB English
+- IGCSE English
 
-- Courses filtered by level (A2-C2)
+## Stripe Payment
 
-![Courses Screenshot](docs/readme-images/courses-placeholder.png)
+### Feature Highlights
 
----
+- Secure Stripe Checkout integration
+- Payment verification via webhooks
+- Metadata-based enrollment linking
+- Duplicate enrollment prevention
+- Transaction-safe enrollment creation
 
-### Course Details
-
-- Detailed course information
-- Enrollment status visibility
-- Clear purchase CTA
-
----
-
-### Stripe Payments
-
-- Secure Stripe checkout
-- Metadata linking user and course
-- Webhook-driven enrollment (source of truth)
-
-![Stripe Screenshot](docs/readme-images/stripe-placeholder.png)
+**Stripe Payment Completed** </br>
+![Stripe Payment Completed](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_completed.jpg) </br>
 
 ---
 
-### Enrollment System
+**Stripe Successful Payment** </br>
+![Stripe Successful Payment](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_successful_message.jpg) </br>
 
-- One enrollment per user per course
-- Automatic creation via webhook
-- Shared `is_enrolled` helper ensures consistency across app
+## Review System
 
----
+### Feature Highlights
+- Course review submission
+- One review per learner
+- Edit/delete review ownership protection
+- Average course rating calculation
+- Enrollment-based review permissions
 
-### Course Access Control
+## Teacher Profile
 
-- Content restricted to enrolled users
-- Safe redirects for unauthorized access
-
----
-
-### Profile Page
-
-- Displays enrolled courses
-- Supports user account management
-
----
-
-### Contact Form
-
-- Sends real emails via Gmail SMTP
-- Fully functional in production
+### Feature Highlights
+- Teacher biography management
+- Image upload validation
+- AWS S3 media storage
+- Secure file validation
+- Teacher dashboard integration
 
 ---
 
-### E-commerce Design Decision (No Basket)
+# System Architecture
 
-The platform intentionally does **not include a shopping basket**.
+## High-Level Architecture
 
-**Reasoning:**
+graph TD </br>
 
-- Users typically purchase one course at a time
-- Reduces friction in checkout flow
-- Simplifies backend logic
-- Improves conversion rate
+A[Frontend - Bootstrap UI] </br>
+--> B[Django Views] </br>
 
-This aligns with MVP product strategy and KISS principles.
+B --> C[Business Logic] </br>
+B --> D[Authentication System] </br>
+B --> E[Stripe Integration] </br>
+B --> F[PostgreSQL Database] </br>
 
----
+E --> G[Stripe Webhooks] </br>
 
-### JavaScript Enhancements & Graceful Degradation
+G --> H[Enrollment Automation] </br>
 
-- Carousel with autoplay, hover pause, and caption animation
-- Back-to-top button for UX improvement
+F --> I[Course Access Control] </br>
 
-Graceful degradation applied:
-
-- If JavaScript fails, core navigation and content remain fully accessible
-- Carousel falls back to static content
+B --> J[AWS S3 Media Storage]
 
 ---
 
-## Future Features
+# Payment & Enrollment Flow
 
-- Course modules and lessons
-- Video-based content
-- Progress tracking
-- Quizzes and assessments
-- Teacher dashboards
-- Reviews and ratings
-- Certificates
+The payment architecture follows a real-world production pattern where Stripe acts as the payment authority while the webhook acts as the enrollment trigger.
+
+## Enrollment Flow
+
+graph TD </br>
+
+A[Learner Selects Course] </br>
+--> B[Stripe Checkout Session] </br> 
+
+B --> C[Payment Completed] </br>
+
+C --> D[Stripe Sends Webhook] </br>
+
+D --> E[Django Verifies Signature] </br>
+
+E --> F[Enrollment Created] </br>
+
+F --> G[Course Access Granted]
+
+## Why Webhooks Are Important
+
+Stripe webhooks ensure that enrollments are only created after Stripe confirms successful payment.
+
+This prevents:
+- fake enrollments
+- client-side payment bypassing
+- duplicate purchases
+- inconsistent payment states
+
+The webhook implementation includes:
+- Stripe signature verification
+- transaction safety using transaction.atomic()
+- duplicate enrollment prevention
+- logging and exception handling
+
+---
+
+# Signals & Automation
+
+The project uses Django signals to automate profile creation and maintain consistent user architecture.
+
+## Signal Flow
+
+graph TD </br>
+
+A[New User Created] </br>
+--> B[post_save Signal Triggered] </br>
+
+B --> C[UserProfile Automatically Created] </br>
+
+C --> D[Role System Ready]
+
+## Why Signals Are Used
+
+Signals eliminate the need to manually create user profiles during registration.
+
+This ensures:
+- every user always has a profile
+- role-based permissions remain consistent
+- profile creation logic stays centralised
+- cleaner registration workflow
+
+The project uses:
+- post_save signals
+- automatic profile creation
+- automatic profile saving
+
+---
+
+# Database Design
+
+## Database Models
+
+| Model | Description |
+|-------|-------------|
+| User | Django authentication model |
+| UserProfile | Extends User with role-based permissions |
+| TeacherProfile | Stores teacher biography and image |
+| Course | Stores course information and pricing |
+| Enrollment | Links learners to purchased courses |
+| Review | Stores learner reviews and ratings |
+
+## Database Schema
+
+User <br>
+└── UserProfile (role)
+
+User <br>
+└── TeacherProfile </br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── bio <br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── image
+
+Course <br>
+├── teacher -> User <br>
+├── level <br>
+├── course_type <br>
+└── price
+
+Enrollment <br>
+├── learner -> User <br>
+├── course -> Course <br>
+├── teacher -> User <br>
+└── is_active
+
+Review <br>
+├── learner -> User <br>
+├── course -> Course <br>
+├── rating <br>
+└── comment
+
+## Relationship Rules & Constraints
+
+### UserProfile
+- Each user has exactly one profile
+- Profile stores role permissions
+- Roles:
+- - Admin
+- - Teacher
+- - Learner
+
+### Enrollment
+
+The Enrollment model acts as the business-critical bridge between learners and courses.
+
+This architecture was intentionally separated instead of using a direct ManyToMany relationship because enrollments contain additional business logic:
+- enrollment timestamps
+- active/inactive state
+- teacher assignment
+- access validation
+- payment-driven ownership
+
+### Enrollment Constraints
+- One learner can only enroll in a course once
+- Duplicate purchases prevented
+- Access controlled through enrollment checks
+- Soft-deactivation supported via `is_active`
+
+### Review Constraints
+- One review per learner per course
+- Reviews restricted to enrolled learners only
+- Ownership validation for edit/delete actions
 
 ---
 
 # Design
 
-## Layout
+## Wireframes
+Initial wireframes were created to plan:
+- responsive layout structure
+- conversion-focused navigation
+- checkout flow clarity
+- dashboard usability
+- mobile responsiveness
 
-- Clean, minimal layout using Bootstrap
-- Mobile-first responsive design
-- Clear content hierarchy
+The wireframes prioritised low cognitive load and simple user journeys following KISS design principles.
 
-**Rationale:**
-Educational platforms require clarity and low cognitive load to support learning focus.
+### Homepage Desktop Wireframe
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png" alt="Homepage Desktop Wireframe" width=20% height=20%/>&nbsp;
 
----
+### Homepage Tablet Wireframe
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png" alt="Homepage Tablet Wireframe" width=20% height=20%/>&nbsp;
 
-## Typography
-
-- Inter font
-- High readability
-- Modern SaaS-like appearance
-
-**Rationale:**
-Improves readability for long-form educational content.
-
----
+### Homepage Mobile Wireframe
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png" alt="Homepage Mobile Wireframe" width=20% height=20%/>&nbsp;
 
 ## Colour Scheme
 
-Defined using CSS variables:
+| Colour | Hex | Usage |
+|--------|-----|-------|
+| Orange | #FF6B35 | Call-to-action buttons, engagement |
+| Dark Blue | #2D3142 | Navigation, structure, readability |
+| Light Grey | #F5F5F5 | Background sections |
+| Green | #06D6A0 | Success states and confirmations |
 
-- Primary: `#FF6B35` (call-to-action, engagement)
-- Dark accent: `#2D3142` (structure, readability)
-- Secondary/light: `#F5F5F5` (clean background)
-- Success: `#06D6A0` (positive feedback)
+### Colour Strategy
+The colour palette was chosen to balance educational professionalism with conversion-oriented UI design.
+- Orange increases visibility of important actions such as registration and purchasing
+- Dark blue improves contrast and platform readability
+- Light grey reduces visual fatigue during long browsing sessions
+- Green reinforces positive user feedback and successful actions
 
-**Rationale:**
+## Typography
 
-- Orange encourages action (buy, register)
-- Dark tones provide contrast and professionalism
-- Light background reduces visual fatigue
+### Primary Font
+- Inter
 
----
+### Typography Strategy
+Inter was selected because it:
+- improves readability across devices
+- performs well in responsive layouts
+- provides modern SaaS-style aesthetics
+- maintains accessibility for long-form educational content
 
-# Database Structure
+The typography system prioritises:
+- readability
+- low cognitive load
+- visual clarity
+- mobile accessibility
 
-### Core Models
+## Backend Design
 
-- User
-- UserProfile (roles)
-- Course
-- Enrollment
+### E-Commerce Design Decision (No Basket)
 
-### Relationships
+The platform intentionally does not include a shopping basket.
 
-- One user → one profile
-- One course → many enrollments
-- One user → many enrollments
+#### Why This Decision Was Made
+- learners typically purchase one course at a time
+- checkout friction is reduced
+- backend architecture remains simpler
+- conversion-focused UX is prioritised
 
-![ERD](docs/readme-images/erd-placeholder.png)
+This decision follows both:
+- MVP product strategy
+- KISS development principles
 
 ---
 
@@ -409,52 +563,562 @@ Defined using CSS variables:
 
 ## Languages
 
-- Python
-- JavaScript
-- HTML5
-- CSS3
+### Python
+Primary backend language used to build:
+- business logic
+- authentication system
+- payment processing
+- enrollment architecture
+- role-based access control
+- webhook automation
+
+### JavaScript
+Used for frontend interactivity and progressive enhancement:
+- Bootstrap carousel controls
+- autoplay and hover pause functionality
+- animated UI behaviour
+- back-to-top button
+- responsive interaction improvements
+
+Graceful degradation principles were applied so the platform remains fully usable even if JavaScript becomes unavailable.
+
+### HTML 5
+Used to structure:
+- responsive page layouts
+- semantic educational content
+- forms
+- navigation systems
+- accessibility-focused components
+
+### CSS3
+Used for:
+- responsive styling
+- layout customisation
+- visual hierarchy
+- UX consistency
+- mobile-first design improvements
+
+Custom CSS variables were implemented for reusable platform-wide design consistency.
 
 ## Frameworks & Libraries
 
-- Django
-- Bootstrap 5
+### Django
+Primary backend framework responsible for:
+- MVC architecture
+- routing
+- ORM/database management
+- authentication
+- template rendering
+- form handling
+- admin dashboard
+- security protections
+- session management
+
+Django was selected because it provides rapid development speed while maintaining production-grade security and scalability.
+
+### Bootstrap 5
+Frontend framework used for:
+- responsive grid system
+- mobile-first layouts
+- reusable UI components
+- navigation structure
+- form styling
+- rapid MVP development
+
+Bootstrap aligned with the project's KISS architecture approach by reducing unnecessary frontend complexity.
 
 ## Database
 
-- PostgreSQL (Neon)
+### PostgreSQL (Neon)
+Production cloud database used for:
+- relational data integrity
+- enrollment relationships
+- transactional consistency
+- scalable production deployment
+
+PostgreSQL was chosen because it provides:
+- strong relational modeling
+- production reliability
+- ACID compliance
+- scalable cloud deployment compatibility
+
+Neon was used as the managed PostgreSQL provider.
 
 ## Third-Party Services
 
-- Stripe
+### Stripe
+Used for:
+- secure payment processing
+- hosted checkout pages
+- payment verification
+- webhook event handling
+- enrollment automation
+
+Stripe webhooks act as the source of truth for successful purchases.
+
+### AWS S3
+Used for:
+- teacher profile image uploads
+- media storage
+- static asset hosting
+- scalable production file delivery
+
+The project integrates:
+- S3 bucket configuration
+- IAM access policies
+- Django storage backends
+- cloud-based media persistence
+
+### Gmail SMTP
+Used for:
+- account activation emails
+- communication workflows
+- production email delivery
+
+Integrated with:
+- Django email backend
+- HTML email templates
+- token-based account activation system
+
+## Development & Deployment Tools
+
+### Git
+Version control system used for:
+- feature branching
+- commit history
+- development workflow management
+
+### GitHub
+Used for:
+- repository hosting
+- portfolio presentation
+- documentation management
+- version control collaboration
+
+### Heroku
+Cloud deployment platform used for:
+- production hosting
+- environment variable management
+- deployment pipeline
+- application scaling
+
+The deployed production stack combines:
+- Django
+- PostgreSQL
 - AWS S3
-- Gmail SMTP
-
-## Tools
-
-- Git
-- GitHub
-- Heroku
+- Stripe
+- Heroku infrastructure
 
 ---
 
 # Testing
 
 ## Manual Testing
+The platform was manually tested across authentication, enrollment, payments, access control, and profile management flows.
 
-- Authentication flow verified
-- Email activation working
-- Stripe checkout tested
-- Webhook enrollment confirmed
-- Access control enforced
+### Manual Testing Results
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|-----------------|---------------|
+| User Registration | Submit valid registration form | Account created inactive | Pass |
+| Email Activation | Click activation link | Account activated | Pass |
+| Resend Activation | Submit resend form | New activation email sent | Pass |
+| Login | Submit valid credentials | User logged in | Pass |
+| Invalid Login | Submit wrong password | Error message displayed | Pass |
+| Logout | Click logout | Session terminated | Pass |
+| Course Search | Search by title | Matching courses displayed | Pass |
+| Course Filtering | Filter by level | Correct level courses displayed | Pass |
+| Stripe Checkout | Complete payment | Redirect to success page | Pass |
+| Stripe Webhook | Successful Stripe event | Enrollment created | Pass |
+| Duplicate Enrollment | Purchase owned course | Enrollment blocked | Pass |
+| Course Access Protection | Non-enrolled user accesses content | Redirected safely | Pass |
+| Add Review | Enrolled learner submits review | Review created | Pass |
+| Edit Review | Review owner edits review | Review updated | Pass |
+| Delete Review | Review owner deletes review | Review removed | Pass |
+| Teacher Bio Update | Submit teacher profile form | Bio updated | Pass |
+| Teacher Image Upload | Upload valid image | Image saved to AWS S3 | Pass |
+| Teacher Image Validation | Upload invalid file type | Validation error displayed | Pass |
+| Teacher Image Deletion | Delete existing image | Image removed | Pass |
+| Profile Update | Change email/username | Profile updated | Pass |
+| Contact Form | Submit valid form | Message stored and email sent | Pass |
+| CAPTCHA Validation | Submit invalid captcha | Form blocked | Pass |
 
 ## Automated Testing
 
-- Model tests
-- View tests
-- Access control tests
-- Payment webhook tests
+The project includes automated Django TestCase coverage focused on critical business logic and security-sensitive flows.
 
-All tests passing.
+### Automated Test Coverage
+
+#### Accounts App
+Tests include:
+- registration flow
+- login validation
+- inactive user blocking
+- activation token verification
+- profile signal execution
+- activation link generation
+
+#### Courses App
+Tests include:
+- course listing
+- course detail rendering
+- review permissions
+- enrolled/non-enrolled review restrictions
+
+#### Enrollments App
+Tests include:
+- enrollment access protection
+- login restrictions
+- enrollment creation
+
+#### Payments App
+Tests include:
+- Stripe webhook processing
+- checkout restrictions
+- Stripe session creation
+- enrollment automation
+
+#### Core App
+Tests include:
+contact form validation
+CAPTCHA verification
+homepage course rendering logic
+
+### Why Automated Tests Matter
+Automated testing helps ensure:
+- payment flows remain secure
+- access control cannot be bypassed
+- role architecture remains stable
+- enrollment logic stays consistent
+- future refactoring does not break business-critical systems
+
+#### Running Tests
+`python manage.py test`
+
+---
+
+# AWS S3 Media Storage
+
+The platform uses AWS S3 for production-ready media and static asset storage.
+
+## AWS S3 Responsibilities
+- teacher profile image storage
+- static file hosting
+- scalable media delivery
+- production asset management
+
+## Why AWS S3 Was Used
+
+AWS S3 improves:
+- scalability
+- deployment reliability
+- media persistence
+- production performance
+
+The implementation includes:
+- bucket configuration
+- IAM access management
+- media upload integration
+- Django storage configuration
+
+---
+
+# Future Improvements
+
+Future roadmap section to be expanded and prioritised further.
+
+## Planned Improvements
+
+### High Priority
+- Course lesson/module architecture
+- Video-based learning system
+- Teacher-managed course content
+- Advanced admin dashboard
+
+### Medium Priority
+- Progress tracking
+- Learning analytics
+- Certificates
+- Student learning history
+
+### Long-Term Scaling
+- Live lessons
+- Subscription model
+- Multi-language support
+- AI-assisted learning recommendations
+
+### Backend Architecture Refactor
+
+The current architecture contains two teacher relationship sources:
+
+- `Enrollment.teacher`
+- `Course.teacher`
+
+This introduces unnecessary data duplication and increases the risk of inconsistent application state.
+
+Example of the issue:
+
+```python
+Enrollment.teacher = Teacher_Ula
+Course.teacher = None
+```
+
+In this situation:
+- frontend components may read one source
+- admin tools may read another source
+- enrollment and course ownership can become inconsistent
+
+#### Recommended Future Structure
+
+The long-term architecture plan is to simplify the `Enrollment` model and use `Course.teacher` as the single source of truth.
+
+### Current Enrollment Model
+
+```python
+Enrollment
+├── learner
+├── course
+├── teacher
+├── is_active
+└── created_at
+```
+
+### Planned Enrollment Model
+
+```python
+Enrollment
+├── learner
+├── course
+├── is_active
+└── created_at
+```
+
+### Planned Refactor
+
+Remove:
+- `Enrollment.teacher`
+
+Keep:
+- `learner`
+- `course`
+- `is_active`
+- `created_at`
+
+Teacher relationships would always be accessed through:
+
+```python
+enrollment.course.teacher
+```
+
+### Benefits of This Refactor
+
+- simpler database architecture
+- single source of truth
+- cleaner admin logic
+- easier maintenance
+- fewer synchronization bugs
+- safer long-term scalability
+- simpler ORM queries
+
+Example simplified query:
+
+```python
+Enrollment.objects.filter(course__teacher=user)
+```
+
+instead of:
+
+```python
+Enrollment.objects.filter(teacher=user)
+```
+
+### Minimal / Safe Migration Strategy
+
+The preferred implementation approach is:
+
+- remove only `Enrollment.teacher` usage
+- keep all existing platform functionality intact
+- migrate all teacher lookups to `course.teacher`
+- avoid unrelated changes to profile or image systems
+
+This approach follows the project's KISS architecture principles while improving long-term maintainability.
+
+---
+
+### React + Django REST Framework Migration
+
+A planned long-term improvement is gradual migration toward a hybrid Django + React architecture.
+
+The goal is to improve:
+- frontend scalability
+- user interactivity
+- dashboard responsiveness
+- reusable component architecture
+- API-driven development experience
+
+The recommended approach is **incremental migration**, not a full frontend rewrite.
+
+## Recommended Stack
+
+### Frontend
+- React
+- React Router
+- Bootstrap
+
+### Backend
+- Django
+- Django REST Framework (DRF)
+
+### Optional Additions
+- Axios
+
+The project intentionally avoids introducing excessive frontend complexity too early.
+
+Technologies intentionally postponed:
+- Redux
+- TypeScript
+- Next.js
+- Tailwind
+
+This keeps the learning and development process aligned with KISS principles.
+
+---
+
+## Recommended Migration Strategy
+
+### Phase 1 - React Fundamentals + DRF
+Learn:
+- JSX
+- components
+- props
+- hooks
+- forms
+- API fetching
+
+Introduce Django REST Framework APIs for:
+- courses
+- reviews
+- enrollments
+
+Templates remain unchanged initially.
+
+---
+
+### Phase 2 - React Reviews System
+
+First React integration target:
+- course reviews system
+
+Reason:
+- isolated feature
+- already fully functional
+- strong portfolio value
+- ideal for API integration practice
+
+Planned React functionality:
+- fetch reviews
+- add review
+- edit/delete review
+- live average rating updates
+
+---
+
+### Phase 3 - React Dashboards
+
+Convert:
+- learner dashboard
+- teacher dashboard
+
+This introduces:
+- reusable UI components
+- async API handling
+- dynamic rendering
+- loading states
+
+---
+
+### Phase 4 - Optional Full Frontend Migration
+
+Potential future migration:
+- course pages
+- profile pages
+- authentication pages
+- payment flows
+
+At this stage:
+- Django becomes API backend
+- React becomes frontend application
+
+---
+
+## Why This Architecture Matters
+
+This roadmap would transform the project into a modern hybrid full-stack architecture demonstrating:
+
+- Django backend development
+- REST API architecture
+- React frontend integration
+- scalable SaaS structure
+- production-ready frontend/backend separation
+
+The migration strategy prioritises:
+- low-risk refactoring
+- stable backend preservation
+- gradual frontend modernisation
+- portfolio-focused scalability
+
+---
+
+# Deployment
+
+## Local Setup
+
+```bash
+git clone https://github.com/jackpoletek/cup-of-english.git
+cd cup-of-english
+pip install -r requirements.txt
+```
+
+Create .env:
+
+```bash
+SECRET_KEY=your_secret_key
+DEBUG=True
+DATABASE_URL=your_database_url
+STRIPE_PUBLIC_KEY=your_key
+STRIPE_SECRET_KEY=your_key
+STRIPE_WEBHOOK_SECRET=your_secret
+```
+
+Run:
+
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+
+## Gmail SMTP Setup
+- Enable 2FA
+- Generate App Password
+- Use in Django email settings
+
+## AWS S3 Setup
+- Create bucket
+- Enable static hosting
+- Configure CORS
+- Add bucket policy
+- Create IAM user and access keys
+
+## Stripe Webhooks
+- Create endpoint /checkout/wh/
+- Add signing secret to environment variables
+- Test using Stripe test cards
+
+## Production
+- Hosted on Heroku
+- PostgreSQL (Neon)
+- AWS S3 for static/media
+- Stripe live payments enabled
 
 ---
 
@@ -532,76 +1196,92 @@ return render(request, "core/contact.html", {...})
 return redirect("core:contact")
 ```
 
-### Known Issues
+---
 
-- Webhook delay may cause slight delay in enrollment visibility
-- No progress tracking yet
+- **Bug:** Django success messages persisted in session storage after logout and appeared repeatedly on the login page:
+- **Error:** Messages such as _Teacher profile updated successfully_ continued appearing after logout.
+- **Fix:**
+- Messages were cleared before logout using Django message storage iteration.
+The login template message block was removed.
+Removed Code
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+Message rendering was centralised inside `base.html`.
 
 ---
 
-# Deployment
+- **Bug:** Homepage "Popular Courses" displayed duplicated course categories because the queryset selected the first six database rows instead of one course per category.
+Example incorrect output:
+- Business English A2
+- Business English B1
+- Business English B2
 
-## Local Setup
+instead of:
+- General English
+- Business English
+- English for Specific Purposes
 
-```bash
-git clone https://github.com/your-username/cup-of-english.git
-cd cup-of-english
-pip install -r requirements.txt
-```
+- **Error:** No Django or Python error occurred.
+The issue caused:
+- duplicated course categories
+- repeated Business English cards
+- incorrect homepage categorisation
+- inconsistent UX between homepage and courses page
+- **Fix:**
+- Implemented one-course-per-category logic.
 
-Create .env:
+---
 
-```bash
-SECRET_KEY=your_secret_key
-DEBUG=True
-DATABASE_URL=your_database_url
-STRIPE_PUBLIC_KEY=your_key
-STRIPE_SECRET_KEY=your_key
-STRIPE_WEBHOOK_SECRET=your_secret
-```
+### Known Issues
+- Stripe webhook processing may occasionally introduce slight enrollment delay
+- Full course lesson architecture is not yet implemented
+- Progress tracking system not yet available
+- Teacher/course architecture still contains duplicated teacher references (`Enrollment.teacher` and `Course.teacher`)
 
-Run:
-
-```bash
-python manage.py migrate
-python manage.py runserver
-```
-
-## Gmail SMTP Setup
-- Enable 2FA
-- Generate App Password
-- Use in Django email settings
-
-## AWS S3 Setup
-- Create bucket
-- Enable static hosting
-- Configure CORS
-- Add bucket policy
-- Create IAM user and access keys
-
-## Stripe Webhooks
-- Create endpoint /checkout/wh/
-- Add signing secret to environment variables
-- Test using Stripe test cards
-
-## Production
-- Hosted on Heroku
-- PostgreSQL (Neon)
-- AWS S3 for static/media
-- Stripe live payments enabled
+---
 
 # Credits
+
+## Template & Design Adaptation
+
+The frontend design was adapted and customised from the following educational template:
+[Ecourses Template by Html Codex](https://htmlcodex.com/online-courses-html-template/) </br>
+
+The original template structure was heavily modified and extended to support:
+- Django template rendering
+- Stripe payment integration
+- responsive educational marketplace architecture
+- authentication workflows
+- dynamic course management
+- role-based user functionality
+
+The project followed KISS principles by reusing and adapting a clean educational UI foundation instead of overengineering the frontend architecture.
+
+Technical Documentation:
 - Django: https://docs.djangoproject.com/
 - Stripe: https://stripe.com/docs
 - Bootstrap: https://getbootstrap.com/
 
+---
+
 # Acknowledgements
 
-This project was developed as a portfolio-grade full-stack application demonstrating:
+Cup of English was developed as a portfolio-grade full-stack application focused on combining practical backend engineering with user-friendly educational experience design.
 
-- Backend architecture
-- Secure payment systems
-- Real-world deployment
-- Access control and business logic
+The project explores the balance between functionality and simplicity - a continuous process of negotiating form and content while avoiding unnecessary complexity. Throughout development, the focus remained on building a platform that feels intuitive for users while still implementing production-oriented architecture, secure payment handling, scalable database relationships, and maintainable backend logic.
 
-Designed and developed by Jack Poletek.
+The application was also an opportunity to apply KISS (Keep It Simple, Stupid) principles in a real-world context, where technical decisions were guided not only by implementation difficulty, but also by usability, clarity, maintainability, and long-term scalability.
+
+Special thanks to:
+- Brian Macharia for mentorship and guidance
+- Manuel Perez for teaching and academic support
+- Urszula for encouragement, support, and patience throughout the development process
+
+Original design template courtesy of Html Codex:
+https://htmlcodex.com/online-courses-html-template/
+
+Adapted, expanded, and developed further by Jack Poletek.
