@@ -429,8 +429,8 @@ User <br>
 
 User <br>
 └── TeacherProfile </br>
-  </br>   ├── bio <br>
-   </br>  └── image
+&nbsp;&nbsp;├── bio <br>
+&nbsp;&nbsp;└── image
 
 Course <br>
 ├── teacher -> User <br>
@@ -475,7 +475,7 @@ This architecture was intentionally separated instead of using a direct ManyToMa
 - One learner can only enroll in a course once
 - Duplicate purchases prevented
 - Access controlled through enrollment checks
-- Soft-deactivation supported via is_active
+- Soft-deactivation supported via `is_active`
 
 ### Review Constraints
 - One review per learner per course
