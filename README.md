@@ -1,188 +1,233 @@
 # Cup of English
 
-![Responsive Mockup](docs/readme-images/responsive-placeholder.png)
+![Cup of English](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/home/Cup%20of%20English%20-%20home.png) </br>
 
-Cup of English is a full-stack Django e-commerce educational platform designed as a professional MVP online English school for teenagers and adults.
+[Live Project](https://cup-of-english-ddc7ce9e283b.herokuapp.com/) </br>
+[Repository](https://github.com/jackpoletek/cup-of-english) </br>
 
-The platform enables users to browse structured English courses, securely purchase access via Stripe, and unlock premium content after successful enrollment.
+Cup of English is a full-stack Django educational e-commerce platform designed as a real-world MVP online English school for teenagers and adults.
 
-The project combines:
+The platform solves a practical business problem:
 
-- Secure user registration with email activation
-- Role-based user architecture (Learner / Teacher / Admin)
-- Course catalog segmentation by learning purpose
-- Stripe-powered course purchasing
-- Enrollment automation via Stripe webhooks
-- Protected premium content access
-- AWS S3 production asset storage
-- Neon PostgreSQL production database
+Many online learning platforms are overloaded with unnecessary complexity, fragmented payment systems, and unclear course access flows. Cup of English focuses on a streamlined learning and purchasing experience where learners can quickly discover a course, purchase access securely, and immediately unlock protected educational content.
+
+The application combines:
+
+- Secure role-based authentication
+- Email account activation
+- Structured English course catalogue
+- Stripe-powered checkout system
+- Automated enrollment handling via Stripe webhooks
+- Protected premium course access
+- Teacher profile management
+- AWS S3 media storage
+- PostgreSQL cloud database architecture
+- Production-ready deployment pipeline
 - Heroku cloud deployment
 - Gmail SMTP communication system
 
-The application follows **KISS (Keep It Simple, Stupid)** principles while demonstrating real-world full-stack development practices.
-
-![Live Project](https://cup-of-english.herokuapp.com/)
-![Repository](https://github.com/jackpoletek/cup-of-english)
+The project was intentionally designed using KISS (Keep It Simple, Stupid) principles while still demonstrating production-level backend architecture, payment processing, security, and scalable application structure.
 
 ---
 
 # Table of Contents
 
+- [Business Problem](#business-problem)
+- [Project Highlights](#project-highlights)
 - [User Experience (UX)](#user-experience-ux)
-- [Strategy](#strategy)
+- [User Types](#user-types)
+- [User Journeys](#user-journeys)
 - [User Stories](#user-stories)
 - [Features](#features)
-- [Existing Features](#existing-features)
-- [Future Features](#future-features)
+- [System Architecture](#system-architecture)
+- [Payment & Enrollment Flow](#payment--enrollment-flow)
+- [Signals & Automation](#signals--automation)
+- [Database Design](#database-design)
 - [Design](#design)
-- [Database Structure](#database-structure)
 - [Technologies Used](#technologies-used)
 - [Testing](#testing)
-- [Bugs and Fixes](#bugs-and-fixes)
 - [Deployment](#deployment)
+- [Future Improvements](#future-improvements)
+- [Bugs and Fixes](#bugs-and-fixes)
 - [Credits](#credits)
+
+---
+
+# Business Problem
+
+Traditional language school platforms often suffer from:
+- complicated onboarding
+- slow payment flows
+- unclear access permissions
+- disconnected learning systems
+- poor mobile usability
+
+Cup of English was designed to solve these issues through a focused MVP architecture that prioritises:
+- simple course discovery
+- secure enrollment
+- fast payment flow
+- immediate course access
+- role-based content protection
+- scalable backend architecture
+
+The platform demonstrates how a modern educational business can automate enrollment, payments, and access control while maintaining a clean and user-friendly experience.
+
+---
+
+# Project Highlights
+
+## Key Technical Highlights
+- Full-stack Django application deployed to production
+- Stripe Checkout integration with webhook automation
+- Role-based authentication system (Admin / Teacher / Learner)
+- Automated email activation workflow
+- Protected premium content architecture
+- PostgreSQL cloud database integration
+- AWS S3 media and static asset storage
+- Responsive Bootstrap frontend
+- Production-safe transaction handling
+- Secure webhook verification
+- Automated test suite for critical flows
+
+## Business-Oriented Highlights
+- Conversion-focused checkout flow
+- Simplified "single-course purchase" UX strategy (no basket)
+- Real-world educational marketplace architecture
+- Automated learner enrollment after payment
+- Secure premium-content delivery system
+- Scalable role-based platform foundation
 
 ---
 
 # User Experience (UX)
 
-## Strategy
+## UX Strategy
 
-The goal of Cup of English is to provide a simple, focused, and conversion-oriented platform for learners to:
+Cup of English was designed around simplicity, clarity, and conversion-focused user experience.
 
-- Improve English skills through structured courses
-- Purchase access quickly and securely
-- Access premium content without friction
+Instead of overwhelming users with unnecessary dashboard complexity, the platform focuses on helping learners complete three core actions efficiently:
 
-The platform prioritizes:
+1. Discover a relevant course
+2. Purchase access securely
+3. Start learning immediately
 
-- clarity over complexity
-- fast load times
-- direct monetization flow
-- minimal user friction
+The interface prioritises:
+- low cognitive load
+- mobile responsiveness
+- fast navigation
+- secure purchasing
+- seamless onboarding
 
----
-
-## Target Users
-
-- Learners improving general English (A2-C2)
-- Professionals learning Business English
-- Students preparing for:
-- IGCSE English
-- IB English
-- Academic English (EAP)
+The overall UX direction follows modern SaaS and educational marketplace patterns while maintaining accessibility and readability.
 
 ---
 
-## User Stories
+# User Types
 
-### Project Planning - User Stories
+## Learner
 
----
+Learners are users who browse, purchase, and access premium English courses.
 
-### User Story 1: Responsive and intuitive navigation (must-have)
+Key learner capabilities:
+- register and activate account
+- browse courses by category and level
+- purchase courses securely
+- access enrolled course content
+- leave course reviews
+- manage account profile
 
-**User Story:**
-As a First-Time Visitor, I want a responsive and intuitive interface so that I can easily explore the platform on any device.
+## Teacher
 
-**Acceptance Criteria**
+Teachers manage educational visibility within the platform.
 
-- Fully responsive design across devices
-- Clear navigation menu
-- Accessible key pages
+Key teacher capabilities:
+- manage teacher profile
+- upload profile image
+- add professional biography
+- view learners enrolled in assigned courses
+- access grouped enrollment dashboard
 
-**Tasks**
+## Admin
 
-- Implement Bootstrap responsive grid
-- Design clear navigation structure
+Administrators manage the entire platform ecosystem.
 
----
-
-### User Story 2: Course discovery (must-have)
-
-**User Story:**
-As a Visitor, I want to browse courses by category so that I can find relevant learning content.
-
-**Acceptance Criteria**
-
-- Courses grouped by type
-- Courses displayed clearly
-- Easy navigation between categories
-
-**Tasks**
-
-- Create course category pages
-- Display courses dynamically
+Key admin capabilities:
+- manage users
+- manage courses
+- manage enrollments
+- oversee platform operations
+- control educational content structure
+- manage platform administration through Django admin tools
 
 ---
 
-### User Story 3: Secure registration and login (must-have)
+# User Journeys
 
-**User Story:**
-As a User, I want to register and activate my account so that I can securely access the platform.
+## Learner Journey
 
-**Acceptance Criteria**
+graph TD
+A[Visitor Browses Courses] --> B[Registers Account] </br>
+B --> C[Receives Activation Email] </br>
+C --> D[Activates Account] </br>
+D --> E[Logs In] </br>
+E --> F[Selects Course] </br>
+F --> G[Stripe Checkout] </br>
+G --> H[Stripe Webhook] </br>
+H --> I[Enrollment Created] </br>
+I --> J[Premium Content Unlocked]
 
-- Email activation required
-- Inactive users cannot log in
-- Secure authentication flow
+## Teacher Journey
 
-**Tasks**
+graph TD
+A[Teacher Registers] --> B[Activates Account] </br>
+B --> C[Logs In] </br>
+C --> D[Creates Teacher Profile] </br>
+D --> E[Uploads Bio & Image] </br>
+E --> F[Views Assigned Courses] </br>
+F --> G[Views Enrolled Learners] </br>
 
-- Implement activation tokens
-- Configure email system
+## Admin Journey
 
----
-
-### User Story 4: Course purchase (must-have)
-
-**User Story:**
-As a Learner, I want to purchase a course easily so that I can access its content.
-
-**Acceptance Criteria**
-
-- Stripe checkout works
-- Payment success triggers enrollment
-- Cancel flow handled correctly
-
-**Tasks**
-
-- Integrate Stripe checkout
-- Store metadata for user/course
-
----
-
-### User Story 5: Protected content access (must-have)
-
-**User Story:**
-As a Learner, I want access only to purchased content so that the platform maintains content security.
-
-**Acceptance Criteria**
-
-- Non-enrolled users blocked
-- Enrolled users granted access
-
-**Tasks**
-
-- Implement access checks
-- Use shared enrollment helper
+graph TD
+A[Admin Accesses Dashboard] --> B[Manages Users] </br>
+B --> C[Manages Courses] </br>
+C --> D[Manages Enrollments] </br>
+D --> E[Oversees Platform Operations]
 
 ---
 
-### User Story 6: Contact communication (should-have)
+# User Stories
 
-**User Story:**
-As a Visitor, I want to contact the platform so that I can ask questions.
+## Course Discovery
 
-**Acceptance Criteria**
+### User Story
 
-- Contact form available
-- Email sent successfully
+As a learner, I want to browse courses by category and level so that I can quickly find a course suitable for my learning goals.
 
-**Tasks**
+### How This Is Achieved
+- Courses grouped by educational purpose
+- Level filtering (A2-C2)
+- Responsive course catalogue layout
+- Search functionality by course title
+- Category-based navigation structure
 
-- Implement form
-- Configure SMTP
+## Secure Enrollment
+
+### User Story
+
+As a learner, I want to securely purchase a course and immediately gain access after payment.
+
+### How This Is Achieved
+- Stripe Checkout integration
+- Secure payment verification
+- Webhook-driven enrollment automation
+- Access validation using shared enrollment helper
+- Protected course content routes
+
+## Teacher Visibility
+
+### User Story
+
 
 ---
 
