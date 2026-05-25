@@ -165,7 +165,7 @@ Key admin capabilities:
 
 ## Learner Journey
 
-graph TD
+graph TD </br>
 A[Visitor Browses Courses] --> B[Registers Account] </br>
 B --> C[Receives Activation Email] </br>
 C --> D[Activates Account] </br>
@@ -178,7 +178,7 @@ I --> J[Premium Content Unlocked]
 
 ## Teacher Journey
 
-graph TD
+graph TD </br>
 A[Teacher Registers] --> B[Activates Account] </br>
 B --> C[Logs In] </br>
 C --> D[Creates Teacher Profile] </br>
@@ -188,7 +188,7 @@ F --> G[Views Enrolled Learners] </br>
 
 ## Admin Journey
 
-graph TD
+graph TD </br>
 A[Admin Accesses Dashboard] --> B[Manages Users] </br>
 B --> C[Manages Courses] </br>
 C --> D[Manages Enrollments] </br>
@@ -428,7 +428,7 @@ User <br>
 └── UserProfile (role)
 
 User <br>
-└── TeacherProfile
+└── TeacherProfile </br>
     ├── bio <br>
     └── image
 
@@ -449,6 +449,18 @@ Review <br>
 ├── course -> Course <br>
 ├── rating <br>
 └── comment
+
+## Relationship Rules & Constraints
+
+### UserProfile
+- Each user has exactly one profile
+- Profile stores role permissions
+- Roles:
+- - Admin
+- - Teacher
+- - Learner
+
+
 
 ---
 
