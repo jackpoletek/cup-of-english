@@ -321,18 +321,18 @@ As a teacher, I want to manage my profile and view enrolled learners so that I c
 graph TD </br>
 
 A[Frontend - Bootstrap UI] </br>
---> B[Django Views] </br> </br>
+--> B[Django Views] </br>
 
 B --> C[Business Logic] </br>
 B --> D[Authentication System] </br>
 B --> E[Stripe Integration] </br>
-B --> F[PostgreSQL Database] </br> </br>
+B --> F[PostgreSQL Database] </br>
 
-E --> G[Stripe Webhooks] </br> </br>
+E --> G[Stripe Webhooks] </br>
 
-G --> H[Enrollment Automation] </br> </br>
+G --> H[Enrollment Automation] </br>
 
-F --> I[Course Access Control] </br> </br>
+F --> I[Course Access Control] </br>
 
 B --> J[AWS S3 Media Storage]
 
@@ -347,15 +347,15 @@ The payment architecture follows a real-world production pattern where Stripe ac
 graph TD </br>
 
 A[Learner Selects Course] </br>
---> B[Stripe Checkout Session] </br> </br>
+--> B[Stripe Checkout Session] </br> 
 
-B --> C[Payment Completed] </br> </br>
+B --> C[Payment Completed] </br>
 
-C --> D[Stripe Sends Webhook] </br> </br>
+C --> D[Stripe Sends Webhook] </br>
 
-D --> E[Django Verifies Signature] </br> </br>
+D --> E[Django Verifies Signature] </br>
 
-E --> F[Enrollment Created] </br> </br>
+E --> F[Enrollment Created] </br>
 
 F --> G[Course Access Granted]
 
@@ -386,9 +386,9 @@ The project uses Django signals to automate profile creation and maintain consis
 graph TD </br>
 
 A[New User Created] </br>
---> B[post_save Signal Triggered] </br> </br>
+--> B[post_save Signal Triggered] </br>
 
-B --> C[UserProfile Automatically Created] </br> </br>
+B --> C[UserProfile Automatically Created] </br>
 
 C --> D[Role System Ready]
 
@@ -414,7 +414,7 @@ The project uses:
 ## Database Models
 
 | Model | Description |
-|------|-------------|
+|-------|-------------|
 | User | Django authentication model |
 | UserProfile | Extends User with role-based permissions |
 | TeacherProfile | Stores teacher biography and image |
@@ -429,8 +429,8 @@ User <br>
 
 User <br>
 └── TeacherProfile </br>
-    ├── bio <br>
-    └── image
+  </br>   ├── bio <br>
+   </br>  └── image
 
 Course <br>
 ├── teacher -> User <br>
@@ -460,7 +460,151 @@ Review <br>
 - - Teacher
 - - Learner
 
+### Enrollment
 
+The Enrollment model acts as the business-critical bridge between learners and courses.
+
+This architecture was intentionally separated instead of using a direct ManyToMany relationship because enrollments contain additional business logic:
+- enrollment timestamps
+- active/inactive state
+- teacher assignment
+- access validation
+- payment-driven ownership
+
+### Enrollment Constraints
+- One learner can only enroll in a course once
+- Duplicate purchases prevented
+- Access controlled through enrollment checks
+- Soft-deactivation supported via is_active
+
+### Review Constraints
+- One review per learner per course
+- Reviews restricted to enrolled learners only
+- Ownership validation for edit/delete actions
+
+---
+
+# Design
+
+## Colour Scheme
+
+| Colour | Hex | Usage |
+|--------|-----|-------|
+| Orange | #FF6B35 | Call-to-action buttons, engagement |
+| Dark Blue | #2D3142 | Navigation, structure, readability |
+| Light Grey | #F5F5F5 | Background sections |
+| Green | #06D6A0 | Success states and confirmations |
+
+### Colour Strategy
+The colour palette was chosen to balance educational professionalism with conversion-oriented UI design.
+- Orange increases visibility of important actions such as registration and purchasing
+- Dark blue improves contrast and platform readability
+- Light grey reduces visual fatigue during long browsing sessions
+- Green reinforces positive user feedback and successful actions
+
+## Typography
+
+### Primary Font
+- Inter
+
+### Typography Strategy
+Inter was selected because it:
+- improves readability across devices
+- performs well in responsive layouts
+- provides modern SaaS-style aesthetics
+- maintains accessibility for long-form educational content
+
+The typography system prioritises:
+- readability
+- low cognitive load
+- visual clarity
+- mobile accessibility
+
+---
+
+# Testing
+
+## Manual Testing
+The platform was manually tested across authentication, enrollment, payments, access control, and profile management flows.
+
+### Manual Testing Results
+
+| Feature | Action | Expected Result | Actual Result |
+|---------|--------|-----------------|---------------|
+| User Registration | Submit valid registration form | Account created inactive | Pass |
+| Email Activation | Click activation link | Account activated | Pass |
+| Resend Activation | Submit resend form | New activation email sent | Pass |
+| Login | Submit valid credentials | User logged in | Pass |
+| Invalid Login | Submit wrong password | Error message displayed | Pass |
+| Logout | Click logout | Session terminated | Pass |
+| Course Search | Search by title | Matching courses displayed | Pass |
+| Course Filtering | Filter by level | Correct level courses displayed | Pass |
+| Stripe Checkout | Complete payment | Redirect to success page | Pass |
+| Stripe Webhook | Successful Stripe event | Enrollment created | Pass |
+| Duplicate Enrollment | Purchase owned course | Enrollment blocked | Pass |
+| Course Access Protection | Non-enrolled user accesses content | Redirected safely | Pass |
+| Add Review | Enrolled learner submits review | Review created | Pass |
+| Edit Review | Review owner edits review | Review updated | Pass |
+| Delete Review | Review owner deletes review | Review removed | Pass |
+| Teacher Bio Update | Submit teacher profile form | Bio updated | Pass |
+| Teacher Image Upload | Upload valid image | Image saved to AWS S3 | Pass |
+| Teacher Image Validation | Upload invalid file type | Validation error displayed | Pass |
+| Teacher Image Deletion | Delete existing image | Image removed | Pass |
+| Profile Update | Change email/username | Profile updated | Pass |
+| Contact Form | Submit valid form | Message stored and email sent | Pass |
+| CAPTCHA Validation | Submit invalid captcha | Form blocked | Pass |
+
+## Automated Testing
+
+The project includes automated Django TestCase coverage focused on critical business logic and security-sensitive flows.
+
+### Automated Test Coverage
+
+#### Accounts App
+Tests include:
+- registration flow
+- login validation
+- inactive user blocking
+- activation token verification
+- profile signal execution
+- activation link generation
+
+#### Courses App
+Tests include:
+- course listing
+- course detail rendering
+- review permissions
+- enrolled/non-enrolled review restrictions
+
+#### Enrollments App
+Tests include:
+- enrollment access protection
+- login restrictions
+- enrollment creation
+
+#### Payments App
+Tests include:
+- Stripe webhook processing
+- checkout restrictions
+- Stripe session creation
+- enrollment automation
+
+#### Core App
+Tests include:
+contact form validation
+CAPTCHA verification
+homepage course rendering logic
+
+### Why Automated Tests Matter
+Automated testing helps ensure:
+- payment flows remain secure
+- access control cannot be bypassed
+- role architecture remains stable
+- enrollment logic stays consistent
+- future refactoring does not break business-critical systems
+
+#### Running Tests
+`python manage.py test`
 
 ---
 
