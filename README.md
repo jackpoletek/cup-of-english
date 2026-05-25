@@ -1,6 +1,6 @@
 # Cup of English
 
-![Cup of English](screenshots/home/Cup of English - home.png)
+![Cup of English]([screenshots/home/Cup of English - home.png](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/home/Cup%20of%20English%20-%20home.png))
 
 Cup of English is a full-stack Django e-commerce educational platform designed as a professional MVP online English school for teenagers and adults.
 
