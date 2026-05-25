@@ -211,6 +211,12 @@ As a learner, I want to browse courses by category and level so that I can quick
 - Search functionality by course title
 - Category-based navigation structure
 
+**Browse Courses By Category** </br>
+![Browse Courses By Category](docs/readme-images/auth-placeholder.png) </br>
+
+**Browse Courses By Level** </br>
+![Browse Courses By Level](docs/readme-images/auth-placeholder.png) </br>
+
 ## Secure Enrollment
 
 ### User Story
@@ -227,97 +233,222 @@ As a learner, I want to securely purchase a course and immediately gain access a
 ## Teacher Visibility
 
 ### User Story
+As a teacher, I want to manage my profile and view enrolled learners so that I can monitor my assigned courses.
 
+### How This Is Achieved
+- Dedicated TeacherProfile model
+- Image upload validation
+- Grouped enrollment dashboard
+- Teacher-course relationship architecture
+
+**Upload Picture & Bio** </br>
+![Upload Picture & Bio](docs/readme-images/auth-placeholder.png)
 
 ---
 
 # Features
 
-## Existing Features
+## Authentication
 
-### Authentication System
+### Feature Highlights
+- Secure registration system
+- Email account activation
+- Role-based authentication
+- Protected login flow
+- Resend activation system
+- Session-safe authentication handling
 
-- User registration with email activation
-- Secure login/logout
-- Role-based architecture
+**Email Account Activation** </br>
+![Email Account Activation](docs/readme-images/auth-placeholder.png)
 
-![Auth Screenshot](docs/readme-images/auth-placeholder.png)
+## Course Discovery
 
----
+### Feature Highlights
+- Course segmentation by learning purpose
+- English level filtering
+- Search functionality
+- Dynamic course pages
+- Structured catalogue navigation
 
-### Course Browsing
-
-- Course categories:
+### Course Categories
 - General English
 - Business English
-- EAP / ESP
-- Exam preparation
+- English for Academic Purposes (EAP)
+- English for Specific Purposes (ESP)
+- IB English
+- IGCSE English
 
-- Courses filtered by level (A2-C2)
+## Stripe Payment
 
-![Courses Screenshot](docs/readme-images/courses-placeholder.png)
+### Feature Highlights
 
----
+- Secure Stripe Checkout integration
+- Payment verification via webhooks
+- Metadata-based enrollment linking
+- Duplicate enrollment prevention
+- Transaction-safe enrollment creation
 
-### Course Details
+**Stripe Payment Completed** </br>
+![Stripe Payment Completed](docs/readme-images/stripe-placeholder.png) </br>
 
-- Detailed course information
-- Enrollment status visibility
-- Clear purchase CTA
+**Stripe Successful Payment** </br>
+![Stripe Successful Payment](docs/readme-images/stripe-placeholder.png)
 
----
+## Review System
 
-### Stripe Payments
+### Feature Highlights
+- Course review submission
+- One review per learner
+- Edit/delete review ownership protection
+- Average course rating calculation
+- Enrollment-based review permissions
 
-- Secure Stripe checkout
-- Metadata linking user and course
-- Webhook-driven enrollment (source of truth)
+## Teacher Profile
 
-![Stripe Screenshot](docs/readme-images/stripe-placeholder.png)
-
----
-
-### Enrollment System
-
-- One enrollment per user per course
-- Automatic creation via webhook
-- Shared `is_enrolled` helper ensures consistency across app
-
----
-
-### Course Access Control
-
-- Content restricted to enrolled users
-- Safe redirects for unauthorized access
-
----
-
-### Profile Page
-
-- Displays enrolled courses
-- Supports user account management
+### Feature Highlights
+- Teacher biography management
+- Image upload validation
+- AWS S3 media storage
+- Secure file validation
+- Teacher dashboard integration
 
 ---
 
-### Contact Form
+# System Architecture
 
-- Sends real emails via Gmail SMTP
-- Fully functional in production
+## High-Level Architecture
+
+graph TD </br>
+
+A[Frontend - Bootstrap UI] </br>
+--> B[Django Views] </br> </br>
+
+B --> C[Business Logic] </br>
+B --> D[Authentication System] </br>
+B --> E[Stripe Integration] </br>
+B --> F[PostgreSQL Database] </br> </br>
+
+E --> G[Stripe Webhooks] </br> </br>
+
+G --> H[Enrollment Automation] </br> </br>
+
+F --> I[Course Access Control] </br> </br>
+
+B --> J[AWS S3 Media Storage]
 
 ---
 
-### E-commerce Design Decision (No Basket)
+# Payment & Enrollment Flow
 
-The platform intentionally does **not include a shopping basket**.
+The payment architecture follows a real-world production pattern where Stripe acts as the payment authority while the webhook acts as the enrollment trigger.
 
-**Reasoning:**
+## Enrollment Flow
 
-- Users typically purchase one course at a time
-- Reduces friction in checkout flow
-- Simplifies backend logic
-- Improves conversion rate
+graph TD </br>
 
-This aligns with MVP product strategy and KISS principles.
+A[Learner Selects Course] </br>
+--> B[Stripe Checkout Session] </br> </br>
+
+B --> C[Payment Completed] </br> </br>
+
+C --> D[Stripe Sends Webhook] </br> </br>
+
+D --> E[Django Verifies Signature] </br> </br>
+
+E --> F[Enrollment Created] </br> </br>
+
+F --> G[Course Access Granted]
+
+## Why Webhooks Are Important
+
+Stripe webhooks ensure that enrollments are only created after Stripe confirms successful payment.
+
+This prevents:
+- fake enrollments
+- client-side payment bypassing
+- duplicate purchases
+- inconsistent payment states
+
+The webhook implementation includes:
+- Stripe signature verification
+- transaction safety using transaction.atomic()
+- duplicate enrollment prevention
+- logging and exception handling
+
+---
+
+# Signals & Automation
+
+The project uses Django signals to automate profile creation and maintain consistent user architecture.
+
+## Signal Flow
+
+graph TD </br>
+
+A[New User Created] </br>
+--> B[post_save Signal Triggered] </br> </br>
+
+B --> C[UserProfile Automatically Created] </br> </br>
+
+C --> D[Role System Ready]
+
+## Why Signals Are Used
+
+Signals eliminate the need to manually create user profiles during registration.
+
+This ensures:
+- every user always has a profile
+- role-based permissions remain consistent
+- profile creation logic stays centralised
+- cleaner registration workflow
+
+The project uses:
+- post_save signals
+- automatic profile creation
+- automatic profile saving
+
+---
+
+# Database Design
+
+## Database Models
+
+| Model | Description |
+|------|-------------|
+| User | Django authentication model |
+| UserProfile | Extends User with role-based permissions |
+| TeacherProfile | Stores teacher biography and image |
+| Course | Stores course information and pricing |
+| Enrollment | Links learners to purchased courses |
+| Review | Stores learner reviews and ratings |
+
+## Database Schema
+
+User <br>
+└── UserProfile (role)
+
+User <br>
+└── TeacherProfile
+    ├── bio <br>
+    └── image
+
+Course <br>
+├── teacher -> User <br>
+├── level <br>
+├── course_type <br>
+└── price
+
+Enrollment <br>
+├── learner -> User <br>
+├── course -> Course <br>
+├── teacher -> User <br>
+└── is_active
+
+Review <br>
+├── learner -> User <br>
+├── course -> Course <br>
+├── rating <br>
+└── comment
 
 ---
 
