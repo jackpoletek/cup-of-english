@@ -289,10 +289,10 @@ As a teacher, I want to manage my profile and view enrolled learners so that I c
 - Transaction-safe enrollment creation
 
 **Stripe Payment Completed** </br>
-![Stripe Payment Completed](docs/readme-images/stripe-placeholder.png) </br>
+![Stripe Payment Completed](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_completed.jpg) </br>
 
 **Stripe Successful Payment** </br>
-![Stripe Successful Payment](docs/readme-images/stripe-placeholder.png)
+![Stripe Successful Payment](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/payments/Payment_successful_message.jpg)
 
 ## Review System
 
@@ -497,13 +497,13 @@ Initial wireframes were created to plan:
 The wireframes prioritised low cognitive load and simple user journeys following KISS design principles.
 
 ### Homepage Desktop Wireframe
-<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png" alt="Homepage Desktop Wireframe" width=35% height=35%/>&nbsp;
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_large_screen.png" alt="Homepage Desktop Wireframe" width=30% height=30%/>&nbsp;
 
 ### Homepage Tablet Wireframe
-<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png" alt="Homepage Tablet Wireframe" width=35% height=35%/>&nbsp;
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_tablet.png" alt="Homepage Tablet Wireframe" width=25% height=25%/>&nbsp;
 
 ### Homepage Mobile Wireframe
-<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png" alt="Homepage Mobile Wireframe" width=35% height=35%/>&nbsp;
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/wireframes/Cup%20of%20English%20-%20home_mobile.png" alt="Homepage Mobile Wireframe" width=20% height=20%/>&nbsp;
 
 ## Colour Scheme
 
