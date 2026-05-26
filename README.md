@@ -46,7 +46,9 @@ The project was intentionally designed using KISS (Keep It Simple, Stupid) princ
 - [Design](#design)
 - [Technologies Used](#technologies-used)
 - [Testing](#testing)
+- [AWS S3 Media Storage](#aws-s3-media-storage)
 - [Deployment](#deployment)
+- [Validation and Performance](#validation-and-performance)
 - [Future Improvements](#future-improvements)
 - [Bugs and Fixes](#bugs-and-fixes)
 - [Credits](#credits)
@@ -823,6 +825,84 @@ The implementation includes:
 
 ---
 
+# Deployment
+
+## Local Setup
+
+```bash
+git clone https://github.com/jackpoletek/cup-of-english.git
+cd cup-of-english
+pip install -r requirements.txt
+```
+
+Create .env:
+
+```bash
+SECRET_KEY=your_secret_key
+DEBUG=True
+DATABASE_URL=your_database_url
+STRIPE_PUBLIC_KEY=your_key
+STRIPE_SECRET_KEY=your_key
+STRIPE_WEBHOOK_SECRET=your_secret
+```
+
+Run:
+
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+
+## Gmail SMTP Setup
+- Enable 2FA
+- Generate App Password
+- Use in Django email settings
+
+## AWS S3 Setup
+- Create bucket
+- Enable static hosting
+- Configure CORS
+- Add bucket policy
+- Create IAM user and access keys
+
+## Stripe Webhooks
+- Create endpoint /checkout/wh/
+- Add signing secret to environment variables
+- Test using Stripe test cards
+
+## Production
+- Hosted on Heroku
+- PostgreSQL (Neon)
+- AWS S3 for static/media
+- Stripe live payments enabled
+
+---
+
+# Validation and Performance
+
+- W3C HTML Checker - Passed<br>
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/validators/html_checker.png" alt="W3C HTML Checker" width=50% height=50%/><br>
+
+- W3C CSS Validator - Passed<br>
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/validators/css_validator.png" alt="W3C CSS Validator" width=50% height=50%/><br>
+
+- JSHint - main.js - No critical issues<br>
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/validators/js_validator_main.png" alt="JSHint main" width=50% height=50%/><br>
+
+- JSHint - carousel.js - No critical issues<br>
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/validators/js_validator_carousel.png" alt="JSHint carousel" width=50% height=50%/><br>
+
+- GTmetrix Audit - Summary<br>
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/web%20performance/gtmetrix.com_summary.png" alt="GTmetrix Score - Summary" width=50% height=50%/><br>
+
+- GTmetrix Audit - Performance<br>
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/web%20performance/gtmetrix.com_performance.png" alt="GTmetrix Score - Performance" width=50% height=50%/><br>
+
+- GTmetrix Audit - Structure<br>
+<img src="https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/web%20performance/gtmetrix.com_structure.png" alt="GTmetrix Score - Structure" width=50% height=50%/><br>
+
+---
+
 # Future Improvements
 
 Future roadmap section to be expanded and prioritised further.
@@ -1066,59 +1146,6 @@ The migration strategy prioritises:
 - stable backend preservation
 - gradual frontend modernisation
 - portfolio-focused scalability
-
----
-
-# Deployment
-
-## Local Setup
-
-```bash
-git clone https://github.com/jackpoletek/cup-of-english.git
-cd cup-of-english
-pip install -r requirements.txt
-```
-
-Create .env:
-
-```bash
-SECRET_KEY=your_secret_key
-DEBUG=True
-DATABASE_URL=your_database_url
-STRIPE_PUBLIC_KEY=your_key
-STRIPE_SECRET_KEY=your_key
-STRIPE_WEBHOOK_SECRET=your_secret
-```
-
-Run:
-
-```bash
-python manage.py migrate
-python manage.py runserver
-```
-
-## Gmail SMTP Setup
-- Enable 2FA
-- Generate App Password
-- Use in Django email settings
-
-## AWS S3 Setup
-- Create bucket
-- Enable static hosting
-- Configure CORS
-- Add bucket policy
-- Create IAM user and access keys
-
-## Stripe Webhooks
-- Create endpoint /checkout/wh/
-- Add signing secret to environment variables
-- Test using Stripe test cards
-
-## Production
-- Hosted on Heroku
-- PostgreSQL (Neon)
-- AWS S3 for static/media
-- Stripe live payments enabled
 
 ---
 
