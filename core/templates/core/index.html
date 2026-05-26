@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block content %}
@@ -20,9 +21,19 @@
                     alt="Learn English online course">
 
                 <div class="carousel-caption">
-                    <h5>Best Online English Courses</h5>
-                    <h1>Learn English From Your Home</h1>
-                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">Explore Courses</a>
+
+                    <p class="text-uppercase fw-bold mb-2">
+                        Best Online English Courses
+                    </p>
+
+                    <h1>
+                        Learn English From Your Home
+                    </h1>
+
+                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
+                        Explore Courses
+                    </a>
+
                 </div>
             </div>
 
@@ -31,9 +42,19 @@
                     alt="Business English training">
 
                 <div class="carousel-caption">
-                    <h5>Professional English Training</h5>
-                    <h1>Improve Your Career Opportunities</h1>
-                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">Browse Courses</a>
+
+                    <p class="text-uppercase fw-bold mb-2">
+                        Professional English Training
+                    </p>
+
+                    <h2 class="h1">
+                        Improve Your Career Opportunities
+                    </h2>
+
+                    <a href="{% url 'courses:courses' %}" class="btn btn-primary">
+                        Browse Courses
+                    </a>
+
                 </div>
             </div>
 
@@ -42,20 +63,34 @@
                     alt="Interactive English lessons">
 
                 <div class="carousel-caption">
-                    <h5>Study With Expert Teachers</h5>
-                    <h1>Interactive Online Lessons</h1>
-                    <a href="{% url 'accounts:register' %}" class="btn btn-primary">Register Now</a>
+
+                    <p class="text-uppercase fw-bold mb-2">
+                        Study With Expert Teachers
+                    </p>
+
+                    <h2 class="h1">
+                        Interactive Online Lessons
+                    </h2>
+
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary">
+                        Register Now
+                    </a>
+
                 </div>
             </div>
 
         </div>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+
             <span class="carousel-control-prev-icon"></span>
+
         </button>
 
         <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+
             <span class="carousel-control-next-icon"></span>
+
         </button>
 
     </div>
@@ -65,16 +100,25 @@
 
 <!-- About Section -->
 <div class="container py-5">
+
     <div class="row align-items-center">
 
         <div class="col-lg-5">
+
             <img class="img-fluid rounded" src="{% static 'cup_of_english/images/about.jpg' %}"
                 alt="About Cup of English">
+
         </div>
 
         <div class="col-lg-7">
-            <h5 class="text-primary text-uppercase mb-3">About Us</h5>
-            <h1 class="mb-4">Innovative Way To Learn English</h1>
+
+            <h2 class="text-primary text-uppercase mb-3 fs-6">
+                About Us
+            </h2>
+
+            <h2 class="mb-4">
+                Innovative Way To Learn English
+            </h2>
 
             <p>
                 Cup of English provides intensive online English courses for
@@ -86,8 +130,11 @@
             <a href="{% url 'core:about' %}" class="btn btn-primary">
                 Learn More
             </a>
+
         </div>
+
     </div>
+
 </div>
 
 
@@ -95,46 +142,66 @@
 <div class="container py-5">
 
     <div class="text-center mb-5">
-        <h5 class="text-primary text-uppercase">Courses</h5>
-        <h1>Popular Courses</h1>
+
+        <h2 class="text-primary text-uppercase fs-6">
+            Courses
+        </h2>
+
+        <h2>
+            Popular Courses
+        </h2>
+
     </div>
 
     <div class="row">
 
         {% for course in featured_courses %}
+
         <div class="col-lg-4 mb-4">
+
             <div class="card course-card h-100">
 
                 {% with forloop.counter|stringformat:"s" as image_num %}
+
                 <img class="card-img-top" src="{% static 'cup_of_english/images/course-'|add:image_num|add:'.jpg' %}"
                     alt="{{ course.get_course_type_display|title }}">
+
                 {% endwith %}
 
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">
+
+                    <h3 class="card-title h5">
                         {{ course.get_course_type_display }}
-                    </h5>
+                    </h3>
 
                     <p class="card-text">
                         {{ course.description|truncatewords:18 }}
                     </p>
 
                     <div class="mt-auto">
+
                         <p class="fw-bold">
                             From £{{ course.price }}
                         </p>
 
                         <a href="{% url 'courses:course_list_by_type' course.course_type %}" class="btn btn-primary">
+
                             View Courses
+
                         </a>
+
                     </div>
+
                 </div>
 
             </div>
+
         </div>
+
         {% endfor %}
 
     </div>
+
 </div>
 
 
@@ -142,14 +209,23 @@
 <div class="container py-5">
 
     <div class="text-center mb-5">
-        <h5 class="text-primary text-uppercase">Teachers</h5>
-        <h1>Meet Our Teachers</h1>
+
+        <h2 class="text-primary text-uppercase fs-6">
+            Teachers
+        </h2>
+
+        <h2>
+            Meet Our Teachers
+        </h2>
+
     </div>
 
     <div class="row">
 
         {% for i in "1234" %}
+
         <div class="col-lg-3 col-md-6 mb-4">
+
             <div class="card course-card h-100">
 
                 <img class="card-img-top" src="{% static 'cup_of_english/images/team-'|add:i|add:'.jpg' %}"
@@ -158,32 +234,63 @@
                 <div class="card-body text-center d-flex flex-column">
 
                     {% if forloop.counter == 1 %}
-                    <h5 class="card-title">Anna Smith</h5>
-                    <p class="card-text">General English Specialist</p>
+
+                    <h3 class="card-title h5">
+                        Anna Smith
+                    </h3>
+
+                    <p class="card-text">
+                        General English Specialist
+                    </p>
 
                     {% elif forloop.counter == 2 %}
-                    <h5 class="card-title">David Brown</h5>
-                    <p class="card-text">IELTS & Cambridge Expert</p>
+
+                    <h3 class="card-title h5">
+                        David Brown
+                    </h3>
+
+                    <p class="card-text">
+                        IELTS & Cambridge Expert
+                    </p>
 
                     {% elif forloop.counter == 3 %}
-                    <h5 class="card-title">Maria Lopez</h5>
-                    <p class="card-text">Academic English Teacher</p>
+
+                    <h3 class="card-title h5">
+                        Maria Lopez
+                    </h3>
+
+                    <p class="card-text">
+                        Academic English Teacher
+                    </p>
 
                     {% elif forloop.counter == 4 %}
-                    <h5 class="card-title">John Carter</h5>
-                    <p class="card-text">Business English Coach</p>
+
+                    <h3 class="card-title h5">
+                        John Carter
+                    </h3>
+
+                    <p class="card-text">
+                        Business English Coach
+                    </p>
+
                     {% endif %}
 
                     <div class="mt-auto">
+
                         <a href="{% url 'core:teachers' %}" class="btn btn-primary">
+
                             View Teachers
+
                         </a>
+
                     </div>
 
                 </div>
 
             </div>
+
         </div>
+
         {% endfor %}
 
     </div>
