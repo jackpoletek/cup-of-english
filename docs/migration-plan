@@ -1,0 +1,145 @@
+# Migration Plan
+
+## Goal
+
+Safely remove:
+
+```python
+Enrollment.teacher
+```
+
+and transition fully as shown without breaking existing functionality:
+
+```python
+Course.teacher
+```
+
+---
+
+## Phase 1 - Audit Existing References
+
+Search the project for all references to:
+
+```python
+enrollment.teacher
+```
+
+Review:
+
+- views
+- templates
+- admin
+- tests
+- utilities
+- serializers
+- forms
+
+---
+
+## Phase 2 - Transition Application Logic
+
+Update all application logic to use:
+
+```python
+enrollment.course.teacher
+```
+
+Examples:
+
+Before:
+
+```python
+enrollment.teacher.username
+```
+
+After:
+
+```python
+enrollment.course.teacher.username
+```
+
+This phase should preserve application behavior while removing
+direct dependencies on `Enrollment.teacher`.
+
+---
+
+## Phase 3 - Verify Course.teacher Coverage
+
+Ensure all active courses have valid teacher assignments where required.
+
+Validation tasks:
+
+- identify null teacher assignments
+- confirm course ownership consistency
+- verify dashboard/template rendering
+
+---
+
+## Phase 4 - Database Migration
+
+Generate a new migration:
+
+```bash
+python manage.py makemigrations
+```
+
+Expected operation:
+
+```python
+migrations.RemoveField(
+model_name="enrollment",
+name="teacher",
+)
+```
+
+Apply migration:
+
+```bash
+python manage.py migrate
+```
+
+Do NOT modify previous migrations.
+
+---
+
+## Phase 5 - Cleanup
+
+Remove obsolete:
+
+- comments
+- fallback logic
+- queries
+- related_name references
+- admin configuration
+- outdated tests
+
+Run full project-wide search for:
+
+```text
+enrollment.teacher
+teaching_enrollments
+```
+
+---
+
+## Verification Checklist
+
+Confirm:
+
+- enrollments still work
+- dashboards render correctly
+- course pages display teachers correctly
+- admin works normally
+- tests pass
+- no `AttributeError` exceptions occur
+
+---
+
+## Rollback Strategy
+
+If issues occur:
+
+1. rollback migration
+2. restore database backup if necessary
+3. temporarily reintroduce `Enrollment.teacher`
+4. isolate failing references before retrying migration
