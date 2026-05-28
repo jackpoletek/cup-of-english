@@ -7,10 +7,15 @@ class Enrollment(models.Model):
 
     """
     Enrollment model represents a learner's registration in a course.
-    It tracks which learners are enrolled in which courses,
-    which teacher is assigned to the enrollment, and the status of the enrollment.
-    It serves as a bridge between the User (learner), and Course models.
+    This model acts as a bridge between:
+    - learner (User)
+    - course (Course)
+
+    Teacher relationships come from: course.teacher
+    This prevents duplicated sources of truth and keeps
+    enrollment logic simple.
     """
+
     # Each enrollment belongs to exactly one learner
     learner = models.ForeignKey(
         User,
@@ -19,30 +24,39 @@ class Enrollment(models.Model):
         )
 
     # Each enrollment is for exactly one course
+    # Enrollments are deleted if the course is deleted
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
-        )
-
-    teacher = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="teaching_enrollments",
+        related_name="enrollments",
     )
 
     # Soft delete flag to allow deactivating enrollments without deleting them
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    is_active = models.BooleanField(
+        default=True
+    )
 
     class Meta:
+
         """
         Meta options for the Enrollment model.
         Defines database constraints and default ordering.
         """
-        unique_together = ("learner", "course") # Learner can only be enrolled in a specific course once
-        ordering = ["-created_at"]  # Most recent enrollments first (descending order)
+
+        # Ensure a learner can only enroll in the same course once
+        unique_together = (
+            "learner",
+            "course"
+        )
+
+        # Most recent enrollments first (descending order)
+        ordering = [
+            "-created_at"
+        ]
 
     # Safely get teacher
     def __str__(self):
