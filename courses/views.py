@@ -23,9 +23,10 @@ def courses_view(request):
     # Search by title
     search_query = request.GET.get("q", "")
 
+    # icontains for case-insensitive search
     if search_query:
         courses = courses.filter(
-            title__contains=search_query
+            title__icontains=search_query
         )
 
     # Filter by level
@@ -69,7 +70,7 @@ def course_list_by_type(request, course_type):
 
     if search_query:
         courses = courses.filter(
-            title__contains=search_query
+            title__icontains=search_query
         )
 
     # Filter by level
@@ -116,6 +117,7 @@ def course_details(request, course_id):
 
     course = get_object_or_404(
         Course.objects.select_related("teacher"),
+
         id=course_id,
         is_active=True
     )
@@ -135,7 +137,7 @@ def course_details(request, course_id):
         {
             "course": course,
             "user_enrolled": user_enrolled,
-            "average_rating": average_rating
+            "average_rating": average_rating,
         }
     )
 
@@ -150,7 +152,9 @@ def my_courses(request):
     enrollments = Enrollment.objects.filter(
         learner=request.user,
         is_active=True
-    ).select_related("course__teacher")
+    ).select_related(
+        "course__teacher"
+    )
 
     return render(
         request,
@@ -167,13 +171,20 @@ def course_content(request, course_id):
     Display the content of a specific course for enrolled users.
     """
 
-    course = get_object_or_404(Course, id=course_id)
+    course = get_object_or_404(
+        Course.objects.select_related("teacher"),
+        id=course_id
+    )
 
     # Check if the user is enrolled in the course
     enrolled = is_enrolled(request.user, course)
 
     if not enrolled:
-        return redirect('courses:course_details', course_id=course.id)
+
+        return redirect(
+            "courses:course_details",
+            course_id=course.id
+        )
 
     return render(
         request,
@@ -186,26 +197,46 @@ def course_content(request, course_id):
 
 @login_required
 def add_review(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
+    course = get_object_or_404(
+        Course,
+        id=course_id
+    )
 
     # Only enrolled learners
     if not is_enrolled(request.user, course):
-        return redirect("enrollments:access_denied")
+        return redirect(
+            "enrollments:access_denied"
+        )
 
     # Prevent duplicates
-    if Review.objects.filter(course=course, learner=request.user).exists():
-        return redirect("courses:course_details", course_id)
+    if Review.objects.filter(
+        course=course,
+        learner=request.user
+    ).exists():
+
+        return redirect(
+            "courses:course_details",
+            course.id
+        )
 
     if request.method == "POST":
+
         form = ReviewForm(request.POST)
+
         if form.is_valid():
+
             review = form.save(commit=False)
+
             review.course = course
             review.learner = request.user
+
             review.save()
 
-            return redirect("courses:course_details", course_id)
-        
+            return redirect(
+                "courses:course_details",
+                course_id
+            )
+
     else:
         form = ReviewForm()
 
@@ -229,7 +260,11 @@ def edit_review(request, review_id):
 
     # Prevent editing other users reviews
     if review.learner != request.user:
-        return redirect("courses:course_details", review.course.id)
+
+        return redirect(
+            "courses:course_details",
+            review.course.id
+        )
 
     if request.method == "POST":
 
@@ -247,7 +282,9 @@ def edit_review(request, review_id):
             )
 
     else:
-        form = ReviewForm(instance=review)
+        form = ReviewForm(
+            instance=review
+        )
 
     return render(
         request,
@@ -268,7 +305,7 @@ def delete_review(request, review_id):
         id=review_id
     )
 
-# Prevent deleting other users reviews
+    # Prevent deleting other users reviews
     if review.learner != request.user:
         return redirect("courses:course_details", review.course.id)
 
