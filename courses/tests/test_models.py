@@ -39,5 +39,5 @@ class CourseModelTest(TestCase):
 
         self.assertEqual(
             str(review),
-            "Test - English (5)"
+            "test - English (5)"
         )
