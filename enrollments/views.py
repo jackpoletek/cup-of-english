@@ -27,7 +27,7 @@ def enroll_course(request, course_id):
     )
 
     # Prevent non-learners from enrolling in courses
-    if request.user.userprofile != "learner":
+    if request.user.userprofile.role != "learner":
 
         messages.error(
             request,
@@ -66,10 +66,14 @@ def enroll_course(request, course_id):
 @login_required
 def access_course(request, course_id):
 
-    course = get_object_or_404(Course, id=course_id)
+    course = get_object_or_404(
+        Course,
+        id=course_id
+    )
 
     # Check enrollment status and show access denied page if not enrolled, otherwise redirect to course details
     if not is_enrolled(request.user, course):
+
         return render(
             request,
             "enrollments/access_denied.html",
