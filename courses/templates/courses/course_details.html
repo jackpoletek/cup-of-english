@@ -24,13 +24,7 @@
 
                         Teacher:
                         <strong>
-                            {% if course.teacher %}
-                            {{ course.teacher.username }}
-                            {% else %}
-                            {% with first_enrollment=course.enrollment_set.first %}
-                            {{ first_enrollment.teacher.username|default:"Not assigned" }}
-                            {% endwith %}
-                            {% endif %}
+                            {{ course.teacher.username|default:"Not assigned" }}
                         </strong>
                     </p>
 

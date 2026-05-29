@@ -115,7 +115,7 @@ def course_details(request, course_id):
     """
 
     course = get_object_or_404(
-        Course,
+        Course.objects.select_related("teacher"),
         id=course_id,
         is_active=True
     )
