@@ -21,25 +21,46 @@ def enroll_course(request, course_id):
         Redirect to course detail page with appropriate status message
     """
 
-    course = get_object_or_404(Course, id=course_id)
+    course = get_object_or_404(
+        Course,
+        id=course_id
+    )
+
+    # Prevent non-learners from enrolling in courses
+    if request.user.userprofile != "learner":
+
+        messages.error(
+            request,
+            "Only learners can enroll in courses."
+        )
+
+        return redirect(
+            "courses:course_details",
+            course_id=course.id
+        )
 
     enrollment, created = Enrollment.objects.get_or_create(
         learner=request.user,
         course=course,
     )
 
-    # If enrollment already exists but teacher is not set
-    if not enrollment.teacher:
-        enrollment.teacher = course.teacher
-        enrollment.save(update_fields=["teacher"])
-
     if not created:
-        messages.info(request, "You are already enrolled in this course.")
+        messages.info(
+            request,
+            "You are already enrolled in this course."
+        )
 
     else:
-        messages.success(request, "Enrollment successful.")
 
-    return redirect("courses:course_details", course_id=course.id)
+        messages.success(
+            request,
+            "Enrollment successful."
+        )
+
+    return redirect(
+        "courses:course_details",
+        course_id=course.id
+    )
 
 
 @login_required
@@ -54,4 +75,7 @@ def access_course(request, course_id):
             "enrollments/access_denied.html",
         )
 
-    return redirect("courses:course_details", course_id=course.id)
+    return redirect(
+        "courses:course_details",
+        course_id=course.id
+    )
