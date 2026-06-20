@@ -14,8 +14,15 @@ DEBUG = os.environ.get("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.environ.get(
     "ALLOWED_HOSTS",
-    "127.0.0.1,localhost,cup-of-english.herokuapp.com,.herokuapp.com"
+    "127.0.0.1,localhost",
 ).split(",")
+
+# RENDER HOSTING CONFIG
+CSRF_TRUSTED_ORIGINS = [
+    origin
+    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin
+]
 
 # APPS
 INSTALLED_APPS = [
@@ -117,11 +124,18 @@ if "USE_AWS" in os.environ:
 
     # STATIC
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    STATICFILES_STORAGE = "custom_storages.StaticStorage"
 
     # MEDIA
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "custom_storages.MediaStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "custom_storages.StaticStorage",
+        },
+    }
 
 else:
     # LOCAL STATIC
@@ -129,11 +143,18 @@ else:
     STATICFILES_DIRS = [BASE_DIR / "static"]
     STATIC_ROOT = BASE_DIR / "staticfiles"
 
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
     # LOCAL MEDIA
     MEDIA_URL = "/media/"
     MEDIA_ROOT = BASE_DIR / "media"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 # AUTH REDIRECTS
 LOGIN_URL = "/login/"
