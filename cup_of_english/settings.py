@@ -78,8 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "cup_of_english.wsgi.application"
 
-print(repr(os.environ.get("DATABASE_URL")))
-
 # DATABASE
 DATABASES = {
     "default": dj_database_url.parse(
