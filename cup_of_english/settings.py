@@ -147,6 +147,11 @@ else:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = BASE_DIR / "media"
 
+    print(f"BASE_DIR = {BASE_DIR}")
+    print(f"STATIC DIR = {BASE_DIR / 'static'}")
+    print(f"STATIC EXISTS = {(BASE_DIR / 'static').exists()}")
+    print(f"IMAGES EXISTS = {(BASE_DIR / 'static' / 'cup_of_english' / 'images').exists()}")
+
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
