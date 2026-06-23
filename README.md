@@ -23,7 +23,7 @@ The application combines:
 - AWS S3 media storage
 - PostgreSQL cloud database architecture
 - Production-ready deployment pipeline
-- Heroku cloud deployment
+- Render cloud deployment
 - Gmail SMTP communication system
 
 The project was intentionally designed using KISS (Keep It Simple, Stupid) principles while still demonstrating production-level backend architecture, payment processing, security, and scalable application structure.
