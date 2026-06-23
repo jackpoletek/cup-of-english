@@ -2,7 +2,7 @@
 
 ![Cup of English](https://github.com/jackpoletek/cup-of-english/blob/main/screenshots/home/Cup%20of%20English%20-%20home.png) </br>
 
-[Live Project](https://cup-of-english-ddc7ce9e283b.herokuapp.com/) </br>
+[Live Project](https://cup-of-english.onrender.com/) </br>
 [Repository](https://github.com/jackpoletek/cup-of-english) </br>
 
 Cup of English is a full-stack Django educational e-commerce platform designed as a real-world MVP online English school for teenagers and adults.
@@ -697,7 +697,7 @@ Used for:
 - documentation management
 - version control collaboration
 
-### Heroku
+### Render
 Cloud deployment platform used for:
 - production hosting
 - environment variable management
@@ -871,7 +871,7 @@ python manage.py runserver
 - Test using Stripe test cards
 
 ## Production
-- Hosted on Heroku
+- Hosted on Render
 - PostgreSQL (Neon)
 - AWS S3 for static/media
 - Stripe live payments enabled
