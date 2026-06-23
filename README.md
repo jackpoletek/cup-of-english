@@ -709,7 +709,7 @@ The deployed production stack combines:
 - PostgreSQL
 - AWS S3
 - Stripe
-- Heroku infrastructure
+- Render infrastructure
 
 ---
 
