@@ -1023,6 +1023,8 @@ The preferred implementation approach is:
 
 This approach follows the project's KISS architecture principles while improving long-term maintainability.
 
+UPDATE -> the above backend architecture improvements has already been implemented.
+
 ---
 
 ### React + Django REST Framework Migration
