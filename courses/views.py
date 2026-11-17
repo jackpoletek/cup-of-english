@@ -204,9 +204,7 @@ def add_review(request, course_id):
 
     # Only enrolled learners
     if not is_enrolled(request.user, course):
-        return redirect(
-            "enrollments:access_denied"
-        )
+        return redirect("core:error_403_view")
 
     # Prevent duplicates
     if Review.objects.filter(

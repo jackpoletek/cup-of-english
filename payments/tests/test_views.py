@@ -60,8 +60,8 @@ class PaymentTest(TestCase):
         mock_session_create
     ):
 
-        self.user.profile.role = "learner"
-        self.user.profile.save()
+        self.user.userprofile.role = "learner"
+        self.user.userprofile.save()
 
         mock_session = MagicMock()
         mock_session.url = "/fake-checkout-url/"

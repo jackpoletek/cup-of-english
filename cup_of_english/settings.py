@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import sys
 import dj_database_url
 from dotenv import load_dotenv
 from django.conf.urls.static import static
@@ -171,14 +172,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # SECURITY
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-else:
+# Don't force HTTPS during local development or `manage.py test`
+
+TESTING = "test" in sys.argv
+
+if DEBUG or TESTING:
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
     SECURE_SSL_REDIRECT = False
+else:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
 
 # STRIPE
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY")
